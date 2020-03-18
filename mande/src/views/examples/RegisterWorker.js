@@ -98,7 +98,7 @@ class RegisterWorker extends React.Component {
                 tag={Link}
               >
                 <div className="text-light">
-                  <small>Login instead</small>
+                  <small>Ingresar</small>
                 </div>
               </NavLink>
             </Col>
