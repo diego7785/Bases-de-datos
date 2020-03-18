@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
-  UncontrolledCollapse, 
+  UncontrolledCollapse,
   Navbar,
   NavItem,
   NavLink,
@@ -24,7 +24,7 @@ class AdminNavbar extends React.Component {
                 tag={Link}
               >
           <img src={require("assets/img/brand/logo.png")} alt="Mande" width="50" height="50"/>
-          
+
           </NavLink>
           <h1 className="text-white">Mande</h1>
             <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
@@ -42,7 +42,7 @@ class AdminNavbar extends React.Component {
                 </Row>
               </div>
               <Nav className="ml-auto" navbar>
-                
+
                 <NavItem>
                   <NavLink
                     className="nav-link-icon"
@@ -50,7 +50,7 @@ class AdminNavbar extends React.Component {
                     tag={Link}
                   >
                     <i className="ni ni-circle-08" />
-                    <span className="nav-link-inner--text">Register</span>
+                    <span className="nav-link-inner--text">Registrar</span>
                   </NavLink>
                 </NavItem>
                 <NavItem>
@@ -60,7 +60,7 @@ class AdminNavbar extends React.Component {
                     tag={Link}
                   >
                     <i className="ni ni-key-25" />
-                    <span className="nav-link-inner--text">Login</span>
+                    <span className="nav-link-inner--text">Ingresar</span>
                   </NavLink>
                 </NavItem>
               </Nav>

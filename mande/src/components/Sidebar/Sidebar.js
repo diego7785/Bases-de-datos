@@ -50,15 +50,18 @@ class Sidebar extends React.Component {
   createLinks = routes => {
       return(
         <NavItem>
-          <NavLink to="/admin/index" tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
+          <NavLink to={this.props.match.path + "/index"} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
             <i>Inicio</i>
           </NavLink>
-          <NavLink to="/admin/user-profile" tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
+          <NavLink to={this.props.match.path + "/user-profile"} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
           <i>Perfil</i>
         </NavLink>
-        
+        <NavLink to="/auth" tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
+        <i>Salir</i>
+      </NavLink>
+
       </NavItem>
-        
+
       );
   };
   render() {

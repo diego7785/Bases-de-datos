@@ -18,7 +18,18 @@ import {
   Media
 } from "reactstrap";
 
-class AdminNavbar extends React.Component {
+function isWorker(props){
+  if(props.match.path === "/worker"){
+    return(
+      <DropdownItem >
+        <i>Disponible</i>
+        <span>Estado</span>
+        </DropdownItem>
+      )
+    }
+}
+
+class NavbarC extends React.Component {
   render() {
     return (
       <>
@@ -26,7 +37,7 @@ class AdminNavbar extends React.Component {
           <Container fluid>
             <Link
               className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-              to="/admin/index"
+              to="/worker/index"
             >
               INICIO
             </Link>
@@ -38,7 +49,7 @@ class AdminNavbar extends React.Component {
                       <i className="fas fa-search" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Search" type="text" />
+                  <Input placeholder="Buscar trabajos" type="text" />
                 </InputGroup>
               </FormGroup>
             </Form>
@@ -61,20 +72,17 @@ class AdminNavbar extends React.Component {
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-arrow" right>
                   <DropdownItem className="noti-title" header tag="div">
-                    <h6 className="text-overflow m-0">Welcome!</h6>
+                    <h6 className="text-overflow m-0">¡Hey!</h6>
                   </DropdownItem>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <DropdownItem to="/worker/user-profile" tag={Link}>
                     <i className="ni ni-single-02" />
-                    <span>My profile</span>
+                    <span>Mi perfil</span>
                   </DropdownItem>
-                  <DropdownItem tag={Link}>
-                    <i>Available</i>
-                    <span>Status</span>
-                  </DropdownItem>
+                  {isWorker(this.props)}
                   <DropdownItem divider />
                   <DropdownItem to="/auth/login" tag={Link}>
                     <i className="ni ni-user-run" />
-                    Log out
+                    Salir
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
@@ -86,4 +94,4 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+export default NavbarC;

@@ -1,7 +1,7 @@
 import React from "react";
 
 // reactstrap components
-import { Button, Container, Row, Col } from "reactstrap";
+import {Container, Row, Col } from "reactstrap";
 
 class UserHeader extends React.Component {
   render() {
@@ -23,18 +23,11 @@ class UserHeader extends React.Component {
           <Container className="d-flex align-items-center" fluid>
             <Row>
               <Col lg="7" md="10">
-                <h1 className="display-2 text-white">Hello Diego</h1>
+                <h1 className="display-2 text-white">Hola Diego</h1>
                 <p className="text-white mt-0 mb-5">
-                  This is your profile page. You can see the progress you've
-                  made with your work and manage your assigned tasks
+                  Este es tu perfil, aquí puedes observar tu progreso en la aplicación y modificar tus datos.
                 </p>
-                <Button
-                  color="info"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  Edit profile
-                </Button>
+
               </Col>
             </Row>
           </Container>

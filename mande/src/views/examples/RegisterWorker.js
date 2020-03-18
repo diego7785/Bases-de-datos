@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Direccion from "views/examples/Direccion.js"
 
 // reactstrap components
 import {
@@ -25,7 +26,7 @@ class RegisterWorker extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>SIGN UP</small>
+                <small>Registro</small>
               </div>
               <Form role="form">
                 <FormGroup>
@@ -36,6 +37,16 @@ class RegisterWorker extends React.Component {
                       </InputGroupText>
                     </InputGroupAddon>
                     <Input placeholder="Name" type="text" />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-email-83" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="Email" type="email" autoComplete="new-email" />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -58,27 +69,18 @@ class RegisterWorker extends React.Component {
                     <Input placeholder="Password" type="password" autoComplete="new-password" />
                   </InputGroup>
                 </FormGroup>
-                <FormGroup>
-                  <InputGroup className="input-group-alternative">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="ni ni-planet" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Direccion" type="text" />
-                  </InputGroup>
-                </FormGroup>
+                  <Direccion/>
                 <FormGroup>
                   <label>
                     Upload document image:
                   </label>
-                  <input type="file"/>
+                  <input type="file" />
                 </FormGroup>
                 <FormGroup>
                   <label>
                     Upload profile pic:
                   </label>
-                  <input type="file"/>
+                  <input type="file" />
                 </FormGroup>
                 <div className="text-center">
                   <Button className="mt-4" color="primary" type="button">

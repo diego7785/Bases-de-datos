@@ -1,7 +1,4 @@
 import React from "react";
-import Rating from '@material-ui/lab/Rating';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 
 // reactstrap components
 import {
@@ -46,23 +43,14 @@ class Profile extends React.Component {
                 </Row>
                 <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                   <div className="d-flex justify-content-between">
-                    <Button
+                  <Button
                       className="mr-4"
                       color="info"
                       href="#pablo"
                       onClick={e => e.preventDefault()}
                       size="sm"
                     >
-                      Connect
-                    </Button>
-                    <Button
-                      className="float-right"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      size="sm"
-                    >
-                      Message
+                      Cambiar
                     </Button>
                   </div>
                 </CardHeader>
@@ -72,15 +60,11 @@ class Profile extends React.Component {
                       <div className="card-profile-stats d-flex justify-content-center mt-md-5">
                         <div>
                           <span className="heading">22</span>
-                          <span className="description">Friends</span>
+                          <span className="description">Trabajos calificados</span>
                         </div>
                         <div>
-                          <span className="heading">10</span>
-                          <span className="description">Photos</span>
-                        </div>
-                        <div>
-                          <span className="heading">89</span>
-                          <span className="description">Comments</span>
+                          <span className="heading">40</span>
+                          <span className="description">Trabajos solicitados</span>
                         </div>
                       </div>
                     </div>
@@ -88,24 +72,12 @@ class Profile extends React.Component {
                   <div className="text-center">
                     <h3>
                       Diego Bonilla
-                      <span className="font-weight-light">, 19</span>
                     </h3>
                     <div className="h5 font-weight-300">
                       <i className="ni location_pin mr-2" />
                       Santander de Quilichao, Cauca, Colombia
                     </div>
-                    <div className="h5 mt-4">
-                      <i className="ni business_briefcase-24 mr-2" />
-                      Systems Engineer
-                    </div>
-                    <div>
-                      <i className="ni education_hat mr-2" />
-                      University of Valley
-                    </div>
                     <hr className="my-4" />
-                    <p>
-                      Description of my jobs
-                    </p>
                   </div>
                 </CardBody>
               </Card>
@@ -115,7 +87,7 @@ class Profile extends React.Component {
                 <CardHeader className="bg-white border-0">
                   <Row className="align-items-center">
                     <Col xs="8">
-                      <h3 className="mb-0">My account</h3>
+                      <h3 className="mb-0">Perfil</h3>
                     </Col>
                     <Col className="text-right" xs="4">
                       <Button
@@ -124,7 +96,7 @@ class Profile extends React.Component {
                         onClick={e => e.preventDefault()}
                         size="sm"
                       >
-                        Settings
+                        Configuración
                       </Button>
                     </Col>
                   </Row>
@@ -132,7 +104,7 @@ class Profile extends React.Component {
                 <CardBody>
                   <Form>
                     <h6 className="heading-small text-muted mb-4">
-                      User information
+                      Información de cliente
                     </h6>
                     <div className="pl-lg-4">
                       <Row>
@@ -142,7 +114,7 @@ class Profile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-username"
                             >
-                              Username
+                              Nombre de usuario
                             </label>
                             <Input
                               className="form-control-alternative"
@@ -159,7 +131,7 @@ class Profile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-email"
                             >
-                              Email address
+                              Correo electrónico
                             </label>
                             <Input
                               className="form-control-alternative"
@@ -177,30 +149,13 @@ class Profile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-first-name"
                             >
-                              First name
+                              Nombre
                             </label>
                             <Input
                               className="form-control-alternative"
-                              defaultValue="Diego"
+                              defaultValue="Diego Bonilla"
                               id="input-first-name"
                               placeholder="First name"
-                              type="text"
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="6">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-last-name"
-                            >
-                              Last name
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              defaultValue="Bonilla"
-                              id="input-last-name"
-                              placeholder="Last name"
                               type="text"
                             />
                           </FormGroup>
@@ -210,7 +165,7 @@ class Profile extends React.Component {
                     <hr className="my-4" />
                     {/* Address */}
                     <h6 className="heading-small text-muted mb-4">
-                      Contact information
+                      Información de contacto
                     </h6>
                     <div className="pl-lg-4">
                       <Row>
@@ -220,13 +175,13 @@ class Profile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-address"
                             >
-                              Address
+                              Dirección
                             </label>
                             <Input
                               className="form-control-alternative"
                               defaultValue="Cra 15 # 1 sur 16"
                               id="input-address"
-                              placeholder="Home Address"
+                              placeholder="Dirección"
                               type="text"
                             />
                           </FormGroup>
@@ -239,13 +194,30 @@ class Profile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-city"
                             >
-                              City
+                              Ciudad
                             </label>
                             <Input
                               className="form-control-alternative"
                               defaultValue="Santander de Quilichao"
                               id="input-city"
-                              placeholder="City"
+                              placeholder="Ciudad"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col lg="4">
+                          <FormGroup>
+                            <label
+                              className="form-control-label"
+                              htmlFor="input-department"
+                            >
+                              Departamento
+                            </label>
+                            <Input
+                              className="form-control-alternative"
+                              defaultValue="Cauca"
+                              id="input-deprtment"
+                              placeholder="Departamento"
                               type="text"
                             />
                           </FormGroup>
@@ -256,30 +228,14 @@ class Profile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-country"
                             >
-                              Country
+                              País
                             </label>
                             <Input
                               className="form-control-alternative"
                               defaultValue="Colombia"
                               id="input-country"
-                              placeholder="Country"
+                              placeholder="País"
                               type="text"
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="4">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-country"
-                            >
-                              Postal code
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-postal-code"
-                              placeholder="Postal code"
-                              type="number"
                             />
                           </FormGroup>
                         </Col>
@@ -287,25 +243,9 @@ class Profile extends React.Component {
                     </div>
                     <hr className="my-4" />
                     {/* Description */}
-                    <h6 className="heading-small text-muted mb-4">About me</h6>
 
-                    <Box component="fieldset" mb={3} borderColor="transparent">
-                      <Typography component="legend">Calification</Typography>
-                      <Rating name="read-only" value={4.4} precision={0.1} readOnly/>
-                    </Box>
-                    <div className="pl-lg-4">
-                      <FormGroup>
-                        <label>About Me</label>
-                        <Input
-                          className="form-control-alternative"
-                          placeholder="A few words about you ..."
-                          rows="4"
-                          defaultValue="A beautiful Dashboard for Bootstrap 4. It is Free and
-                          Open Source."
-                          type="textarea"
-                        />
-                      </FormGroup>
-                    </div>
+
+
                   </Form>
                 </CardBody>
               </Card>

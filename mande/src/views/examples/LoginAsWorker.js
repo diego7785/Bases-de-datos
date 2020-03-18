@@ -49,7 +49,7 @@ class LoginAsWorker extends React.Component {
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button">
+                  <Button className="my-4" color="primary" type="button" href="/worker/index">
                     Sign in
                   </Button>
                 </div>

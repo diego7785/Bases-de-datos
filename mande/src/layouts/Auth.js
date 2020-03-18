@@ -41,11 +41,11 @@ class Auth extends React.Component {
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
                   <Col lg="5" md="6">
-                    <h1 className="text-white">Welcome!</h1>
+                    <h1 className="text-white">¡Bienvenido!</h1>
                     <p className="text-lead text-light">
                       Mande App
                       <br/>
-                      Work and get workers
+                      Trabaja o consigue trabajadores
                     </p>
                   </Col>
                 </Row>

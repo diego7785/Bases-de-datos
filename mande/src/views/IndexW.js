@@ -7,7 +7,8 @@ import {
 
 import Header from "components/Headers/Header.js";
 
-class Index extends React.Component {
+
+class IndexW extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -23,17 +24,18 @@ class Index extends React.Component {
         this.state.chartExample1Data === "data1" ? "data2" : "data1"
     });
   };
+
+
   render() {
     return (
       <>
         <Header />
         {/* Page content */}
         <Container className="mt--7" fluid>
-          
         </Container>
       </>
     );
   }
 }
 
-export default Index;
+export default IndexW;

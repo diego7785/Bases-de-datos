@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Direccion from "views/examples/Direccion.js"
 
 // reactstrap components
 import {
@@ -68,16 +69,7 @@ class RegisterUser extends React.Component {
                     <Input placeholder="Password" type="password" autoComplete="new-password" />
                   </InputGroup>
                 </FormGroup>
-                <FormGroup>
-                  <InputGroup className="input-group-alternative">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="ni ni-planet" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Direccion" type="text" />
-                  </InputGroup>
-                </FormGroup>
+                  <Direccion/>
                 <FormGroup>
                   <label>
                     Upload services bill:

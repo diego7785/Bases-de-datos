@@ -1,5 +1,7 @@
-import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
+import IndexW from "views/IndexW.js";
+import IndexC from "views/IndexC.js";
+import ProfileW from "views/examples/ProfileW.js";
+import ProfileC from "views/examples/ProfileC.js";
 import RegisterWorker from "views/examples/RegisterWorker.js";
 import LoginAsUser from "views/examples/LoginAsUser.js";
 import RegisterAs from "views/examples/RegisterAs.js"
@@ -12,15 +14,29 @@ var routes = [
     path: "/index",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
-    component: Index,
-    layout: "/admin"
+    component: IndexW,
+    layout: "/worker"
+  },
+  {
+    path: "/index",
+    name: "Dashboard",
+    icon: "ni ni-tv-2 text-primary",
+    component: IndexC,
+    layout: "/client"
   },
   {
     path: "/user-profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin"
+    component: ProfileW,
+    layout: "/worker"
+  },
+  {
+    path: "/user-profile",
+    name: "User Profile",
+    icon: "ni ni-single-02 text-yellow",
+    component: ProfileC,
+    layout: "/client"
   },
   {
     path: "/loginasuser",

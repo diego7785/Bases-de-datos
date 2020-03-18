@@ -19,26 +19,25 @@ class RegisterAs extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>SIGN UP AS</small>
+                <small>Registrar como</small>
               </div>
-              
-              <Col lg="10">
-              <div className="text-center" >
-                <div style={{marginRight: 90}}>
-                  <img src={require("assets/img/icons/common/worker.png")} alt="Worker" width="150" />
-                  </div>
-                  <div style={{marginLeft: 220, marginTop: -170}}>
-                  <img src={require("assets/img/icons/common/user.png")} alt="Worker" width="150" />
-                  </div>
-                  </div>
-              </Col>
-              
-              <div className="text-center" style={{marginRight: 10 }}>
-              <Col>
-                  <Button variant="contained" color="primary" href="/auth/registerworker">Register as worker</Button>
-                  <Button variant="contained" color="primary" href="/auth/registeruser">Register as user</Button>
-              </Col>
+              <div className="text-center">
+                <img src={require("assets/img/icons/common/worker.png")} alt="Worker" width="150"/>
               </div>
+              <div className="text-center" style={{marginTop: -25}}>
+                <Button variant="contained" color="primary" href="/auth/RegisterWorker">
+                  Registrar como trabajador
+                </Button>
+              </div>
+              <div className="text-center">
+                <img src={require("assets/img/icons/common/user.png")} alt="Worker" width="150"/>
+              </div>
+              <div className="text-center" style={{marginTop: -7}}>
+                <Button variant="contained" color="primary"  href="/auth/RegisterUser">
+                  Registrar como cliente
+                </Button>
+              </div>
+
             </CardBody>
           </Card>
           <Row className="mt-3">
@@ -49,7 +48,7 @@ class RegisterAs extends React.Component {
                 tag={Link}
               >
                 <div className="text-light">
-                  <small>Login instead</small>
+                  <small>Ingresar</small>
                 </div>
               </NavLink>
             </Col>

@@ -13,7 +13,7 @@ class Footer extends React.Component {
             <img src={require("assets/img/icons/common/github.svg")} alt="Github"/>
               <a className="font-weight-bold ml-1"
                 href="https://github.com/diego7785/Bases-de-datos">
-                Repositorio 
+                Repositorio
               </a>
             </div>
           </Col>

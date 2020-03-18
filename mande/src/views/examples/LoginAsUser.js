@@ -49,8 +49,8 @@ class LoginAsUser extends React.Component {
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button">
-                    Sign in
+                  <Button className="my-4" color="primary" type="button" href="/client/index">
+                    Ingresar
                   </Button>
                 </div>
               </Form>
