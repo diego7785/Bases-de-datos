@@ -22,17 +22,17 @@ class LoginAs extends React.Component {
               <small>Ingresar como</small>
             </div>
             <div className="text-center">
-              <img src={require("assets/img/icons/common/worker.png")} alt="Worker" width="150"/>
+              <img src="https://img.icons8.com/cotton/64/000000/business--v1.png"/>
             </div>
-            <div className="text-center" style={{marginTop: -25}}>
+            <div className="text-center" style={{marginTop: 8, marginBottom: 8}}>
               <Button variant="contained" color="primary" href="/auth/LoginAsWorker">
                 Ingresar como trabajador
               </Button>
             </div>
             <div className="text-center">
-              <img src={require("assets/img/icons/common/user.png")} alt="Worker" width="150"/>
+              <img src="https://img.icons8.com/cotton/64/000000/gender-neutral-user--v1.png" alt={"worker"} />
             </div>
-            <div className="text-center" style={{marginTop: -7}}>
+            <div className="text-center" style={{marginTop: 8}}>
               <Button variant="contained" color="primary" href="/auth/LoginAsUser">
                 Ingresar como cliente
               </Button>
