@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Direccion from "views/examples/Direccion.js"
+import Direccion from "components/Address/Direccion.js"
 
 // reactstrap components
 import {

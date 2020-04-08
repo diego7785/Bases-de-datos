@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Direccion from "views/examples/Direccion.js"
+import Direccion from "components/Address/Direccion.js"
+
 
 // reactstrap components
 import {
@@ -17,6 +18,7 @@ import {
   Col,
   NavLink
 } from "reactstrap";
+
 
 class RegisterWorker extends React.Component {
   render() {
@@ -69,22 +71,12 @@ class RegisterWorker extends React.Component {
                     <Input placeholder="Password" type="password" autoComplete="new-password" />
                   </InputGroup>
                 </FormGroup>
+
                   <Direccion/>
-                <FormGroup>
-                  <label>
-                    Upload document image:
-                  </label>
-                  <input type="file" />
-                </FormGroup>
-                <FormGroup>
-                  <label>
-                    Upload profile pic:
-                  </label>
-                  <input type="file" />
-                </FormGroup>
+
                 <div className="text-center">
-                  <Button className="mt-4" color="primary" type="button">
-                    Create account
+                  <Button className="mt-4" color="primary" type="button" href="RegisterWorker1">
+                    Siguiente
                   </Button>
                 </div>
               </Form>

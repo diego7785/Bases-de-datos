@@ -3,6 +3,7 @@ import IndexC from "views/IndexC.js";
 import ProfileW from "views/examples/ProfileW.js";
 import ProfileC from "views/examples/ProfileC.js";
 import RegisterWorker from "views/examples/RegisterWorker.js";
+import RegisterWorker1 from "views/examples/RegisterWorker1.js";
 import LoginAsUser from "views/examples/LoginAsUser.js";
 import RegisterAs from "views/examples/RegisterAs.js"
 import RegisterUser from "views/examples/RegisterUser.js"
@@ -50,6 +51,13 @@ var routes = [
     name: "Register Worker",
     icon: "ni ni-circle-08 text-pink",
     component: RegisterWorker,
+    layout: "/auth"
+  },
+  {
+    path: "/registerworker1",
+    name: "Register Worker Labs and Pics",
+    icon: "ni ni-circle-08 text-pink",
+    component: RegisterWorker1,
     layout: "/auth"
   },
   {
