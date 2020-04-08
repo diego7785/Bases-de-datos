@@ -164,7 +164,7 @@ export default function CustomizedSelects() {
           }
         >
           <option value="Select" />
-          {tipoVia.map((tipo,i) => <option value={tipo} key={i}>{tipo}</option>)}
+          {complementoVia.map((tipo,i) => <option value={tipo} key={i}>{tipo}</option>)}
         </NativeSelect>
       </FormControl>
       <FormControl className={classes.margin} style={{marginLeft: 7, marginTop:15}}>
@@ -189,7 +189,7 @@ export default function CustomizedSelects() {
           }
         >
           <option value="Select" />
-          {tipoVia.map((tipo,i) => <option value={tipo} key={i}>{tipo}</option>)}
+          {complementoVia.map((tipo,i) => <option value={tipo} key={i}>{tipo}</option>)}
         </NativeSelect>
       </FormControl>
       <FormControl className={classes.margin} style={{marginLeft: 7, marginTop:5}}>
