@@ -1,5 +1,6 @@
 import React from "react";
 import Jobs from "components/Jobs/Jobs.js"
+import AddJobs from 'components/Buttons/PlusButton.js';
 
 // reactstrap components
 import {
@@ -23,6 +24,7 @@ class RegisterWorker1 extends React.Component {
             <Form role="form">
 
             <Jobs/>
+            <AddJobs/>
 
             <label className="text-center"> No dudamos de ti, sin embargo debes enviarnos una foto de tu documento de identidad</label>
             <FormGroup>

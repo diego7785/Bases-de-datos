@@ -4,9 +4,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
-import Tooltip from '@material-ui/core/Tooltip';
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
@@ -180,13 +177,6 @@ export default function CustomizedSelects() {
           inputComponent: NumberFormatCustom,
         }}
       />
-    <FormControl className={classes.margin} style={{marginTop:-20}}>
-      <Tooltip title="Añadir otra labor" aria-label="add">
-        <Fab color="primary" className={classes.fab}>
-          <AddIcon />
-        </Fab>
-      </Tooltip>
-      </FormControl>
       </FormGroup>
       </>
     );
