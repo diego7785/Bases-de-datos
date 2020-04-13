@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Api of Mande App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diego7785/Bases-de-datos.git"
+  },
+  "author": "Angelica,Diego,Pablo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/diego7785/Bases-de-datos/issues"
+  },
+  "homepage": "https://github.com/diego7785/Bases-de-datos#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.3",
+    "pg-promise": "^10.5.0",
+    "pgp": "^0.1.0"
+  }
+}

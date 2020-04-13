@@ -8,7 +8,8 @@ import {
   CardBody,
   FormGroup,
   Form,
-  Col
+  Col,
+  Button
 } from "reactstrap";
 
 class RegisterWorker1 extends React.Component {
@@ -46,6 +47,11 @@ class RegisterWorker1 extends React.Component {
               <input type="file" />
             </FormGroup>
             </Form>
+            <div className="text-center">
+              <Button className="mt-4" color="primary" type="button" href="RegisterWorker2">
+                Siguiente
+              </Button>
+            </div>
           </CardBody>
         </Card>
       </Col>

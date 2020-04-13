@@ -69,7 +69,11 @@ class RegisterUser extends React.Component {
                     <Input placeholder="Password" type="password" autoComplete="new-password" />
                   </InputGroup>
                 </FormGroup>
+
+
                   <Direccion/>
+
+
                 <FormGroup>
                   <label>
                     Upload services bill:

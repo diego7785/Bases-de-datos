@@ -4,6 +4,7 @@ import ProfileW from "views/examples/ProfileW.js";
 import ProfileC from "views/examples/ProfileC.js";
 import RegisterWorker from "views/examples/RegisterWorker.js";
 import RegisterWorker1 from "views/examples/RegisterWorker1.js";
+import RegisterWorker2 from "views/examples/RegisterWorker2.js";
 import LoginAsUser from "views/examples/LoginAsUser.js";
 import RegisterAs from "views/examples/RegisterAs.js"
 import RegisterUser from "views/examples/RegisterUser.js"
@@ -58,6 +59,13 @@ var routes = [
     name: "Register Worker Labs and Pics",
     icon: "ni ni-circle-08 text-pink",
     component: RegisterWorker1,
+    layout: "/auth"
+  },
+  {
+    path: "/registerworker2",
+    name: "Register Worker Payment Method",
+    icon: "ni ni-circle-08 text-pink",
+    component: RegisterWorker2,
     layout: "/auth"
   },
   {

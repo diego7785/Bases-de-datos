@@ -58,6 +58,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const state = {
+  pais: true,
+  departamento: true,
+  municipio: true,
+  tipoVia: true,
+  nombreVia: true,
+  compViaPrinc: true,
+  nombreViaSec: true,
+  compViaSec: true,
+  numeroCasa: true,
+  comp: true,
+  barrio: true,
+}
+
+const handleOnChange = (id, event)=>{
+  this.setState({ [id]: event.target.value });
+}
+
 
 const tipoVia = ["Autopista", "Avenida", "Av. Calle", "Av. Carrera", "Barrio", "Calle", "Callejón", "Carrera",
   "Circular", "Diagonal", "Kilómetro", "Pasaje", "Paso", "Ramal", "Subramal", "Tramo", "Transversal", "Vereda"]
@@ -66,12 +84,19 @@ const complementoVia =["Este","Manzana","Noreste","Noroccidente","Noroeste","Nor
                         "Sur","Sureste","Suroccidente","Suroeste","Suroriente"]
 
 
-export default function CustomizedSelects() {
+export default function Direccion(props) {
   const classes = useStyles();
   const [element, setelement] = React.useState('');
-  const handleChange = event => {
+  const handleChange = id => event => {
     setelement(event.target.value);
+    console.log(props.stateProps)
   };
+
+  const onHandleChange = id => event =>{
+    //this.handleOnChange(id, event);
+    console.log('hey');
+  }
+
 
   return (
     <>
@@ -82,7 +107,7 @@ export default function CustomizedSelects() {
             <i className="ni ni-planet" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input placeholder="País" type="text" />
+        <Input placeholder="País" type="text" id="pais" onChange={onHandleChange('pais')}/>
       </InputGroup>
     </FormGroup>
     <FormGroup>
@@ -92,7 +117,7 @@ export default function CustomizedSelects() {
             <i className="ni ni-planet" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input placeholder="Departamento" type="text" />
+        <Input placeholder="Departamento" type="text" id="departamento" onChange={onHandleChange('departamento')}/>
       </InputGroup>
     </FormGroup>
     <FormGroup>
@@ -102,7 +127,7 @@ export default function CustomizedSelects() {
             <i className="ni ni-planet" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input placeholder="Municipio" type="text" />
+        <Input placeholder="Municipio" type="text" id="municipio" onChange={onHandleChange('municipio')}/>
       </InputGroup>
     </FormGroup>
       <FormControl className={classes.marginN} style={{marginTop:-5}} >
@@ -110,7 +135,7 @@ export default function CustomizedSelects() {
         <NativeSelect
           id="demo-customized-select-native"
           value={element}
-          onChange={handleChange}
+          onChange={handleChange('tipoVia')}
           input={<BootstrapInput  />}
         >
           <option value="Select" />
@@ -125,7 +150,7 @@ export default function CustomizedSelects() {
                 <i className="ni ni-planet" />
               </InputGroupText>
             </InputGroupAddon>
-            <Input placeholder="Nombre o número de vía" type="text" />
+            <Input placeholder="Nombre o número de vía" type="text" id="nombreVia" onChange={onHandleChange('nombreVia')}/>
           </InputGroup>
         </FormGroup>
       </FormControl>
@@ -134,7 +159,7 @@ export default function CustomizedSelects() {
         <NativeSelect
           id="demo-customized-select-native"
           value={element}
-          onChange={handleChange}
+          onChange={handleChange('compViaPrinc')}
           input={<BootstrapInput  style={{marginTop:30}}/>}
           >
           <option value="Select" />
@@ -149,7 +174,7 @@ export default function CustomizedSelects() {
                 <i className="ni ni-planet" />
               </InputGroupText>
             </InputGroupAddon>
-            <Input placeholder="Número de vía secundaria" type="text" />
+            <Input placeholder="Número de vía secundaria" type="text" id="nombreViaSec" onChange={onHandleChange('nombreViaSec')}/>
           </InputGroup>
         </FormGroup>
       </FormControl>
@@ -159,7 +184,7 @@ export default function CustomizedSelects() {
         <NativeSelect
           id="demo-customized-select-native"
           value={element}
-          onChange={handleChange}
+          onChange={handleChange('compViaSec')}
           input={<BootstrapInput style={{marginTop:30}}/>
           }
         >
@@ -175,7 +200,7 @@ export default function CustomizedSelects() {
                 <i className="ni ni-planet" />
               </InputGroupText>
             </InputGroupAddon>
-            <Input placeholder="Número de casa" type="text" />
+            <Input placeholder="Número de casa" type="text" id="numeroCasa" onChange={onHandleChange('numeroCasa')}/>
           </InputGroup>
         </FormGroup>
       </FormControl>
@@ -184,7 +209,7 @@ export default function CustomizedSelects() {
         <NativeSelect
           id="demo-customized-select-native"
           value={element}
-          onChange={handleChange}
+          onChange={handleChange('comp')}
           input={<BootstrapInput style={{marginTop:20}}/>
           }
         >
@@ -200,7 +225,7 @@ export default function CustomizedSelects() {
                 <i className="ni ni-planet" />
               </InputGroupText>
             </InputGroupAddon>
-            <Input placeholder="Barrio" type="text" />
+            <Input placeholder="Barrio" type="text" id="barrio" onChange={onHandleChange('barrio')}/>
           </InputGroup>
         </FormGroup>
       </FormControl>

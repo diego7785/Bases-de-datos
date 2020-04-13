@@ -1,9 +1,6 @@
 import React from "react";
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import InputBase from '@material-ui/core/InputBase';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import NumberFormat from 'react-number-format';
@@ -35,40 +32,6 @@ function NumberFormatCustom(props) {
   );
 }
 
-const BootstrapInput = withStyles(theme => ({
-  root: {
-    'label + &': {
-      marginTop: theme.spacing(2),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: 'relative',
-    backgroundColor: theme.palette.background.paper,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    padding: '10px 26px 10px 50px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
-      borderRadius: 4,
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-  },
-}))(InputBase);
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -94,11 +57,10 @@ const labores = [{code: "Profesor de ingles", label:"Profesor inglés"},
                  {code: "Plomero", label: "Plomero"},
                  {code: "Electricista", label: "Electricista"},];
 
-const tipoCobro = ["Por hora", "Por labor"];
+const tipoCobro = [{type:"Por hora"}, {type:"Por labor"},];
 
-export default function CustomizedSelects() {
+export default function Jobs() {
   const classes = useStyles();
-  const element = React.useState('');
   const [values, setValues] = React.useState({
     textmask: '(1  )    -    ',
     numberformat: '1320',
@@ -137,7 +99,7 @@ export default function CustomizedSelects() {
                 autoComplete: 'new-password', // disable autocomplete and autofill
               }}
             />
-          )}
+        )}
         />
       </FormGroup>
       <FormGroup>
@@ -153,18 +115,32 @@ export default function CustomizedSelects() {
         </FormControl>
       </FormGroup>
       <FormGroup>
-      <FormControl className={classes.marginN} style={{marginTop:-5}} >
-        <InputLabel htmlFor="demo-customized-select-native">Tipo cobro</InputLabel>
-        <NativeSelect
-          id="demo-customized-select-native"
-          value={element}
-          onChange={handleChange}
-          input={<BootstrapInput  />}
-        >
-          <option value="Select" />
-          {tipoCobro.map((tipo,i) => <option value={tipo} key={i}>{tipo}</option>)}
-        </NativeSelect>
-      </FormControl>
+        <Autocomplete
+          id="jobs-selection"
+          style={{ width: 200 }}
+          options={tipoCobro}
+          classes={{
+            option: classes.option,
+          }}
+          autoHighlight
+          getOptionLabel={(option) => option.type}
+          renderOption={(option) => (
+            <React.Fragment>
+              {option.type}
+            </React.Fragment>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Tipo cobro"
+              variant="outlined"
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password', // disable autocomplete and autofill
+              }}
+            />
+        )}
+        />
     </FormGroup>
       <FormGroup>
         <TextField
