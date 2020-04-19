@@ -1,12 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios'
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import InputBase from '@material-ui/core/InputBase';
 import Direccion from "components/Address/Direccion.js"
+import TextField from '@material-ui/core/TextField';
 
 // reactstrap components
 import {
@@ -28,36 +23,52 @@ import {
 class RegisterWorker extends React.Component {
   state = {
     name: true,
+    lastname: true,
     email: true,
     idCard: true,
     password: true,
     pais: true,
     departamento: true,
     municipio: true,
+    postalcode: true,
     tipoVia: true,
     nombreVia: true,
-    compViaPrinc: true,
+    viaSec: true,
     nombreViaSec: true,
     compViaSec: true,
     numeroCasa: true,
     comp: true,
     barrio: true,
+    via: false,
   }
 
-  onHandleChange = id => event => {
+  onHandleChange = (event, id) => {
     this.setState({ [id]: event.target.value })
+  }
+
+  changeViaState = () => {
+    this.setState({via: true})
   }
 
   onClickNext = (e) => {
     e.preventDefault()
-    const name = this.state.name;
-    const email = this.state.email;
-    const idCard = this.state.idCard;
-    const password = this.state.password;
-
-    axios.post(`http://localhost:5000/RegisterWorker/${name}/${email}/${idCard}/${password}`).then(res => {
-      console.log(res);
-    })
+    this.props.history.push({ pathname: "/auth/RegisterWorker1/", state: { name: this.state.name,
+                                                                        lastname: this.state.lastname,
+                                                                        email: this.state.email,
+                                                                        idCard: this.state.idCard,
+                                                                        password: this.state.password,
+                                                                        pais: this.state.pais,
+                                                                        departamento: this.state.departamento,
+                                                                        municipio: this.state.municipio,
+                                                                        postalcode: this.state.postalcode,
+                                                                        tipoVia: this.state.tipoVia,
+                                                                        nombreVia: this.state.nombreVia,
+                                                                        viaSec: this.state.viaSec,
+                                                                        nombreViaSec: this.state.nombreViaSec,
+                                                                        compViaSec: this.state.compViaSec,
+                                                                        numeroCasa: this.state.numeroCasa,
+                                                                        comp: this.state.comp,
+                                                                        barrio: this.state.barrio,}})
   }
 
   render() {
@@ -77,7 +88,17 @@ class RegisterWorker extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Name" type="text" id="name" onChange={this.onHandleChange('name')}/>
+                    <Input placeholder="Nombre" type="text" id="name" onChange={e => this.onHandleChange(e, 'name')}/>
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-hat-3" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="Apellido" type="text" id="lastname" onChange={e => this.onHandleChange(e, 'lastname')}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -87,7 +108,7 @@ class RegisterWorker extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email" id="email" onChange={this.onHandleChange('email')}/>
+                    <Input placeholder="Correo" type="email" autoComplete="new-email" id="email" onChange={e => this.onHandleChange(e, 'email')}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -97,7 +118,7 @@ class RegisterWorker extends React.Component {
                         <i className="ni ni-key-25" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Cedula" type="text" id="idCard" onChange={this.onHandleChange('idCard')}/>
+                    <Input placeholder="Cedula" type="text" id="idCard" onChange={e => this.onHandleChange(e, 'idCard')}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -107,11 +128,13 @@ class RegisterWorker extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password" id="password" onChange={this.onHandleChange('password')}/>
+                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e, 'password')}/>
                   </InputGroup>
                 </FormGroup>
 
-                  <Direccion />
+                  <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState}/>
+
+                <TextField id="address" disabled="true" label="Esto tiene que mostrar la dirección escrita" style={{width:400}}/>
 
                 <div className="text-center">
                   <Button className="mt-4" color="primary" type="button" onClick={this.onClickNext}>

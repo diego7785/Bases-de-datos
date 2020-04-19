@@ -59,7 +59,7 @@ const labores = [{code: "Profesor de ingles", label:"Profesor inglés"},
 
 const tipoCobro = [{type:"Por hora"}, {type:"Por labor"},];
 
-export default function Jobs() {
+export default function Jobs(props) {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     textmask: '(1  )    -    ',
@@ -70,6 +70,8 @@ export default function Jobs() {
       ...values,
       [event.target.name]: event.target.value,
     });
+    props.onHandleChange('price', event.target.value)
+
   };
 
     return(
@@ -98,8 +100,9 @@ export default function Jobs() {
                 ...params.inputProps,
                 autoComplete: 'new-password', // disable autocomplete and autofill
               }}
-            />
-        )}
+              />
+          )}
+        onChange={e => props.onHandleChange('job', e.target.innerText)}
         />
       </FormGroup>
       <FormGroup>
@@ -111,12 +114,13 @@ export default function Jobs() {
           rows="4"
           placeholder="Por favor, escriba una corta descripción de su labor"
           variant="outlined"
+          onChange={e => props.onHandleChange('description', e.target.value)}
         />
         </FormControl>
       </FormGroup>
       <FormGroup>
         <Autocomplete
-          id="jobs-selection"
+          id="type-selection"
           style={{ width: 200 }}
           options={tipoCobro}
           classes={{
@@ -140,6 +144,7 @@ export default function Jobs() {
               }}
             />
         )}
+        onChange={e => props.onHandleChange('type', e.target.innerText)}
         />
     </FormGroup>
       <FormGroup>

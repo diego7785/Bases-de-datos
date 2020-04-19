@@ -61,7 +61,7 @@ class Worker extends React.Component {
           />
           <Switch>
             {this.getRoutes(routes)}
-            <Redirect from="*" to="/worker/index" />
+            <Redirect from="*" to={{ pathname: "/worker/index", state: {path: 'worker'}}}/>
           </Switch>
           <Container fluid>
             <Footer />

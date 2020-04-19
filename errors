@@ -1,2 +1,3 @@
 In case of this error: Error: ENOSPC: System limit for number of file watchers reached
-try: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+try: 
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p

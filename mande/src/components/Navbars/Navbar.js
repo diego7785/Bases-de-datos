@@ -29,6 +29,14 @@ function isWorker(props){
     }
 }
 
+function searchBar(props){
+  if(props.match.path === "/worker"){
+    return(<Input placeholder="Busca trabajos" type="text"/>)
+  } else {
+    return(<Input placeholder="Busca trabajadores" type="text"/>)
+  }
+}
+
 class NavbarC extends React.Component {
   render() {
     return (
@@ -37,7 +45,7 @@ class NavbarC extends React.Component {
           <Container fluid>
             <Link
               className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-              to="/worker/index"
+              to = {this.props.match.path + "/index"}
             >
               INICIO
             </Link>
@@ -49,7 +57,7 @@ class NavbarC extends React.Component {
                       <i className="fas fa-search" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Buscar trabajos" type="text" />
+                  {searchBar(this.props)}
                 </InputGroup>
               </FormGroup>
             </Form>

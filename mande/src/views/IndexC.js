@@ -26,7 +26,7 @@ class IndexC extends React.Component {
   render() {
     return (
       <>
-        <Header />
+        <Header/>
         {/* Page content */}
         <Container className="mt--7" fluid>
         </Container>

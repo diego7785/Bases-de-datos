@@ -64,6 +64,24 @@ class Sidebar extends React.Component {
 
       );
   };
+
+  searchBar = (props) =>{
+    if(props.match.path === '/worker'){
+      return(<Input
+        aria-label="Search"
+        className="form-control-rounded form-control-prepended"
+        placeholder="Busca trabajos"
+        type="search"
+      />)
+  } else {
+    return(<Input
+      aria-label="Search"
+      className="form-control-rounded form-control-prepended"
+      placeholder="Busca un trabajador"
+      type="search"
+    />)
+  }
+  }
   render() {
     const {routes, logo } = this.props;
     let navbarBrandProps;
@@ -136,12 +154,7 @@ class Sidebar extends React.Component {
             {/* Form */}
             <Form className="mt-4 mb-3 d-md-none">
               <InputGroup className="input-group-rounded input-group-merge">
-                <Input
-                  aria-label="Search"
-                  className="form-control-rounded form-control-prepended"
-                  placeholder="Search"
-                  type="search"
-                />
+                {this.searchBar(this.props)}
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
                     <span className="fa fa-search" />
