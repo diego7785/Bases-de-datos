@@ -9,6 +9,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
 
+
 class Worker extends React.Component {
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
@@ -42,6 +43,8 @@ class Worker extends React.Component {
     }
     return "Brand";
   };
+
+
   render() {
     return (
       <>
@@ -62,8 +65,11 @@ class Worker extends React.Component {
           <Switch>
             {this.getRoutes(routes)}
             <Redirect from="*" to={{ pathname: "/worker/index", state: {path: 'worker'}}}/>
+
           </Switch>
+
           <Container fluid>
+
             <Footer />
           </Container>
         </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 
@@ -18,7 +19,12 @@ import {
   Nav,
   Container,
   Row,
-  Col
+  Col,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  Media
 } from "reactstrap";
 
 
@@ -51,13 +57,13 @@ class Sidebar extends React.Component {
       return(
         <NavItem>
           <NavLink to={this.props.match.path + "/index"} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
-            <i>Inicio</i>
+            <i className="ni ni-planet"/><span className="nav-link-inner--text">Inicio</span>
           </NavLink>
           <NavLink to={this.props.match.path + "/user-profile"} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
-          <i>Perfil</i>
+          <i className="ni ni-single-02"/><span className="nav-link-inner--text">Perfil</span>
         </NavLink>
         <NavLink to="/auth" tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
-        <i>Salir</i>
+        <i className="ni ni-user-run" /><span className="nav-link-inner--text">Salir</span>
       </NavLink>
 
       </NavItem>
@@ -121,6 +127,62 @@ class Sidebar extends React.Component {
               />
             </NavbarBrand>
           ) : null}
+          {/* User */}
+          <Nav className="align-items-center d-md-none">
+            <UncontrolledDropdown nav>
+              <DropdownToggle nav className="nav-link-icon">
+                <i className="ni ni-bell-55" />
+              </DropdownToggle>
+              <DropdownMenu
+                aria-labelledby="navbar-default_dropdown_1"
+                className="dropdown-menu-arrow"
+                right
+              >
+                <DropdownItem>Action</DropdownItem>
+                <DropdownItem>Another action</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>Something else here</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            <UncontrolledDropdown nav>
+              <DropdownToggle nav>
+                <Media className="align-items-center">
+                  <span className="avatar avatar-sm rounded-circle">
+                    <img
+                      alt="..."
+                      src={require("assets/img/theme/iconprofile.png")}
+                    />
+                  </span>
+                </Media>
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu-arrow" right>
+                <DropdownItem className="noti-title" header tag="div">
+                  <h6 className="text-overflow m-0">Welcome!</h6>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-single-02" />
+                  <span>My profile</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-settings-gear-65" />
+                  <span>Settings</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-calendar-grid-58" />
+                  <span>Activity</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-support-16" />
+                  <span>Support</span>
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                  <i className="ni ni-user-run" />
+                  <span>Logout</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </Nav>
           {/* Collapse */}
           <Collapse navbar isOpen={this.state.collapseOpen}>
             {/* Collapse header */}
@@ -161,6 +223,7 @@ class Sidebar extends React.Component {
                   </InputGroupText>
                 </InputGroupAddon>
               </InputGroup>
+              <Button variant="contained" color="primary" style={{marginTop: 5}}>Busqueda avanzada</Button>
             </Form>
             {/* Navigation */}
             <Nav navbar>{this.createLinks(routes)}</Nav>

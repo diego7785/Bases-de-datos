@@ -3,21 +3,9 @@ import React from "react";
 // reactstrap components
 import {
   Container,
-  Form,
-  FormGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  InputGroup,} from "reactstrap";
+} from "reactstrap";
 
-function searchBar(props, id){
-  if(id === 2){
-    if(props.location=== "/worker/index"){
-      return(<Input placeholder="Busca trabajos" type="text" style={{width: 600}}/>)
-    } else {
-      return(<Input placeholder="Busca trabajadores" type="text" style={{width: 600}}/>)
-    }
-  } else{
+function searchBar(props){
     if(props.location=== "/worker/index"){
       return(<h1>¡Con Mande conseguir trabajo es mucho más fácil!</h1>)
     } else {
@@ -25,7 +13,6 @@ function searchBar(props, id){
     }
   }
 
-}
 class Header extends React.Component {
 
   render() {
@@ -33,7 +20,7 @@ class Header extends React.Component {
       <>
         <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
           <Container fluid>
-            {searchBar(this.props,1)}
+            {searchBar(this.props)}
 
           </Container>
         </div>

@@ -1,11 +1,20 @@
 import React from "react";
+import Button from '@material-ui/core/Button';
 // reactstrap components
 import {
-  Container
+  Container,
+  Form,
+  FormGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Input,
+  InputGroup,
 } from "reactstrap";
 
 
 import Header from "components/Headers/Header.js";
+
+
 
 class IndexC extends React.Component {
   constructor(props){
@@ -29,6 +38,20 @@ class IndexC extends React.Component {
         <Header/>
         {/* Page content */}
         <Container className="mt--7" fluid>
+          <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto" >
+            <FormGroup className="mb-0">
+              <InputGroup className="input-group-alternative">
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="fas fa-search" />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input placeholder="Busca trabajadores" type="text" style={{width: 600}}/>
+              </InputGroup>
+            </FormGroup>
+            <Button variant="contained" color="primary" style={{marginLeft: 30}}>Buscar</Button>
+            <Button variant="contained" color="secondary" style={{marginLeft: 50}}>Busqueda avanzada</Button>
+          </Form>
         </Container>
       </>
     );
