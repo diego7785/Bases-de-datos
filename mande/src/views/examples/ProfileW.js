@@ -88,6 +88,16 @@ class Profile extends React.Component {
                       <i className="ni education_hat mr-2" />
                       Labores
                     </div>
+                    <div>
+                      <Button
+                        color="info"
+                        href="#pablo"
+                        onClick={e => e.preventDefault()}
+                        size="sm"
+                      >
+                        Agregar labor
+                      </Button>
+                    </div>
                     <hr className="my-4" />
                   </div>
                 </CardBody>
@@ -107,7 +117,7 @@ class Profile extends React.Component {
                         onClick={e => e.preventDefault()}
                         size="sm"
                       >
-                        Configuración
+                        Editar
                       </Button>
                     </Col>
                   </Row>

@@ -1,10 +1,9 @@
 import React from "react";
-// node.js library that concatenates classes (strings)
-import classnames from "classnames";
+
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
@@ -15,10 +14,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
   Table,
   Container,
   Row,
@@ -29,7 +24,6 @@ import {
 import {
   chartOptions,
   parseOptions,
-  chartExample1,
   chartExample2
 } from "variables/charts.js";
 

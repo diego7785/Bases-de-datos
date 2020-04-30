@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Direccion from "components/Address/Direccion.js"
 import TextField from '@material-ui/core/TextField';
+import Geocode from "react-geocode";
+import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
 
 // reactstrap components
 import {
@@ -19,6 +21,23 @@ import {
   NavLink
 } from "reactstrap";
 
+var retornarDireccion = (state) =>{
+  if(state.completeAddress === true){
+    return(<TextField id="address" disabled="true" label="Continúe escribiendo la dirección" style={{width:500}}/>);
+  } else{
+    return(<TextField id="address" disabled="true" label={state.completeAddress} style={{width:500}}/>)
+  }
+}
+
+var retornaMap = (state) => {
+  if(state.barrio === true){
+    state.latitude=3.376804;
+    state.length=  -76.530432;
+    return(<Map state={state}/>);
+  } else{
+    return(<Map state={state}/>);
+  }
+}
 
 class RegisterWorker extends React.Component {
   state = {
@@ -40,10 +59,66 @@ class RegisterWorker extends React.Component {
     comp: true,
     barrio: true,
     via: false,
+    latitude: true,
+    length: true,
+    completeAddress: true,
   }
 
-  onHandleChange = (event, id) => {
+  //Setea el state, correspondiente al id, trigger sets the variables for the map
+  onHandleChange = (event, id, trigger) => {
+    if(trigger === 1){
+      this.setState({ [id]: event.target.value })
+    } else {
     this.setState({ [id]: event.target.value })
+    var pais = this.state.pais;
+    var departamento = this.state.departamento;
+    var municipio = this.state.municipio;
+    var tipoVia = this.state.tipoVia;
+    var nombreVia = this.state.nombreVia;
+    var nombreViaSec = this.state.nombreViaSec;
+    var compViaSec = this.state.compViaSec;
+    var numeroCasa = this.state.numeroCasa;
+    var comp = this.state.comp;
+
+    if(tipoVia === true || tipoVia === "Select"){
+      tipoVia = "";
+    }
+    if(nombreVia === true || nombreVia === "Select"){
+      nombreVia = "";
+    }
+    if(nombreViaSec === true || nombreViaSec === "Select"){
+      nombreViaSec = "";
+    }
+    if(compViaSec === true || compViaSec === "Select"){
+      compViaSec = "-";
+    }
+    if(numeroCasa === true || numeroCasa === "Select"){
+      numeroCasa = "";
+    }
+    if(comp === true || comp === "Select"){
+      comp = "";
+    }
+
+    var address = tipoVia +" "+ nombreVia +" # "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
+
+    var toConvert = address + ", "+municipio+", "+departamento+", "+pais;
+    this.setState({completeAddress: toConvert});
+    Geocode.fromAddress(toConvert).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        this.setState({ latitude: lat});
+        this.setState({ length: lng});
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+  }
+
+  onChangePais = (event) => {
+    var largo = event.target.innerText.length;
+    this.setState({ pais: event.target.innerText.substring(5,largo-4)})
   }
 
   changeViaState = () => {
@@ -68,7 +143,9 @@ class RegisterWorker extends React.Component {
                                                                         compViaSec: this.state.compViaSec,
                                                                         numeroCasa: this.state.numeroCasa,
                                                                         comp: this.state.comp,
-                                                                        barrio: this.state.barrio,}})
+                                                                        barrio: this.state.barrio,
+                                                                        latitude: this.state.latitude,
+                                                                        length: this.state.length,}})
   }
 
   render() {
@@ -88,7 +165,7 @@ class RegisterWorker extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Nombre" type="text" id="name" onChange={e => this.onHandleChange(e, 'name')}/>
+                    <Input placeholder="Nombre" type="text" id="name" onChange={e => this.onHandleChange(e, 'name',1)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -98,7 +175,7 @@ class RegisterWorker extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Apellido" type="text" id="lastname" onChange={e => this.onHandleChange(e, 'lastname')}/>
+                    <Input placeholder="Apellido" type="text" id="lastname" onChange={e => this.onHandleChange(e, 'lastname',1)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -108,7 +185,7 @@ class RegisterWorker extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Correo" type="email" autoComplete="new-email" id="email" onChange={e => this.onHandleChange(e, 'email')}/>
+                    <Input placeholder="Correo" type="email" autoComplete="new-email" id="email" onChange={e => this.onHandleChange(e, 'email',1)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -118,7 +195,7 @@ class RegisterWorker extends React.Component {
                         <i className="ni ni-key-25" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Cedula" type="text" id="idCard" onChange={e => this.onHandleChange(e, 'idCard')}/>
+                    <Input placeholder="Cedula" type="text" id="idCard" onChange={e => this.onHandleChange(e, 'idCard',1)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -128,13 +205,13 @@ class RegisterWorker extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e, 'password')}/>
+                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e, 'password',1)}/>
                   </InputGroup>
                 </FormGroup>
 
-                  <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState}/>
-
-                <TextField id="address" disabled="true" label="Esto tiene que mostrar la dirección escrita" style={{width:400}}/>
+                  <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState} onChangePais={this.onChangePais}/>
+                  {retornaMap(this.state)}
+                  {retornarDireccion(this.state)}
 
                 <div className="text-center">
                   <Button className="mt-4" color="primary" type="button" onClick={this.onClickNext}>
