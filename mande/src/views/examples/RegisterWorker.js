@@ -46,10 +46,8 @@ class RegisterWorker extends React.Component {
     email: true,
     idCard: true,
     password: true,
-    pais: true,
     departamento: true,
     municipio: true,
-    postalcode: true,
     tipoVia: true,
     nombreVia: true,
     viaSec: true,
@@ -70,7 +68,6 @@ class RegisterWorker extends React.Component {
       this.setState({ [id]: event.target.value })
     } else {
     this.setState({ [id]: event.target.value })
-    var pais = this.state.pais;
     var departamento = this.state.departamento;
     var municipio = this.state.municipio;
     var tipoVia = this.state.tipoVia;
@@ -101,7 +98,7 @@ class RegisterWorker extends React.Component {
 
     var address = tipoVia +" "+ nombreVia +" # "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
 
-    var toConvert = address + ", "+municipio+", "+departamento+", "+pais;
+    var toConvert = address + ", "+municipio+", "+departamento+", "+ "Colombia";
     this.setState({completeAddress: toConvert});
     Geocode.fromAddress(toConvert).then(
       response => {
@@ -116,11 +113,6 @@ class RegisterWorker extends React.Component {
   }
   }
 
-  onChangePais = (event) => {
-    var largo = event.target.innerText.length;
-    this.setState({ pais: event.target.innerText.substring(5,largo-4)})
-  }
-
   changeViaState = () => {
     this.setState({via: true})
   }
@@ -132,10 +124,8 @@ class RegisterWorker extends React.Component {
                                                                         email: this.state.email,
                                                                         idCard: this.state.idCard,
                                                                         password: this.state.password,
-                                                                        pais: this.state.pais,
                                                                         departamento: this.state.departamento,
                                                                         municipio: this.state.municipio,
-                                                                        postalcode: this.state.postalcode,
                                                                         tipoVia: this.state.tipoVia,
                                                                         nombreVia: this.state.nombreVia,
                                                                         viaSec: this.state.viaSec,
@@ -209,7 +199,7 @@ class RegisterWorker extends React.Component {
                   </InputGroup>
                 </FormGroup>
 
-                  <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState} onChangePais={this.onChangePais}/>
+                  <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState}/>
                   {retornaMap(this.state)}
                   {retornarDireccion(this.state)}
 

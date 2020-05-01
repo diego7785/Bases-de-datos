@@ -45,10 +45,8 @@ class RegisterUser extends React.Component {
     email: true,
     idCard: true,
     password: true,
-    pais: true,
     departamento: true,
     municipio: true,
-    postalcode: true,
     tipoVia: true,
     nombreVia: true,
     viaSec: true,
@@ -71,7 +69,6 @@ class RegisterUser extends React.Component {
       this.setState({ [id]: event.target.value })
     } else {
     this.setState({ [id]: event.target.value })
-    var pais = this.state.pais;
     var departamento = this.state.departamento;
     var municipio = this.state.municipio;
     var tipoVia = this.state.tipoVia;
@@ -102,7 +99,7 @@ class RegisterUser extends React.Component {
 
     var address = tipoVia +" "+ nombreVia +" # "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
 
-    var toConvert = address + ", "+municipio+", "+departamento+", "+pais;
+    var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
     this.setState({completeAddress: toConvert});
     Geocode.fromAddress(toConvert).then(
       response => {
@@ -116,10 +113,7 @@ class RegisterUser extends React.Component {
     );
   }
   }
-  onChangePais = (event) => {
-    var largo = event.target.innerText.length;
-    this.setState({ pais: event.target.innerText.substring(5,largo-4)})
-  }
+
   render() {
     return (
       <>
@@ -172,7 +166,7 @@ class RegisterUser extends React.Component {
                 </FormGroup>
 
 
-                  <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState} onChangePais={this.onChangePais}/>
+                  <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState}/>
                   {retornaMap(this.state)}
                   {retornarDireccion(this.state)}
 
