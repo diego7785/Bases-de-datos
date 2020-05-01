@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Direccion from "components/Address/Direccion.js"
+import Geocode from "react-geocode";
+import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
+import TextField from '@material-ui/core/TextField';
 
 // reactstrap components
 import {
@@ -18,7 +21,105 @@ import {
   NavLink
 } from "reactstrap";
 
+var retornaMap = (state) => {
+  if(state.barrio === true){
+    state.latitude=3.376804;
+    state.length=  -76.530432;
+    return(<Map state={state}/>);
+  } else{
+    return(<Map state={state}/>);
+  }
+}
+
+var retornarDireccion = (state) =>{
+  if(state.completeAddress === true){
+    return(<TextField id="address" disabled="true" label="Continúe escribiendo la dirección" style={{width:500}}/>);
+  } else{
+    return(<TextField id="address" disabled="true" label={state.completeAddress} style={{width:500}}/>)
+  }
+}
 class RegisterUser extends React.Component {
+  state = {
+    name: true,
+    lastname: true,
+    email: true,
+    idCard: true,
+    password: true,
+    pais: true,
+    departamento: true,
+    municipio: true,
+    postalcode: true,
+    tipoVia: true,
+    nombreVia: true,
+    viaSec: true,
+    nombreViaSec: true,
+    compViaSec: true,
+    numeroCasa: true,
+    comp: true,
+    barrio: true,
+    via: false,
+    latitude: true,
+    length: true,
+    completeAddress: true,
+  }
+  changeViaState = () => {
+    this.setState({via: true})
+  }
+  //Setea el state, correspondiente al id, trigger sets the variables for the map
+  onHandleChange = (event, id, trigger) => {
+    if(trigger === 1){
+      this.setState({ [id]: event.target.value })
+    } else {
+    this.setState({ [id]: event.target.value })
+    var pais = this.state.pais;
+    var departamento = this.state.departamento;
+    var municipio = this.state.municipio;
+    var tipoVia = this.state.tipoVia;
+    var nombreVia = this.state.nombreVia;
+    var nombreViaSec = this.state.nombreViaSec;
+    var compViaSec = this.state.compViaSec;
+    var numeroCasa = this.state.numeroCasa;
+    var comp = this.state.comp;
+
+    if(tipoVia === true ||  tipoVia === "Select"){
+      tipoVia = "";
+    }
+    if(nombreVia === true || nombreVia === "Select"){
+      nombreVia = "";
+    }
+    if(nombreViaSec === true || nombreViaSec === "Select"){
+      nombreViaSec = "";
+    }
+    if(compViaSec === true || compViaSec === "Select"){
+      compViaSec = "-";
+    }
+    if(numeroCasa === true || numeroCasa === "Select"){
+      numeroCasa = "";
+    }
+    if(comp === true ||  comp === "Select"){
+      comp = "";
+    }
+
+    var address = tipoVia +" "+ nombreVia +" # "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
+
+    var toConvert = address + ", "+municipio+", "+departamento+", "+pais;
+    this.setState({completeAddress: toConvert});
+    Geocode.fromAddress(toConvert).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        this.setState({ latitude: lat});
+        this.setState({ length: lng});
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+  }
+  onChangePais = (event) => {
+    var largo = event.target.innerText.length;
+    this.setState({ pais: event.target.innerText.substring(5,largo-4)})
+  }
   render() {
     return (
       <>
@@ -71,8 +172,9 @@ class RegisterUser extends React.Component {
                 </FormGroup>
 
 
-                  <Direccion/>
-
+                  <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState} onChangePais={this.onChangePais}/>
+                  {retornaMap(this.state)}
+                  {retornarDireccion(this.state)}
 
                 <FormGroup>
                   <label>
