@@ -10,6 +10,7 @@ import RegisterAs from "views/examples/RegisterAs.js"
 import RegisterUser from "views/examples/RegisterUser.js"
 import LoginAs from "views/examples/LoginAs.js"
 import LoginAsWorker from "views/examples/LoginAsWorker.js"
+import ForgotPassword from "views/examples/ForgotPassword.js"
 
 var routes = [
   {
@@ -82,6 +83,12 @@ var routes = [
     path: "/loginasworker",
     name: "Login As Worker",
     component: LoginAsWorker,
+    layout: "/auth"
+  },
+  {
+    path: "/forgotpassword",
+    name: "Forgot Password",
+    component: ForgotPassword,
     layout: "/auth"
   },
 ];

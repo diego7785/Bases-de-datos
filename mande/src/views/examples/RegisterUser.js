@@ -121,7 +121,7 @@ class RegisterUser extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>SIGN UP</small>
+                <small>Registrar</small>
               </div>
               <Form role="form">
               <FormGroup>

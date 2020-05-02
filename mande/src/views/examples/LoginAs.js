@@ -22,7 +22,7 @@ class LoginAs extends React.Component {
               <small>Ingresar como</small>
             </div>
             <div className="text-center">
-              <img src="https://img.icons8.com/cotton/64/000000/business--v1.png"/>
+              <img src="https://img.icons8.com/cotton/64/000000/business--v1.png" alt="Trabajador"/>
             </div>
             <div className="text-center" style={{marginTop: 8, marginBottom: 8}}>
               <Button variant="contained" color="primary" href="/auth/LoginAsWorker">
@@ -30,7 +30,7 @@ class LoginAs extends React.Component {
               </Button>
             </div>
             <div className="text-center">
-              <img src="https://img.icons8.com/cotton/64/000000/gender-neutral-user--v1.png" alt={"worker"} />
+              <img src="https://img.icons8.com/cotton/64/000000/gender-neutral-user--v1.png" alt="Cliente" />
             </div>
             <div className="text-center" style={{marginTop: 8}}>
               <Button variant="contained" color="primary" href="/auth/LoginAsUser">

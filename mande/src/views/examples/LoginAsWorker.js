@@ -25,7 +25,7 @@ class LoginAsWorker extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>SIGN IN </small>
+                <small>Ingresar </small>
               </div>
               <Form role="form">
                 <FormGroup className="mb-3">
