@@ -6,10 +6,11 @@ import RegisterWorker from "views/examples/RegisterWorker.js";
 import RegisterWorker1 from "views/examples/RegisterWorker1.js";
 import RegisterWorker2 from "views/examples/RegisterWorker2.js";
 import LoginAsUser from "views/examples/LoginAsUser.js";
-import RegisterAs from "views/examples/RegisterAs.js"
-import RegisterUser from "views/examples/RegisterUser.js"
-import LoginAs from "views/examples/LoginAs.js"
-import LoginAsWorker from "views/examples/LoginAsWorker.js"
+import RegisterAs from "views/examples/RegisterAs.js";
+import RegisterUser from "views/examples/RegisterUser.js";
+import LoginAs from "views/examples/LoginAs.js";
+import LoginAsWorker from "views/examples/LoginAsWorker.js";
+import RegisterUser1 from "views/examples/RegisterUser1.js";
 
 var routes = [
   {
@@ -82,6 +83,12 @@ var routes = [
     path: "/loginasworker",
     name: "Login As Worker",
     component: LoginAsWorker,
+    layout: "/auth"
+  },
+  {
+    path: "/registeruser1",
+    name: "Register As User 1",
+    component: RegisterUser1,
     layout: "/auth"
   },
 ];
