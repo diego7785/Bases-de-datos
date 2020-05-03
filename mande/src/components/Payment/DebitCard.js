@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 
 import {
+  Button,
   FormGroup,
   InputGroup,
   InputGroupAddon,
@@ -55,10 +56,7 @@ const bancos = [ {code:"Banco Agrario de Colombia", label:"Banco Agrario de Colo
                  {code:"Scotiabank Colpatria", label:"Scotiabank Colpatria"},
                 ];
 
-const tipoCuenta = [{code: "Cuenta de ahorros", label: "Cuenta de ahorros"},
-                    {code: "Cuenta corriente", label: "Cuenta corriente"},]
-
-export default function CuentaBancaria(){
+export default function CreditCard(){
 const classes = useStyles();
   return(
     <>
@@ -80,7 +78,7 @@ const classes = useStyles();
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Escoja un Banco"
+          label="Escoge un Banco"
           variant="outlined"
           inputProps={{
             ...params.inputProps,
@@ -90,34 +88,7 @@ const classes = useStyles();
     )}
     />
     </FormGroup>
-    <FormGroup>
-    <Autocomplete
-      id="jobs-selection"
-      style={{ width: 440 }}
-      options={tipoCuenta}
-      classes={{
-        option: classes.option,
-      }}
-      autoHighlight
-      getOptionLabel={(option) => option.label}
-      renderOption={(option) => (
-        <React.Fragment>
-          {option.label}
-        </React.Fragment>
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label="Escoja un tipo de cuenta bancaria"
-          variant="outlined"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
-          }}
-        />
-    )}
-    />
-    </FormGroup>
+
     <FormGroup>
       <InputGroup className="input-group-alternative mb-3">
         <InputGroupAddon addonType="prepend">
@@ -125,9 +96,27 @@ const classes = useStyles();
             <i className="ni ni-credit-card" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input placeholder="Número de cuenta" type="text" />
+        <Input placeholder="Número de Tarjeta" type="text" required maxLength="16"/>
       </InputGroup>
     </FormGroup>
+    
+    <FormGroup>
+      <InputGroup className="input-group-alternative mb-3">
+        <InputGroupAddon addonType="prepend">
+          <InputGroupText>
+            <i className="ni ni-credit-card" />
+          </InputGroupText>
+        </InputGroupAddon>
+        <Input placeholder="Número de cuenta" type="text" required maxLength="20"/>
+      </InputGroup>
+    </FormGroup>
+
+    <div className="text-center">
+        <Button className="mt-4" color="primary" type="button">
+            Finalizar
+        </Button>
+    </div>
     </>
   );
 }
+

@@ -63,7 +63,7 @@ class RegisterUser extends React.Component {
   changeViaState = () => {
     this.setState({via: true})
   }
-  //Setea el state, correspondiente al id, trigger sets the variables for the map
+  //Setea el state, correspondiente al id, trigger sts the variables for the map
   onHandleChange = (event, id, trigger) => {
     if(trigger === 1){
       this.setState({ [id]: event.target.value })
@@ -121,7 +121,7 @@ class RegisterUser extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>SIGN UP</small>
+                <small>REGÍSTRESE</small>
               </div>
               <Form role="form">
               <FormGroup>
@@ -141,9 +141,19 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Name" type="text" />
+                    <Input placeholder="Nombre" type="text" />
                   </InputGroup>
                 </FormGroup>
+                <FormGroup>
+                <InputGroup className="input-group-alternative mb-3">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <i className="ni ni-hat-3" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input placeholder="Apellido" type="text" />
+                </InputGroup>
+              </FormGroup>
                 <FormGroup>
                   <InputGroup className="input-group-alternative mb-3">
                     <InputGroupAddon addonType="prepend">
@@ -155,13 +165,33 @@ class RegisterUser extends React.Component {
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-key-25" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="Cedula" type="text" id="idCard"/>
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password" />
+                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-lock-circle-open" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" />
                   </InputGroup>
                 </FormGroup>
 
@@ -169,16 +199,9 @@ class RegisterUser extends React.Component {
                   <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState}/>
                   {retornaMap(this.state)}
                   {retornarDireccion(this.state)}
-
-                <FormGroup>
-                  <label>
-                    Upload services bill:
-                  </label>
-                  <input type="file"/>
-                </FormGroup>
                 <div className="text-center">
                   <Button className="mt-4" color="primary" type="button">
-                    Create account
+                    Continuar
                   </Button>
                 </div>
               </Form>

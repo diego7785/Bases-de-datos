@@ -24,7 +24,7 @@ render(){
         </div>
         <div className="text-center">
         <label>
-          ¡Estas a un paso de terminar el registro!
+          ¡Estás a un paso de terminar el registro!
         </label>
         <label>
           Agrega el medio de pago por el cual recibirás el pago
