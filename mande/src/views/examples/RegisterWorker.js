@@ -98,19 +98,19 @@ class RegisterWorker extends React.Component {
 
       var address = tipoVia + " " + nombreVia + " # " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
 
-      var toConvert = address + ", " + municipio + ", " + departamento + ", " + "Colombia";
-      this.setState({ completeAddress: toConvert });
-      Geocode.fromAddress(toConvert).then(
-        response => {
-          const { lat, lng } = response.results[0].geometry.location;
-          this.setState({ latitude: lat });
-          this.setState({ length: lng });
-        },
-        error => {
-          console.error(error);
-        }
-      );
-    }
+    var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
+    this.setState({completeAddress: toConvert});
+    Geocode.fromAddress(toConvert).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        this.setState({ latitude: lat});
+        this.setState({ length: lng});
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
   }
 
   changeViaState = () => {
@@ -149,7 +149,7 @@ class RegisterWorker extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>Registro</small>
+                <small>Registrar</small>
               </div>
               <Form role="form">
               <FormGroup>

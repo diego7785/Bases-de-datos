@@ -1,8 +1,9 @@
 import React from "react";
+import ChangePassword from 'components/Password/ChangePassword.js'
+
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardHeader,
   CardBody,
@@ -17,8 +18,18 @@ import {
 import UserHeader from "components/Headers/UserHeader.js";
 
 
-
 class Profile extends React.Component {
+
+  state = {
+    actualPass: true,
+    newPass: true,
+    newConfirmPass: true,
+  }
+
+  changeState = (id, event) => {
+    this.setState({ [id]: event })
+  }
+
   render() {
     return (
       <>
@@ -42,17 +53,7 @@ class Profile extends React.Component {
                   </Col>
                 </Row>
                 <CardHeader className="text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
-                  <div className="d-flex justify-content-between">
-                  <Button
-                      className="mr-4"
-                      color="info"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      size="sm"
-                    >
-                      Cambiar
-                    </Button>
-                  </div>
+
                 </CardHeader>
                 <CardBody className="pt-0 pt-md-4">
                   <Row>
@@ -89,16 +90,6 @@ class Profile extends React.Component {
                     <Col xs="8">
                       <h3 className="mb-0">Perfil</h3>
                     </Col>
-                    <Col className="text-right" xs="4">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        Configuración
-                      </Button>
-                    </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
@@ -117,6 +108,7 @@ class Profile extends React.Component {
                               Nombre de usuario
                             </label>
                             <Input
+                              readOnly={true}
                               className="form-control-alternative"
                               defaultValue="3219234114"
                               id="input-username"
@@ -134,6 +126,7 @@ class Profile extends React.Component {
                               Correo electrónico
                             </label>
                             <Input
+                              readOnly={true}
                               className="form-control-alternative"
                               id="input-email"
                               placeholder="dianbovi@hotmail.com"
@@ -152,6 +145,7 @@ class Profile extends React.Component {
                               Nombre
                             </label>
                             <Input
+                              readOnly={true}
                               className="form-control-alternative"
                               defaultValue="Diego Bonilla"
                               id="input-first-name"
@@ -178,6 +172,7 @@ class Profile extends React.Component {
                               Dirección
                             </label>
                             <Input
+                              readOnly={true}
                               className="form-control-alternative"
                               defaultValue="Cra 15 # 1 sur 16"
                               id="input-address"
@@ -197,6 +192,7 @@ class Profile extends React.Component {
                               Ciudad
                             </label>
                             <Input
+                              readOnly={true}
                               className="form-control-alternative"
                               defaultValue="Santander de Quilichao"
                               id="input-city"
@@ -214,6 +210,7 @@ class Profile extends React.Component {
                               Departamento
                             </label>
                             <Input
+                              readOnly={true}
                               className="form-control-alternative"
                               defaultValue="Cauca"
                               id="input-deprtment"
@@ -231,6 +228,7 @@ class Profile extends React.Component {
                               País
                             </label>
                             <Input
+                              readOnly={true}
                               className="form-control-alternative"
                               defaultValue="Colombia"
                               id="input-country"
@@ -244,6 +242,7 @@ class Profile extends React.Component {
                     <hr className="my-4" />
                     {/* Description */}
 
+                    <ChangePassword changePass={this.changeState} state={this.state}/>
 
 
                   </Form>
