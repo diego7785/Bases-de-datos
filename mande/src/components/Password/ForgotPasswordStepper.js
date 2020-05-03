@@ -37,12 +37,12 @@ function getSteps() {
 }
 
 function getStepContent(stepIndex, props) {
-  switch (stepIndex) {
-    case 0:
+  if(stepIndex === 0){
       return (
+        <>
         <Form role="form">
           <FormGroup className="mb-3">
-            <InputGroup className="input-group-alternative">
+              <InputGroup className="input-group-alternative">
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>
                   <i className="ni ni-email-83" />
@@ -52,9 +52,11 @@ function getStepContent(stepIndex, props) {
             </InputGroup>
           </FormGroup>
       </Form>
+      </>
     );
-    case 1:
+  } else if(stepIndex === 1){
       return(
+        <>
         <Form role="form">
           <FormGroup className="mb-3">
             <InputGroup className="input-group-alternative">
@@ -67,8 +69,9 @@ function getStepContent(stepIndex, props) {
             </InputGroup>
           </FormGroup>
       </Form>
+      </>
       );
-    case 2:
+    } else {
       return(
         <>
         <Form role="form">
@@ -79,7 +82,7 @@ function getStepContent(stepIndex, props) {
                   <i className="ni ni-lock-circle-open" />
                 </InputGroupText>
               </InputGroupAddon>
-              <Input placeholder="Ingrese su nueva contraseña" type="text" onChange={e => props.onHandleChange('nuevaContrasenia', e.target.value)}/>
+              <Input placeholder="Ingrese su nueva contraseña" type="password" onChange={e => props.onHandleChange('nuevaContrasenia', e.target.value)}/>
             </InputGroup>
           </FormGroup>
       </Form>
@@ -91,16 +94,14 @@ function getStepContent(stepIndex, props) {
                 <i className="ni ni-lock-circle-open" />
               </InputGroupText>
             </InputGroupAddon>
-            <Input placeholder="Escriba su nueva contraseña de nuevo" type="text" onChange={e => props.onHandleChange('nuevaConfirmacionContrasenia', e.target.value)}/>
+            <Input placeholder="Escriba su nueva contraseña de nuevo" type="password" onChange={e => props.onHandleChange('nuevaConfirmacionContrasenia', e.target.value)}/>
           </InputGroup>
         </FormGroup>
       </Form>
       </>
       );
-    default:
-      return 'Unknown stepIndex';
+    }
   }
-}
 
 
 export default function ForgotPasswordStepper(props) {
@@ -116,13 +117,8 @@ export default function ForgotPasswordStepper(props) {
       console.log('estoy verificando que el código sea correcto');
     } else {
       console.log('estoy cambiando la contraseña');
-      alert('Contraeña cambiada con éxito o tal vez no')
     }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleReset = (props) => {
-    props.history.push({ pathname: "/auth/loginas/" });
   };
 
   return (
@@ -142,14 +138,14 @@ export default function ForgotPasswordStepper(props) {
               {activeStep === steps.length ? (
                 <div>
                   <Typography className={classes.instructions}>Contraseña actualizada</Typography>
-                  <Button onClick={handleReset(props)}>Finish</Button>
+                  <Button href="/auth/loginas/">Finalizar</Button>
                 </div>
               ) : (
                 <div>
                   <Typography className={classes.instructions}>{getStepContent(activeStep, props)}</Typography>
                   <div>
                     <Button variant="contained" color="primary" onClick={handleNext}>
-                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                      {activeStep === steps.length - 1 ? 'Confirmar' : 'Siguiente'}
                     </Button>
                   </div>
                 </div>
