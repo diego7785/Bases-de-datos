@@ -85,13 +85,13 @@ CREATE TABLE Trabajador(
  );
 
  CREATE TABLE Direccion(
-	 id_direccion INT NOT NULL,
+	 id_direccion SERIAL NOT NULL,
 	 cedula_usuario BIGINT,
 	 celular_usuario VARCHAR(10),
 	 cedula_trabajador BIGINT,
 	 celular_trabajador VARCHAR(10),
 	 direccion_latitud NUMERIC(9,6) NOT NULL,
-	 direccion_longitud NUMERIC(9,6) NOT NULL,
+ 	direccion_longitud NUMERIC(9,6) NOT NULL,
 	 direccion_domicilio VARCHAR(40) NOT NULL,
 	 direccion_ciudad VARCHAR(40) NOT NULL,
 	 direccion_departamento VARCHAR(40) NOT NULL,

@@ -99,7 +99,7 @@ export default function Jobs(props) {
               }}
               />
           )}
-        onChange={e => props.onHandleChange('job', e.target.innerText)}
+        onChange={e => props.onHandleChange('job',parseInt(e.target.dataset.optionIndex)+1)}
         />
       </FormGroup>
       <FormGroup>
