@@ -58,8 +58,10 @@ const bancos = [ {code:"Banco Agrario de Colombia", label:"Banco Agrario de Colo
 const tipoCuenta = [{code: "Cuenta de ahorros", label: "Cuenta de ahorros"},
                     {code: "Cuenta corriente", label: "Cuenta corriente"},]
 
-export default function CuentaBancaria(){
+export default function CuentaBancaria(props){
 const classes = useStyles();
+const [element1, setElement1] = React.useState('');
+const [element2, setElement2] = React.useState('');
   return(
     <>
     <FormGroup>
@@ -82,12 +84,10 @@ const classes = useStyles();
           {...params}
           label="Escoja un Banco"
           variant="outlined"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
-          }}
         />
     )}
+    value={element1.getOptionLabel}
+    onChange={e => { props.functionSetState(e, 'bancoCuenta'); setElement1(e.target.value) }} 
     />
     </FormGroup>
     <FormGroup>
@@ -110,12 +110,10 @@ const classes = useStyles();
           {...params}
           label="Escoja un tipo de cuenta bancaria"
           variant="outlined"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
-          }}
         />
     )}
+    value={element2.getOptionLabel}
+    onChange={e => { props.functionSetState(e, 'tipoCuenta'); setElement2(e.target.value) }} 
     />
     </FormGroup>
     <FormGroup>
@@ -125,7 +123,7 @@ const classes = useStyles();
             <i className="ni ni-credit-card" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input placeholder="Número de cuenta" type="text" />
+        <Input placeholder="Número de cuenta" type="text" required maxLength="20" onChange={e => props.functionSetState(e, 'numeroCuenta')} />
       </InputGroup>
     </FormGroup>
     </>

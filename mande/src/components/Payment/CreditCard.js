@@ -3,6 +3,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 import {
   Button,
   FormGroup,
@@ -55,13 +56,14 @@ const bancos = [ {code:"Banco Agrario de Colombia", label:"Banco Agrario de Colo
                  {code:"Scotiabank Colpatria", label:"Scotiabank Colpatria"},
                 ];
 
-export default function CreditCard(){
+export default function CreditCard(props){
 const classes = useStyles();
+const [element1, setElement1] = React.useState('');
   return(
     <>
     <FormGroup>
     <Autocomplete
-      id="jobs-selection"
+      id="bancoCredito"
       style={{ width: 440 }}
       options={bancos}
       classes={{
@@ -85,6 +87,8 @@ const classes = useStyles();
           }}
         />
     )}
+    value={element1.getOptionLabel}
+    onChange={e => {props.functionSetStateI(e, 'bancoCredito'); setElement1(e.target.value)}}
     />
     </FormGroup>
 
@@ -95,7 +99,7 @@ const classes = useStyles();
             <i className="ni ni-credit-card" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input placeholder="Número de Tarjeta" type="text" required maxLength="16" />
+        <Input placeholder="Número de Tarjeta" type="text" id="numeroTarjetaCredito" required maxLength="16" onChange={e => props.functionSetStateI(e, 'numeroTarjetaCredito')} />
       </InputGroup>
     </FormGroup>
 
@@ -106,7 +110,7 @@ const classes = useStyles();
             <i className="ni ni-credit-card" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input placeholder="CVC" type="text" required maxLength="4"/>
+        <Input placeholder="CVC" type="text" id="cvcCredito" required maxLength="4" onChange={e => props.functionSetStateI(e, 'cvcCredito')}/>
       </InputGroup>
     </FormGroup>
 
@@ -117,12 +121,12 @@ const classes = useStyles();
             <i className="ni ni-credit-card" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input type="text" class= "cc-exp"
+        <Input type="text" className= "cc-exp"
         pattern="\d*" x-autocompletetype="cc-exp"
-        placeholder="Mes de expiración             //" required maxLength="2"/>
-        <Input type="text" class= "cc-exp"
-        pattern="\d*" x-autocompletetype="cc-exp"
-        placeholder="    Año de expiración" required maxLength="4"/>
+        placeholder="Mes de expiración             //" id="mesVencimientoCredito" required maxLength="2" onChange={e => props.functionSetStateI(e, 'mesVencimientoCredito')}/>
+        <Input type="text" className= "a-exp"
+        pattern="\d*" x-autocompletetype="a-exp"
+        placeholder="    Año de expiración"  id= "anioVencimientoCredito" required maxLength="4" onChange={e => props.functionSetStateI(e, 'anioVencimientoCredito')}/>
       </InputGroup>
     </FormGroup>
 
@@ -133,7 +137,7 @@ const classes = useStyles();
             <i className="ni ni-key-25" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input placeholder="Cédula del propietario" type="text" required maxLength="10" />
+        <Input placeholder="Cédula del propietario" type="text" id="cedulaPropietarioCredito" required maxLength="10" onChange={e => props.functionSetStateI(e, 'cedulaPropietarioCredito')}/>
       </InputGroup>
     </FormGroup>
 

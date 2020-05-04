@@ -12,6 +12,7 @@ import LoginAs from "views/examples/LoginAs.js"
 import LoginAsWorker from "views/examples/LoginAsWorker.js"
 import ForgotPassword from "views/examples/ForgotPassword.js"
 import RegisterUser1 from "views/examples/RegisterUser1.js";
+import RegisterUser2 from "views/examples/RegisterUser2.js";
 
 var routes = [
   {
@@ -96,8 +97,13 @@ var routes = [
     path: "/registeruser1",
     name: "Register As User 1",
     component: RegisterUser1,
-    layout: "/auth",
-  }
-
+    layout: "/auth"
+  },
+  {
+    path: "/registeruser2",
+    name: "Register As User 2",
+    component: RegisterUser2,
+    layout: "/auth"
+  },
 ];
 export default routes;
