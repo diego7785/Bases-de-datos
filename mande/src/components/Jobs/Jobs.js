@@ -63,7 +63,7 @@ export default function Jobs(props) {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     textmask: '(1  )    -    ',
-    numberformat: '1320',
+    numberformat: '0',
   });
   const handleChange = (event) => {
     setValues({

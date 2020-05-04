@@ -12,6 +12,9 @@ import {
   InputGroup,
   Row,
   Col,
+  Table,
+  Card,
+  CardHeader,
 } from "reactstrap";
 
 
@@ -57,16 +60,43 @@ class IndexC extends React.Component {
               </Form>
             </Col>
             <Col>
-            <Button variant="contained" color="primary" style={{marginLeft: 30}}>Buscar</Button>
-            <Button variant="contained" color="secondary" style={{marginLeft: 50}}>Busqueda avanzada</Button>
+              <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+                <Button variant="contained" color="primary" style={{marginLeft: 30}}>Buscar</Button>
+                <Button variant="contained" color="secondary" style={{marginLeft: 50}}>Busqueda avanzada</Button>
+              </Form>
             </Col>
           </Row>
-          <Row style={{ marginTop: 45}}>
-            <Col xl="7" md="6">
-
+          <Row style={{ marginTop: 50}}>
+            <Col xl="4">
+              <Card className="shadow">
+                <CardHeader className="border-0">
+                  <Row className="align-items-center">
+                    <div className="col">
+                      <h3 className="mb-0">Labor activa</h3>
+                    </div>
+                  </Row>
+                </CardHeader>
+              <Table className="align-items-center table-flush" responsive>
+                <thead className="thead-light">
+                  <tr>
+                    <th scope="col">Icono</th>
+                    <th scope="col">Nombre labor</th>
+                    <th scope="col">Terminar labor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Icono profeso</th>
+                    <td>Profesor matemáticas</td>
+                    <td>
+                      <Button variant="contained" color="primary">Terminar</Button>
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
+              </Card>
             </Col>
           </Row>
-
         </Container>
       </>
     );
