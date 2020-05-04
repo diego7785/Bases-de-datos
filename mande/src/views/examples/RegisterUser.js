@@ -45,6 +45,7 @@ class RegisterUser extends React.Component {
     email: true,
     idCard: true,
     password: true,
+    passwordR:true,
     departamento: true,
     municipio: true,
     tipoVia: true,
@@ -77,7 +78,6 @@ class RegisterUser extends React.Component {
     var compViaSec = this.state.compViaSec;
     var numeroCasa = this.state.numeroCasa;
     var comp = this.state.comp;
-
     if(tipoVia === true ||  tipoVia === "Select"){
       tipoVia = "";
     }
@@ -113,7 +113,38 @@ class RegisterUser extends React.Component {
     );
   }
   }
-
+  onClickNext = (e) => {
+    e.preventDefault()
+    this.props.history.push({
+      pathname: "/auth/RegisterUser1/", state: {
+        name: this.state.name,
+        lastname: this.state.lastname,
+        email: this.state.email,
+        idCard: this.state.idCard,
+        password: this.state.password,
+        passwordR: this.state.passwordR,
+        departamento: this.state.departamento,
+        municipio: this.state.municipio,
+        tipoVia: this.state.tipoVia,
+        nombreVia: this.state.nombreVia,
+        viaSec: this.state.viaSec,
+        nombreViaSec: this.state.nombreViaSec,
+        compViaSec: this.state.compViaSec,
+        numeroCasa: this.state.numeroCasa,
+        comp: this.state.comp,
+        barrio: this.state.barrio,
+        latitude: this.state.latitude,
+        length: this.state.length,
+      }
+    })
+    console.log(this.state.name);
+    console.log(this.state.password);
+    console.log(this.state.passwordR);
+    console.log(this.state.name);
+    console.log(this.state.tipoVia);
+    console.log(this.state.nombreVia);
+    console.log(this.state.latitude);
+  }
   render() {
     return (
       <>
@@ -121,7 +152,7 @@ class RegisterUser extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>REGÍSTRESE</small>
+                <small>PASO 1: Ingresar información personal</small>
               </div>
               <Form role="form">
               <FormGroup>
@@ -131,7 +162,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-tablet-button" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Celular" type="text" />
+                    <Input placeholder="Celular" type="text" onChange={e => this.onHandleChange(e, 'celular', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -141,7 +172,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Nombre" type="text" />
+                    <Input placeholder="Nombre" type="text" onChange={e => this.onHandleChange(e, 'name', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -151,7 +182,7 @@ class RegisterUser extends React.Component {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Apellido" type="text" />
+                  <Input placeholder="Apellido" type="text" onChange={e => this.onHandleChange(e, 'lastname', 1)}/>
                 </InputGroup>
               </FormGroup>
                 <FormGroup>
@@ -161,7 +192,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email" />
+                    <Input placeholder="Email" type="email" autoComplete="new-email" onChange={e => this.onHandleChange(e, 'email', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -171,7 +202,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-key-25" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Cedula" type="text" id="idCard"/>
+                    <Input placeholder="Cedula" type="text" id="idCard" onChange={e => this.onHandleChange(e, 'idCard', 1)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -181,7 +212,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" />
+                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" onChange={e => this.onHandleChange(e, 'password', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -191,7 +222,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" />
+                    <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" onChange={e => this.onHandleChange(e, 'passwordR', 1)} />
                   </InputGroup>
                 </FormGroup>
 
@@ -200,8 +231,8 @@ class RegisterUser extends React.Component {
                   {retornaMap(this.state)}
                   {retornarDireccion(this.state)}
                 <div className="text-center">
-                  <Button className="mt-4" color="primary" type="button">
-                    Continuar
+                  <Button className="mt-4" color="primary" type="button" onClick={this.onClickNext}>
+                    Siguiente
                   </Button>
                 </div>
               </Form>

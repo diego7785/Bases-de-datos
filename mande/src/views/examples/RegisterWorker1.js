@@ -141,32 +141,39 @@ class RegisterWorker1 extends React.Component {
         <Card className="bg-secondary shadow border-0">
           <CardBody className="px-lg-5 py-lg-5">
             <div className="text-center text-muted mb-4">
-              <small>Registro</small>
+              <small>PASO 2: Labores y verificación</small>
             </div>
             <Form role="form">
-
             <Jobs state={this.state}  onHandleChange={this.onHandleChange}/>
-
-            <label className="text-center"> No dudamos de ti, sin embargo debes enviarnos una foto de tu documento de identidad</label>
-            <FormGroup>
+            <FormGroup className="text-center"> 
+            <label> 
+              No dudamos de ti
+            </label>
+            </FormGroup>
+            <label className="text-center" style={{ marginTop: 2}}> 
+              Sin embargo debes enviarnos una foto de tu documento de identidad para verificar tu información
+            </label>
+            <FormGroup style={{ marginTop: 30}}>
               <label>
-                Parte delantera:
+                Parte delantera  :
               </label>
               <input type="file" accept=".png, .jpg, .jpeg" onChange={e => this.handleFileChange(e,'front')}/>
             </FormGroup>
-            <FormGroup>
+            <FormGroup style={{ marginTop: -20}}>
               <label>
-                Parte trasera:
+                Parte trasera :
               </label>
               <input type="file" accept=".png, .jpg, .jpeg" onChange={e => this.handleFileChange(e,'back')}/>
             </FormGroup>
-            <FormGroup>
+            <FormGroup style={{ marginTop: 30}}>
               <label>
-                Agrega una foto tuya:
+                Agrega una foto para tu perfil
               </label>
               <input type="file" accept=".png, .jpg, .jpeg" onChange={e => this.handleFileChange(e,'profilepic')}/>
             </FormGroup>
             </Form>
+            <div style={{ marginTop: 30 }}>
+            </div>
             <div className="text-center">
               <Button className="mt-4" color="primary" type="button" onClick={this.onHandleNext}>
                 Siguiente
