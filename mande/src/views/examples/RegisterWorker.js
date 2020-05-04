@@ -46,6 +46,7 @@ class RegisterWorker extends React.Component {
     email: true,
     idCard: true,
     password: true,
+    passwordR: true,
     departamento: true,
     municipio: true,
     tipoVia: true,
@@ -126,6 +127,7 @@ class RegisterWorker extends React.Component {
         email: this.state.email,
         idCard: this.state.idCard,
         password: this.state.password,
+        passwordR: this.state.passwordR,
         departamento: this.state.departamento,
         municipio: this.state.municipio,
         tipoVia: this.state.tipoVia,
@@ -140,6 +142,9 @@ class RegisterWorker extends React.Component {
         length: this.state.length,
       }
     })
+    console.log(this.state.name);
+    console.log(this.state.password);
+    console.log(this.state.passwordR);
   }
 
   render() {
@@ -149,7 +154,7 @@ class RegisterWorker extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>Registro</small>
+                <small>PASO 1: Ingresar información personal</small>
               </div>
               <Form role="form">
               <FormGroup>
@@ -219,7 +224,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-lock-circle-open" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e, 'password', 1)} />
+                  <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e, 'passwordR', 1)} />
                 </InputGroup>
               </FormGroup>
 

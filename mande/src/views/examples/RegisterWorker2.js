@@ -12,6 +12,27 @@ import {
 
 class RegisterWorker2 extends React.Component{
 
+state={
+  bancoCuenta:'',
+  tipoCuenta:'',
+  numeroCuenta:'',
+}
+
+selectCuenta = (event, id) => {
+  if (id === "numeroCuenta") {
+    this.setState({ [id]: event.target.value })
+  }
+  else {
+    this.setState({ [id]: event.target.innerText })
+  }
+  var bancoCuenta = this.state.bancoCuenta;
+  var tipoCuenta = this.state.tipoCuenta;
+  var numeroCuenta = this.state.numeroCuenta;
+  console.log(this.state.bancoCuenta);
+  console.log(this.state.tipoCuenta);
+  console.log(this.state.numeroCuenta);
+}
+
 render(){
 
   return(
@@ -20,20 +41,22 @@ render(){
     <Card className="bg-secondary shadow border-0">
       <CardBody className="px-lg-5 py-lg-5">
         <div className="text-center text-muted mb-4">
-          <small>Registro</small>
+          <small>PASO 3: Agregar cuenta bancaria</small>
         </div>
         <div className="text-center">
-        <label>
+        <label style={{ marginTop: 10}}>
           ¡Estás a un paso de terminar el registro!
         </label>
-        <label>
-          Agrega el medio de pago por el cual recibirás el pago
+        <label style={{ marginTop: 20}}>
+          Agrega la cuenta por la cual recibirás tus pagos
         </label>
         </div>
         <Form role="form">
 
         <FormGroup>
-          <CuentaBancaria/>
+          <div style={{ marginTop: 15}}>
+          </div>
+          <CuentaBancaria state={this.state} functionSetState={this.selectCuenta}/>
         </FormGroup>
         </Form>
         <div className="text-center">
@@ -47,7 +70,6 @@ render(){
   </>
 );
 }
-
 }
 
 export default RegisterWorker2;
