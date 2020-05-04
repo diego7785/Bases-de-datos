@@ -18,6 +18,10 @@ state={
   tipoCuenta:'',
   numeroCuenta:'',
 }
+constructor(props){
+  super(props)
+  console.log(props)
+}
 
 selectCuenta = (event, id) => {
   if (id === "numeroCuenta") {
@@ -46,7 +50,22 @@ FinalRegister = () => {
   axios.post(`http://localhost:5000/RegisterWorker2/${numberAccount}/${bank}/${type}/${idCard}/${phone}`)
   .then(res => console.log(res))
 
-  
+  const idJob = this.props.location.state.job;
+  const price = this.props.location.state.price;
+  const description = this.props.locaton.state.description;
+  const status = true;
+
+  axios.post(`http://localhost:5000/RegisterWorker2/${idJob}/${idCard}/${phone}/${price}/${description}/${status}`)
+  .then(res => console.log(res))
+
+  const lat = this.props.location.state.latitude;
+  const lng = this.props.location.state.length;
+  const address = this.props.location.state.completeAddress;
+  const city = this.props.location.state.city;
+  const dpto = this.props.location.state.depto;
+
+  axios.post(`http://localhost:5000/RegisterWorker2/${idCard}/${phone}/${lat}/${lng}/${address}/${city}/${dpto}`)
+  .then(res => console.log(res))
 }
 
 render(){

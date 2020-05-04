@@ -28,10 +28,6 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single('file')
 
-app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:password`, (req,res) => worker.createWorker(req,res, db))
-
-app.post(`/RegisterWorker2/:numberAccount/:bank/:type/:idCard/:phone`, (req,res) => worker.createBankAccount(req,res,db))
-
 app.get(`/RegisterWorker1/:labores`, (req, res) => worker.getPreDefinedJobs(req,res,db))
 
 app.post(`/RegisterWorker1/images`, (req, res) => {
@@ -44,5 +40,13 @@ app.post(`/RegisterWorker1/images`, (req, res) => {
       return res.status(200).send(req.file)
     })
 });
+
+app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:password`, (req,res) => worker.createWorker(req,res, db))
+
+app.post(`/RegisterWorker2/:numberAccount/:bank/:type/:idCard/:phone`, (req,res) => worker.createBankAccount(req,res,db))
+
+app.post(`/RegisterWorker2/:idJob/:idCard/:phone/:price/:description/:status`, (req,res) => worker.createRealiza(req,res,db))
+
+app.post(`/RegisterWorker2/:idCard/:phone/:lat/:lng/:address/:city/:dpto`, (req,res) => worker.createAddress(req,res,db))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))

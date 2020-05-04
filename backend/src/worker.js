@@ -50,8 +50,54 @@ var createBankAccount = (req,res,db)=>{
 
 }
 
+var createRealiza = (req,res,db)=>{
+  const idJob = req.params.idJob;
+  const idCard = req.params.idCard;
+  const phone = req.params.phone;
+  const price = req.params.price;
+  const description = req.params.description;
+  const status = req.params.status;
+
+  db.none(`INSERT INTO Realiza VALUES($1,$2,$3,$4,$5,$6)`,
+  [escape(idJob), escape(idCard), escape(phone), escape(price),
+    escape(description), escape(status)])
+  .then((data) => {
+    res.send(JSON.stringify(`Labor a realizar registrada éxitosamente`))
+  })
+  .catch((error) => {
+    console.log(req.params)
+    console.log(`ERROR`, error)
+    res.send(error.detail)
+  })
+
+}
+
+var createAddress = (req,res,db)=>{
+  const idCard = req.params.idCard;
+  const phone = req.params.phone;
+  const lat = req.params.lat;
+  const lng = req.params.lng;
+  const address = req.params.address;
+  const city = req.params.city;
+  const depto = req.params.dpto;
+
+  db.none(`INSERT INTO Direccion VALUES($1,$2,$3,$4,$5,$6,$7)`,
+  [escape(idCard), escape(phone), escape(lat), escape(lng),
+    escape(address), escape(city), escape(depto)])
+  .then((data) => {
+    res.send(JSON.stringify(`Dirección registrada éxitosamente`))
+  })
+  .catch((error) => {
+    console.log(req.params)
+    console.log(`ERROR`, error)
+    res.send(error.detail)
+  })
+}
+
 module.exports = {
   createWorker,
   getPreDefinedJobs,
   createBankAccount,
+  createRealiza,
+  createAddress,
 }
