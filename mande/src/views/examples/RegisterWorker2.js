@@ -1,5 +1,6 @@
 import React from 'react';
 import CuentaBancaria from 'components/Banco/CuentaBancaria';
+import axios from 'axios'
 
 import {
   Card,
@@ -25,12 +26,27 @@ selectCuenta = (event, id) => {
   else {
     this.setState({ [id]: event.target.innerText })
   }
-  var bancoCuenta = this.state.bancoCuenta;
-  var tipoCuenta = this.state.tipoCuenta;
-  var numeroCuenta = this.state.numeroCuenta;
-  console.log(this.state.bancoCuenta);
-  console.log(this.state.tipoCuenta);
-  console.log(this.state.numeroCuenta);
+  console.log(this.state)
+}
+
+FinalRegister = () => {
+  const idCard = this.props.location.state.idCard;
+  const phone = this.props.location.state.celular;
+  const email = this.props.location.state.email;
+  const name = this.props.location.state.name;
+  const password = this.props.location.state.password;
+
+  axios.post(`http://localhost:5000/RegisterWorker2/${idCard}/${phone}/${email}/${name}/${password}`)
+  .then(res => console.log(res))
+
+  const numberAccount = this.state.numeroCuenta;
+  const bank = this.state.bancoCuenta;
+  const type = this.state.tipoCuenta;
+
+  axios.post(`http://localhost:5000/RegisterWorker2/${numberAccount}/${bank}/${type}/${idCard}/${phone}`)
+  .then(res => console.log(res))
+
+  
 }
 
 render(){
@@ -60,7 +76,7 @@ render(){
         </FormGroup>
         </Form>
         <div className="text-center">
-          <Button className="mt-4" color="primary" type="button" href="RegisterWorker2">
+          <Button className="mt-4" color="primary" type="button" onClick={this.FinalRegister}>
             Finalizar
           </Button>
         </div>´

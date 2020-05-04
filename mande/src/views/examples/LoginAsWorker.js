@@ -18,6 +18,25 @@ import {
 } from "reactstrap";
 
 class LoginAsWorker extends React.Component {
+
+  state = {
+    idCard: true,
+    pass: true,
+  }
+
+  onHandleChange = (id, event) =>{
+    this.setState({ [id]: event.target.value})
+  }
+
+  onHandleNext = (e) =>{
+    e.preventDefault();
+    this.props.history.push({
+      pathname: "/worker/", state: {
+      idCard: this.state.idCard
+      }
+    })
+}
+
   render() {
     return (
       <>
@@ -35,7 +54,7 @@ class LoginAsWorker extends React.Component {
                         <i className="ni ni-key-25" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Cedula" type="text"/>
+                    <Input placeholder="Cedula" type="text" onChange={e=> this.onHandleChange('idCard', e)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -45,11 +64,11 @@ class LoginAsWorker extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password" />
+                    <Input placeholder="Password" type="password" autoComplete="new-password" onChange={e=> this.onHandleChange('pass', e)}/>
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button" href="/worker/index">
+                  <Button className="my-4" color="primary" type="button" onClick={e => this.onHandleNext(e)}>
                     Sign in
                   </Button>
                 </div>

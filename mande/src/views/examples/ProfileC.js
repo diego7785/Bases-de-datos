@@ -24,6 +24,7 @@ class Profile extends React.Component {
     actualPass: true,
     newPass: true,
     newConfirmPass: true,
+    phone: this.props.location.state.idCard
   }
 
   changeState = (id, event) => {
@@ -46,7 +47,7 @@ class Profile extends React.Component {
                         <img
                           alt="..."
                           className="rounded-circle"
-                          src={require("assets/img/theme/iconprofile.png")}
+                          src={require("assets/img/userImages/profilepic-"+this.state.phone+".png")}
                         />
                       </a>
                     </div>
@@ -110,7 +111,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue="3219234114"
+                              defaultValue={this.state.phone}
                               id="input-username"
                               placeholder="Username"
                               type="text"

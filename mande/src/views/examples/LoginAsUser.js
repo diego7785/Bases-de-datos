@@ -18,6 +18,25 @@ import {
 } from "reactstrap";
 
 class LoginAsUser extends React.Component {
+
+  state = {
+    phone: true,
+    pass: true,
+  }
+
+  onHandleChange = (id, event) =>{
+    this.setState({ [id]: event.target.value})
+  }
+
+  onHandleNext = (e) =>{
+    e.preventDefault();
+    this.props.history.push({
+      pathname: "/client/", state: {
+      idCard: this.state.phone
+      }
+    })
+}
+
   render() {
     return (
       <>
@@ -35,7 +54,7 @@ class LoginAsUser extends React.Component {
                         <i className="ni ni-mobile-button" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Celular" type="text"/>
+                    <Input placeholder="Celular" type="text" onChange={e => this.onHandleChange('phone', e)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -45,11 +64,11 @@ class LoginAsUser extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password" />
+                    <Input placeholder="Password" type="password" autoComplete="new-password" onChange={e => this.onHandleChange('pass', e)}/>
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button" href="/client/index">
+                  <Button className="my-4" color="primary" type="button" onClick={e => this.onHandleNext(e)}>
                     Ingresar
                   </Button>
                 </div>

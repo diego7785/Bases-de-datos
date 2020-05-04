@@ -86,7 +86,7 @@ class IndexC extends React.Component {
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">Icono profeso</th>
+                    <th scope="row">Icono profesor</th>
                     <td>Profesor matemáticas</td>
                     <td>
                       <Button variant="contained" color="primary">Terminar</Button>
