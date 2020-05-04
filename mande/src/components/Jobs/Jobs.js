@@ -51,15 +51,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //Esto se debe actualizar con respecto a la base de datos
-const labores = [{code: "Profesor de ingles", label:"Profesor inglés"},
-                 {code: "Paseador de perros", label: "Paseador de perros"},
-                 {code: "Profesor de matematicas", label: "Profesor de matemáticas"},
-                 {code: "Plomero", label: "Plomero"},
-                 {code: "Electricista", label: "Electricista"},];
+var labores =[];
 
 const tipoCobro = [{type:"Por hora"}, {type:"Por labor"},];
 
 export default function Jobs(props) {
+  labores=props.jobs;
   const classes = useStyles();
   const [values, setValues] = React.useState({
     textmask: '(1  )    -    ',
