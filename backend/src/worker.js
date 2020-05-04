@@ -1,21 +1,12 @@
 var createWorker = (req, res, db) => {
-  const cedula = req.params.cedula;
+  const idCard = req.params.idCard;
+  const phone = req.params.phone;
   const email = req.params.email;
-  const estado = req.params.estado;
-  const profilepic = req.params.profilepic;
-  const front = req.params.front;
-  const back = req.params.back;
   const name = req.params.name;
-  const address = req.params.address;
   const password = req.params.password;
-  const pais = req.params.pais;
-  const depto = req.params.depto;
-  const city = req.params.city;
-  const postalcode = req.params.postalcode;
 
-  db.none(`INSERT INTO Trabajador VALUES($1,$2,$3, bytea($4), bytea($5), bytea($6), $7, $8, $9, $10, $11, $12, $13)`,
-  [escape(cedula), escape(email), escape(estado), escape(profilepic), escape(front), escape(back),
-  escape(name), escape(address), escape(password), escape(pais), escape(depto), escape(city), escape(postalcode)])
+  db.none(`INSERT INTO Trabajador VALUES($1,$2,$3,$4,$5)`,
+  [escape(idCard), escape(phone), escape(email), escape(name), escape(password)])
   .then((data) => {
     res.send(JSON.stringify(`Trabajador registrado exitosamente`))
   })
@@ -34,12 +25,33 @@ var getPreDefinedJobs = (req,res,db) =>{
     })
     .catch(function (error) {
       console.log(`ERROR:`, error)
-      res.send(JSON.stringify("Error leyendo las labores prestablecidas"))
+      res.send(JSON.stringify(error.detail))
     })
   }
+}
+
+var createBankAccount = (req,res,db)=>{
+  const numberAccount = req.params.numberAccount;
+  const bank = req.params.bank;
+  const type = req.params.type;
+  const idCard = req.params.idCard;
+  const phone = req.params.phone;
+
+  db.none(`INSERT INTO Cuenta_bancaria VALUES($1,$2,$3,$4,$5)`,
+  [escape(numberAccount), escape(bank), escape(type), escape(idCard), escape(phone)])
+  .then((data) => {
+    res.send(JSON.stringify(`Cuenta registrada éxitosamente`))
+  })
+  .catch((error) => {
+    console.log(req.params)
+    console.log(`ERROR`, error)
+    res.send(error.detail)
+  })
+
 }
 
 module.exports = {
   createWorker,
   getPreDefinedJobs,
+  createBankAccount,
 }

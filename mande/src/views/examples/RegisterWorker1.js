@@ -33,109 +33,80 @@ class RegisterWorker1 extends React.Component {
     this.setState({ [id]: value })
   }
 
-  joinAddres = (tipoVia, nombreVia, viaSec, nombreViaSec, compViaSec, numeroCasa, comp, barrio) =>{
-    var address;
-    var ftipoVia;
-    var fnombreVia;
-    var fviaSec;
-    var fnombreViaSec;
-    var fcompViaSec;
-    var fnumeroCasa;
-    var fcomp;
-    var fbarrio;
-
-    if(tipoVia === true || tipoVia === "Select"){
-      ftipoVia = "";
-    } else {
-      ftipoVia= tipoVia;
-    }
-
-    if(nombreVia === true || nombreVia === "Select"){
-      fnombreVia = "";
-    } else {
-      fnombreVia= nombreVia;
-    }
-
-    if(viaSec === true || viaSec === "Select"){
-      fviaSec = "";
-    } else {
-      fviaSec= viaSec;
-    }
-
-    if(nombreViaSec === true || nombreViaSec === "Select"){
-      fnombreViaSec = "";
-    } else {
-      fnombreViaSec= nombreViaSec;
-    }
-
-    if(compViaSec === true || compViaSec === "Select"){
-      fcompViaSec = "";
-    } else {
-      fcompViaSec= compViaSec;
-    }
-
-    if(numeroCasa === true || numeroCasa === "Select"){
-      fnumeroCasa = "";
-    } else {
-      fnumeroCasa= numeroCasa;
-    }
-
-    if(comp === true || comp === "Select"){
-      fcomp = "";
-    } else {
-      fcomp= comp;
-    }
-
-    if(barrio === true || barrio === "Select"){
-      fbarrio = "";
-    } else {
-      fbarrio= barrio;
-    }
-
-    address = ftipoVia +" "+ fnombreVia +" "+ fviaSec +" "+ fnombreViaSec +" "+ fcompViaSec +" "+ fnumeroCasa +" "+ fcomp +" ("+ fbarrio + ")";
-
-    return address;
-  }
-
   onHandleNext = () => {
-    const cedula = this.props.location.state.idCard;
-    const email = this.props.location.state.email;
-    const celular = this.props.location.state.celular;
-    const estado = true;
-    const profilepic =  this.state.profilepic;
-    const front = this.state.front;
-    const back =  this.state.back;
-    const name = this.props.location.state.name + " " + this.props.location.state.lastname;
-    const tipoVia = this.props.location.state.tipoVia;
-    const nombreVia = this.props.location.state.nombreVia;
-    const viaSec = this.props.location.state.viaSec;
-    const nombreViaSec = this.props.location.state.nombreViaSec;
-    const compViaSec = this.props.location.state.compViaSec;
-    const numeroCasa = this.props.location.state.numeroCasa;
-    const comp = this.props.location.state.comp;
-    const barrio = this.props.location.state.barrio;
-    const password = this.props.location.state.password
-    const pais = this.props.location.state.pais;
-    const depto = this.props.location.state.departamento;
-    const city = this.props.location.state.municipio;
-    const postalcode = this.props.location.state.postalcode;
-
-    const address = this.joinAddres(tipoVia, nombreVia, viaSec, nombreViaSec, compViaSec, numeroCasa, comp, barrio);
-
-    console.log(front);
-    console.log(back);
-    console.log(profilepic);
-
-    axios.post(`http://localhost:5000/RegisterWorker1/${front}`).then(res => console.log(res));
-    /*axios.post(`http://localhost:5000/RegisterWorker/${cedula}/${celular}/${email}/${profilepic}/${front}/${back}/${name}/${password}`).then(res => {
-      console.log(res);
-    })*/
+    this.props.history.push({
+      pathname: "/auth/RegisterWorker2/", state: {
+      idCard: this.props.location.state.idCard,
+       email : this.props.location.state.email,
+       celular : this.props.location.state.celular,
+       profilepic :  this.state.profilepic,
+       front : this.state.front,
+       back :  this.state.back,
+       name : this.props.location.state.name + ' ' + this.props.location.state.lastname,
+       completeAddress : this.props.location.state.completeAddress,
+       password : this.props.location.state.password,
+       passwordR : this.props.location.state.passwordR,
+       depto : this.props.location.state.departamento,
+       city : this.props.location.state.municipio,
+       job : this.state.job,
+       description : this.state.description,
+       type : this.state.type,
+       price : this.state.price,
+       latitude : this.props.location.state.latitude,
+       length : this.props.location.state.length,
+      }
+    })
   }
 
-  handleFileChange = (event, id) => {
-    this.setState({ [id]: event.target.files[0]});
-  }
 
+  onChangeHandler = (id, event, type) =>{
+    this.setState({ [id]: event.target.files[0]})
+    switch (type) {
+      case 1: this.setState({ loaded1: true})
+        break;
+      case 2: this.setState({ loaded2: true})
+        break;
+      case 3: this.setState({ loaded3: true})
+        break;
+      default: return('Unknow index');
+
+    }
+}
+
+onClickHandler = () => {
+    var cont = 0;
+    var data = new FormData()
+    data.append('file', this.state.front)
+    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=front", data, {})
+      .then(res => {
+        if(res.statusText == "OK"){
+          cont=1;
+        }
+      })
+    data = new FormData()
+    data.append('file', this.state.back)
+    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=back", data, {})
+      .then(res => {
+        if(res.statusText == "OK"){
+          cont++;
+        }
+      })
+    data = new FormData()
+    data.append('file', this.state.profilepic)
+    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=profilepic", data, {})
+      .then(res => {
+        if(res.statusText == "OK"){
+          cont++;
+          if(cont === 3){
+            alert('Imágenes cargadas con éxito');
+          } else{
+            alert('Fallo al cargar una de las imágenes');
+          }
+        }
+      })
+
+
+}
   render(){
     return(
       <>
@@ -157,26 +128,26 @@ class RegisterWorker1 extends React.Component {
             </label>
             <FormGroup style={{ marginTop: 30}}>
               <label>
-                Parte delantera  :
+                Parte delantera:
               </label>
-              <form id="frontUploader" enctype="multipart/form-data" action="http://localhost:5000/RegisterWorker1/front" method="post">
-                <input type="file" accept=".png, .jpg, .jpeg"  onChange={e => this.handleFileChange(e,'front')}/>
-                <input type="submit" name="submit" id="btnSubmit" value="Cargar imagen" />
-              </form>
+              <input type="file" name="file" accept=".png, .jpg, .jpeg" style={{marginLeft: 5}} onChange={e => this.onChangeHandler('front',e,1)}/>
             </FormGroup>
-            <FormGroup style={{ marginTop: -20}}>
+            <FormGroup style={{ marginTop: -10}}>
               <label>
                 Parte trasera :
               </label>
-              <input type="file" accept=".png, .jpg, .jpeg" onChange={e => this.handleFileChange(e,'back')}/>
+              <input type="file" name="file" accept=".png, .jpg, .jpeg" style={{marginLeft: 5}} onChange={e => this.onChangeHandler('back',e,2)}/>
             </FormGroup>
             <FormGroup style={{ marginTop: 30}}>
               <label>
                 Agrega una foto para tu perfil
               </label>
-              <input type="file" accept=".png, .jpg, .jpeg" onChange={e => this.handleFileChange(e,'profilepic')}/>
+              <input type="file" name="file" accept=".png, .jpg, .jpeg" onChange={e => this.onChangeHandler('profilepic',e,3)}/>
             </FormGroup>
             </Form>
+            <Button color="primary" style={{width: 400, marginTop: 10}} onClick={this.onClickHandler}>
+              Cargar
+            </Button>
             <div style={{ marginTop: 30 }}>
             </div>
             <div className="text-center">

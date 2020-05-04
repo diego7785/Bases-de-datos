@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS Trabajador CASCADE;
 DROP TABLE IF EXISTS Usuario CASCADE;
+DROP TABLE IF EXISTS Labor CASCADE;
 DROP TABLE IF EXISTS Cuenta_bancaria CASCADE;
 DROP TABLE IF EXISTS Medio_pago CASCADE;
 DROP TABLE IF EXISTS Tarjeta_debito CASCADE;
@@ -14,9 +15,6 @@ CREATE TABLE Trabajador(
 	cedula_trabajador BIGINT NOT NULL,
 	celular_trabajador VARCHAR(10) NOT NULL,
 	trabajador_email VARCHAR(50) NOT NULL,
-	trabajador_foto_perfil BYTEA NOT NULL,
-	trabajador_foto_documento_delantero BYTEA NOT NULL,
-	trabajador_foto_documento_trasero BYTEA NOT NULL,
 	trabajador_nombre VARCHAR(70) NOT NULL,
 	trabajador_contrasenia VARCHAR(50) NOT NULL,
 	CONSTRAINT pk_trabajador PRIMARY KEY (cedula_trabajador, celular_trabajador)

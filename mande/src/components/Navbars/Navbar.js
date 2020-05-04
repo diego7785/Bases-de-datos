@@ -40,6 +40,12 @@ function getNotification(props){
 
 }
 class NavbarC extends React.Component {
+
+  state={
+    notification: true,
+    idCard: this.props.location.state.idCard
+  }
+
   render() {
     return (
       <>
@@ -60,8 +66,8 @@ class NavbarC extends React.Component {
                   <Media className="align-items-center">
                     <span className="avatar avatar-sm rounded-circle">
                       <img
-                        alt="..."
-                        src={require("assets/img/theme/iconprofile.png")}
+                        alt="Profile pic"
+                        src={require("assets/img/userImages/profilepic-"+this.state.idCard+".png")}
                       />
                     </span>
                     <Media className="ml-2 d-none d-lg-block">

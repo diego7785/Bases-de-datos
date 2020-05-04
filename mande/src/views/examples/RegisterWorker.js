@@ -99,8 +99,7 @@ class RegisterWorker extends React.Component {
         comp = "";
       }
 
-      var address = tipoVia + " " + nombreVia + " # " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
-
+    var address = tipoVia + " " + nombreVia + " # " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
     var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
     this.setState({completeAddress: address});
     Geocode.fromAddress(toConvert).then(
@@ -139,22 +138,12 @@ class RegisterWorker extends React.Component {
         passwordR: this.state.passwordR,
         departamento: this.state.departamento,
         municipio: this.state.municipio,
-        tipoVia: this.state.tipoVia,
-        nombreVia: this.state.nombreVia,
-        viaSec: this.state.viaSec,
-        nombreViaSec: this.state.nombreViaSec,
-        compViaSec: this.state.compViaSec,
-        numeroCasa: this.state.numeroCasa,
-        comp: this.state.comp,
-        barrio: this.state.barrio,
+        completeAddress: this.state.completeAddress,
         latitude: this.state.latitude,
         length: this.state.length,
         tjobs: jobs,
       }
     })
-    console.log(this.state.name);
-    console.log(this.state.password);
-    console.log(this.state.passwordR);
   }
 
   render() {

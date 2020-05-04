@@ -11,6 +11,7 @@ import routes from "routes.js";
 
 
 class Worker extends React.Component {
+
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -65,9 +66,7 @@ class Worker extends React.Component {
           <Switch>
             {this.getRoutes(routes)}
             <Redirect from="*" to={{ pathname: "/worker/index", state: {path: 'worker'}}}/>
-
           </Switch>
-
           <Container fluid>
 
             <Footer />
