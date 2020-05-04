@@ -4,6 +4,7 @@ import Direccion from "components/Address/Direccion.js"
 import TextField from '@material-ui/core/TextField';
 import Geocode from "react-geocode";
 import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
+import axios from 'axios'
 
 // reactstrap components
 import {
@@ -44,6 +45,7 @@ class RegisterWorker extends React.Component {
     name: true,
     lastname: true,
     email: true,
+    celular: true,
     idCard: true,
     password: true,
     departamento: true,
@@ -99,7 +101,7 @@ class RegisterWorker extends React.Component {
       var address = tipoVia + " " + nombreVia + " # " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
 
     var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
-    this.setState({completeAddress: toConvert});
+    this.setState({completeAddress: address});
     Geocode.fromAddress(toConvert).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
@@ -118,11 +120,18 @@ class RegisterWorker extends React.Component {
   }
 
   onClickNext = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    var jobs=[];
+    axios.get(`http://localhost:5000/RegisterWorker1/${"labores"}/`).then(res => {
+                                                                                  for(var i=0; i<res.data.length; i++){
+                                                                                    jobs.push({code: res.data[i].labor_nombre, label: res.data[i].labor_nombre});
+                                                                                  }
+                                                                                })
     this.props.history.push({
       pathname: "/auth/RegisterWorker1/", state: {
         name: this.state.name,
         lastname: this.state.lastname,
+        celular: this.state.celular,
         email: this.state.email,
         idCard: this.state.idCard,
         password: this.state.password,
@@ -138,6 +147,7 @@ class RegisterWorker extends React.Component {
         barrio: this.state.barrio,
         latitude: this.state.latitude,
         length: this.state.length,
+        tjobs: jobs,
       }
     })
   }

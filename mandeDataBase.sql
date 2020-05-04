@@ -1,9 +1,22 @@
+DROP TABLE IF EXISTS Trabajador CASCADE;
+DROP TABLE IF EXISTS Usuario CASCADE;
+DROP TABLE IF EXISTS Cuenta_bancaria CASCADE;
+DROP TABLE IF EXISTS Medio_pago CASCADE;
+DROP TABLE IF EXISTS Tarjeta_debito CASCADE;
+DROP TABLE IF EXISTS Tarjeta_credito CASCADE;
+DROP TABLE IF EXISTS Realiza CASCADE;
+DROP TABLE IF EXISTS Direccion CASCADE;
+DROP TABLE IF EXISTS Servicio CASCADE;
+DROP TABLE IF EXISTS Paga CASCADE;
+
+
 CREATE TABLE Trabajador(
 	cedula_trabajador BIGINT NOT NULL,
 	celular_trabajador VARCHAR(10) NOT NULL,
 	trabajador_email VARCHAR(50) NOT NULL,
 	trabajador_foto_perfil BYTEA NOT NULL,
-	trabajador_foto_documento BYTEA NOT NULL,
+	trabajador_foto_documento_delantero BYTEA NOT NULL,
+	trabajador_foto_documento_trasero BYTEA NOT NULL,
 	trabajador_nombre VARCHAR(70) NOT NULL,
 	trabajador_contrasenia VARCHAR(50) NOT NULL,
 	CONSTRAINT pk_trabajador PRIMARY KEY (cedula_trabajador, celular_trabajador)
@@ -56,7 +69,7 @@ CREATE TABLE Trabajador(
  );
 
  CREATE TABLE Labor(
-	 id_labor INT NOT NULL,
+	 id_labor SERIAL NOT NULL,
 	 labor_nombre VARCHAR(50) NOT NULL,
 	 CONSTRAINT pk_labor PRIMARY KEY (id_labor)
  );
@@ -82,7 +95,6 @@ CREATE TABLE Trabajador(
 	 direccion_latitud NUMERIC(9,6) NOT NULL,
 	 direccion_longitud NUMERIC(9,6) NOT NULL,
 	 direccion_domicilio VARCHAR(40) NOT NULL,
- 	 direccion_codigo_postal VARCHAR(10) NOT NULL,
 	 direccion_ciudad VARCHAR(40) NOT NULL,
 	 direccion_departamento VARCHAR(40) NOT NULL,
 	 CONSTRAINT pk_direccion PRIMARY KEY (id_direccion),
@@ -115,3 +127,10 @@ CREATE TABLE Trabajador(
 	 CONSTRAINT fk_servicio FOREIGN KEY (id_servicio) REFERENCES Servicio(id_servicio) ON UPDATE CASCADE ON DELETE RESTRICT,
 	 CONSTRAINT fk_medio_pago FOREIGN KEY (numero_tarjeta_medio_pago) REFERENCES Medio_pago(numero_tarjeta_medio_pago) ON UPDATE CASCADE ON DELETE RESTRICT
  );
+
+
+INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),
+																			('Paseador de perros'),
+																			('Profesor de matemáticas'),
+																			('Plomero'),
+																			('Electricista');

@@ -26,6 +26,20 @@ var createWorker = (req, res, db) => {
   })
 }
 
+var getPreDefinedJobs = (req,res,db) =>{
+  if(req.params.labores === 'labores'){
+    db.many('SELECT labor_nombre FROM Labor')
+    .then(function (data) {
+      res.send(JSON.stringify(data))
+    })
+    .catch(function (error) {
+      console.log(`ERROR:`, error)
+      res.send(JSON.stringify("Error leyendo las labores prestablecidas"))
+    })
+  }
+}
+
 module.exports = {
   createWorker,
+  getPreDefinedJobs,
 }

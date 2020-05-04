@@ -100,6 +100,7 @@ class RegisterWorker1 extends React.Component {
   onHandleNext = () => {
     const cedula = this.props.location.state.idCard;
     const email = this.props.location.state.email;
+    const celular = this.props.location.state.celular;
     const estado = true;
     const profilepic =  this.state.profilepic;
     const front = this.state.front;
@@ -125,9 +126,10 @@ class RegisterWorker1 extends React.Component {
     console.log(back);
     console.log(profilepic);
 
-    axios.post(`http://localhost:5000/RegisterWorker/${cedula}/${email}/${estado}/${profilepic}/${front}/${back}/${name}/${address}/${password}/${pais}/${depto}/${city}/${postalcode}`).then(res => {
+    axios.post(`http://localhost:5000/RegisterWorker1/${front}`).then(res => console.log(res));
+    /*axios.post(`http://localhost:5000/RegisterWorker/${cedula}/${celular}/${email}/${profilepic}/${front}/${back}/${name}/${password}`).then(res => {
       console.log(res);
-    })
+    })*/
   }
 
   handleFileChange = (event, id) => {
@@ -145,14 +147,17 @@ class RegisterWorker1 extends React.Component {
             </div>
             <Form role="form">
 
-            <Jobs state={this.state}  onHandleChange={this.onHandleChange}/>
+            <Jobs state={this.state} jobs={this.props.location.state.tjobs} onHandleChange={this.onHandleChange}/>
 
             <label className="text-center"> No dudamos de ti, sin embargo debes enviarnos una foto de tu documento de identidad</label>
             <FormGroup>
               <label>
                 Parte delantera:
               </label>
-              <input type="file" accept=".png, .jpg, .jpeg" onChange={e => this.handleFileChange(e,'front')}/>
+              <form id="frontUploader" enctype="multipart/form-data" action="http://localhost:5000/RegisterWorker1/front" method="post">
+                <input type="file" accept=".png, .jpg, .jpeg"  onChange={e => this.handleFileChange(e,'front')}/>
+                <input type="submit" name="submit" id="btnSubmit" value="Cargar imagen" />
+              </form>
             </FormGroup>
             <FormGroup>
               <label>
