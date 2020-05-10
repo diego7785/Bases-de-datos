@@ -1,6 +1,7 @@
 import React from "react";
 import Button from '@material-ui/core/Button';
 
+
 // reactstrap components
 import {
     Container,
@@ -21,8 +22,7 @@ class SearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeNav: 1,
-            chartExample1Data: "data1",
+            advancedSearch: false,
             search: ''
         };
     }
@@ -30,8 +30,12 @@ class SearchBar extends React.Component {
     buscar = (e) => {
         //this.state({username: e.target.value});
         e.preventDefault();
-        this.setState({search: e.target.value})
+        this.setState({ search: e.target.value })
         console.log(e.target.value);
+    }
+
+    openAdvancedSearch = () => {
+        this.setState({advancedSearch: !this.state.advancedSearch});
     }
 
     render() {
@@ -52,30 +56,22 @@ class SearchBar extends React.Component {
                                         <Input placeholder="Busca trabajadores" name="busca" type="text" style={{ width: 600 }} ref={this.buscaRef} />
                                     </InputGroup>
                                 </FormGroup>
-                                <div style = {{marginTop: 15}}>
-                                    <AdvancedSearchBar />
-                                </div>
-                                
+                                {this.state.advancedSearch ?
+                                <div style={{ marginTop: 15 }}><AdvancedSearchBar/></div> :
+                                <div style={{ marginTop: 15 }}> </div>}
                             </Form>
-                            
-                            <Col style ={{marginTop: 0}}>
+                            <Col style={{ marginTop: 0 }}>
                                 <Button type="submit" variant="contained" color="primary" style={{ marginLeft: 0 }} >
                                     Buscar
                             </Button>
-                                <Button variant="contained" color="secondary" style={{ marginLeft: 20 }}>
+                                <Button variant="contained" color="secondary" style={{ marginLeft: 20 }} onClick = {this.openAdvancedSearch} >
                                     Busqueda avanzada
                             </Button>
                             </Col>
                         </Col>
-                        
                     </Row>
-                    <Row style={{ marginTop: 40 }}>
-                        <Col xl="7" md="6">
-                        </Col>
-                    </Row>
-                    
                 </Container>
-                
+
             </>
         );
     }
