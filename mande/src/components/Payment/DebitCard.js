@@ -56,15 +56,6 @@ const bancos = [{ code: "Banco Agrario de Colombia", label: "Banco Agrario de Co
 { code: "Scotiabank Colpatria", label: "Scotiabank Colpatria" },
 ];
 
-function isSet(element) {
-  if (typeof element != 'undefined') {
-    return element;
-  }
-  else {
-    return null;
-  }
-}
-
 export default function CreditCard(props) {
   const classes = useStyles();
   const [element1, setElement1] = React.useState('');
@@ -93,7 +84,7 @@ export default function CreditCard(props) {
             />
           )}
           value={element1.getOptionLabel}
-          onChange={e => { props.functionSetState(e, 'bancoDebito'); setElement1(e.target.value) }} 
+          onChange={e => { props.functionSetState(e, 'bancoDebito'); setElement1(e.target.value) }}
         />
       </FormGroup>
 
@@ -127,4 +118,3 @@ export default function CreditCard(props) {
     </>
   );
 }
-

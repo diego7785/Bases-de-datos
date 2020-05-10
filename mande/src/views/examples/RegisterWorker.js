@@ -99,7 +99,7 @@ class RegisterWorker extends React.Component {
         comp = "";
       }
 
-    var address = tipoVia + " " + nombreVia + " # " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
+    var address = tipoVia + " " + nombreVia + " No " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
     var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
     this.setState({completeAddress: address});
     Geocode.fromAddress(toConvert).then(

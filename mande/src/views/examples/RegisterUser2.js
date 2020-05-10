@@ -1,18 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Pay from 'components/Payment/Pay';
-import DebitCard from 'components/Payment/DebitCard';
-import CreditCard from 'components/Payment/CreditCard';
 // reactstrap components
 import {
     Card,
     CardBody,
-    FormGroup,
     Form,
-    Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
     Row,
     Col,
     NavLink

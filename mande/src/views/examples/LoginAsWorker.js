@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // reactstrap components
 import {
@@ -28,13 +29,24 @@ class LoginAsWorker extends React.Component {
     this.setState({ [id]: event.target.value})
   }
 
-  onHandleNext = (e) =>{
+  onHandleNext = async (e) =>{
     e.preventDefault();
-    this.props.history.push({
-      pathname: "/worker/", state: {
-      idCard: this.state.idCard
-      }
-    })
+    const idCard = parseInt(this.state.idCard);
+    const pass = this.state.pass;
+
+    var res = await axios.get(`http://localhost:5000/LoginAsWorker/${idCard}/${pass}/`);
+    if(res.data){
+      this.props.history.push({
+        pathname: "/worker/", state: {
+        idCard: this.state.idCard
+        }
+      })
+    } else {
+      alert('Credenciales incorrectas');
+    }
+
+
+
 }
 
   render() {

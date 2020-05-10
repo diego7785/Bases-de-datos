@@ -60,13 +60,11 @@ const tipoCuenta = [{code: "Cuenta de ahorros", label: "Cuenta de ahorros"},
 
 export default function CuentaBancaria(props){
 const classes = useStyles();
-const [element1, setElement1] = React.useState('');
-const [element2, setElement2] = React.useState('');
   return(
     <>
     <FormGroup>
     <Autocomplete
-      id="jobs-selection"
+      id="bank-selection"
       style={{ width: 440 }}
       options={bancos}
       classes={{
@@ -84,10 +82,13 @@ const [element2, setElement2] = React.useState('');
           {...params}
           label="Escoja un Banco"
           variant="outlined"
+          inputProps={{
+            ...params.inputProps,
+            autoComplete: 'new-password', // disable autocomplete and autofill
+          }}
         />
     )}
-    value={element1.getOptionLabel}
-    onChange={e => { props.functionSetState(e, 'bancoCuenta'); setElement1(e.target.value) }} 
+    onChange={e =>  props.functionSetState(e, 'bancoCuenta')  }
     />
     </FormGroup>
     <FormGroup>
@@ -112,8 +113,7 @@ const [element2, setElement2] = React.useState('');
           variant="outlined"
         />
     )}
-    value={element2.getOptionLabel}
-    onChange={e => { props.functionSetState(e, 'tipoCuenta'); setElement2(e.target.value) }} 
+    onChange={e => props.functionSetState(e, 'tipoCuenta')  }
     />
     </FormGroup>
     <FormGroup>

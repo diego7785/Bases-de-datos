@@ -11,6 +11,7 @@ import {
   Button
 } from "reactstrap";
 
+
 class RegisterWorker2 extends React.Component{
 
 state={
@@ -33,39 +34,56 @@ selectCuenta = (event, id) => {
   console.log(this.state)
 }
 
-FinalRegister = () => {
+FinalRegister = async () => {
+  var exito = 0;
   const idCard = this.props.location.state.idCard;
   const phone = this.props.location.state.celular;
   const email = this.props.location.state.email;
   const name = this.props.location.state.name;
+  const lastname = this.props.location.state.lastname;
   const password = this.props.location.state.password;
 
-  axios.post(`http://localhost:5000/RegisterWorker2/${idCard}/${phone}/${email}/${name}/${password}`)
-  .then(res => console.log(res))
+  var res = await axios.post(`http://localhost:5000/RegisterWorker2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
+  console.log(res);
+  exito=exito+1;
 
   const numberAccount = this.state.numeroCuenta;
   const bank = this.state.bancoCuenta;
   const type = this.state.tipoCuenta;
 
-  axios.post(`http://localhost:5000/RegisterWorker2/${numberAccount}/${bank}/${type}/${idCard}/${phone}`)
-  .then(res => console.log(res))
-
-  const idJob = this.props.location.state.job;
-  const price = this.props.location.state.price;
-  const description = this.props.locaton.state.description;
-  const status = true;
-
-  axios.post(`http://localhost:5000/RegisterWorker2/${idJob}/${idCard}/${phone}/${price}/${description}/${status}`)
-  .then(res => console.log(res))
+  res = await axios.post(`http://localhost:5000/RegisterWorker2/${numberAccount}/${bank}/${type}/${idCard}/${phone}`)
+  console.log(res);
+  exito=exito+1;
 
   const lat = this.props.location.state.latitude;
   const lng = this.props.location.state.length;
   const address = this.props.location.state.completeAddress;
   const city = this.props.location.state.city;
-  const dpto = this.props.location.state.depto;
+  const depto = this.props.location.state.depto;
 
-  axios.post(`http://localhost:5000/RegisterWorker2/${idCard}/${phone}/${lat}/${lng}/${address}/${city}/${dpto}`)
-  .then(res => console.log(res))
+  res = await axios.post(`http://localhost:5000/RegisterWorker2_2/${idCard}/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
+  console.log(res);
+  exito=exito+1;
+
+  const idJob = this.props.location.state.job;
+  const price = this.props.location.state.price;
+  const description = this.props.location.state.description;
+  const status = true;
+
+  res = await axios.post(`http://localhost:5000/RegisterWorker2_1/${idJob}/${idCard}/${phone}/${price}/${description}/${status}`)
+  console.log(res);
+  exito=exito+1;
+
+  if(exito === 4){
+    alert('Registro exitoso');
+    this.props.history.push({pathname: "/auth/"})
+  }else{
+    res = await axios.post(`http://localhost:5000/delete/${idCard}`)
+
+    alert('No se ha podido realizar el registro, por favor intente de nuevo');
+
+  }
+
 }
 
 render(){
