@@ -58,7 +58,6 @@ const bancos = [ {code:"Banco Agrario de Colombia", label:"Banco Agrario de Colo
 
 export default function CreditCard(props){
 const classes = useStyles();
-const [element1, setElement1] = React.useState('');
   return(
     <>
     <FormGroup>
@@ -87,8 +86,7 @@ const [element1, setElement1] = React.useState('');
           }}
         />
     )}
-    value={element1.getOptionLabel}
-    onChange={e => {props.functionSetStateI(e, 'bancoCredito'); setElement1(e.target.value)}}
+    onChange={e => {props.functionSetStateI(e, 'bancoCredito')}}
     />
     </FormGroup>
 

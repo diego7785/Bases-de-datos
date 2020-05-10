@@ -37,7 +37,8 @@ class Pay extends React.Component {
     else {
       this.setState({ [id]: event.target.value })
     }
-    /*console.log(this.state.bancoDebito);
+    /*
+    console.log(this.state.bancoDebito);
     console.log(this.state.numeroTarjetaDebito);
     console.log(this.state.numeroCuentaDebito);*/
   }
@@ -49,7 +50,8 @@ class Pay extends React.Component {
     else {
       this.setState({ [id]: event.target.value })
     }
-    /*console.log(this.state.bancoCredito);
+    /*
+    console.log(this.state.bancoCredito);
     console.log(this.state.numeroTarjetaCredito);
     console.log(this.state.cvcCredito);
     console.log(this.state.mesVencimientoCredito);
