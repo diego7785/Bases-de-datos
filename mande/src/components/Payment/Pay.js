@@ -1,7 +1,6 @@
 import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import DebitCard from './DebitCard';
 import CreditCard from './CreditCard';
 
@@ -12,28 +11,10 @@ import {
 const medioPago = [{ code: "Tarjeta débito", label: "Tarjeta débito" },
 { code: "Tarjeta de crédito", label: "Tarjeta de crédito" },]
 
-const useStyles = makeStyles(theme => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-  marginN: {
-    marginTop: theme.spacing(-1.6),
-  },
-  fab: {
-    margin: theme.spacing(2),
-  },
-  absolute: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(3),
-  },
-}));
-
 class Pay extends React.Component {
 
   state = {
     formaPago: '',
-    bancoDebito: '',
     numeroTarjetaDebito: '',
     numeroCuentaDebito: '',
     bancoCredito: '',
@@ -56,9 +37,6 @@ class Pay extends React.Component {
     else {
       this.setState({ [id]: event.target.value })
     }
-    var bancoDebito = this.state.bancoDebito;
-    var numeroTarjetaDebito = this.state.numeroTarjetaDebito;
-    var numeroCuentaDebito = this.state.numeroCuentaDebito;
     /*console.log(this.state.bancoDebito);
     console.log(this.state.numeroTarjetaDebito);
     console.log(this.state.numeroCuentaDebito);*/
@@ -71,12 +49,6 @@ class Pay extends React.Component {
     else {
       this.setState({ [id]: event.target.value })
     }
-    var bancoCredito = this.state.bancoCredito;
-    var numeroTarjetaCredito = this.state.numeroTarjetaCredito;
-    var cvcCredito = this.state.cvcCredito;
-    var mesVencimientoCredito = this.state.mesVencimientoCredito;
-    var anioVencimientoCredito = this.state.anioVencimientoCredito;
-    var cedulaPropietarioCredito = this.state.cedulaPropietarioCredito;
     /*console.log(this.state.bancoCredito);
     console.log(this.state.numeroTarjetaCredito);
     console.log(this.state.cvcCredito);
@@ -132,4 +104,3 @@ class Pay extends React.Component {
   }
 }
 export default Pay;
-

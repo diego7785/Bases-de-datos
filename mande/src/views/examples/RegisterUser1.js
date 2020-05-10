@@ -1,8 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Pay from 'components/Payment/Pay';
-import DebitCard from 'components/Payment/DebitCard';
-import CreditCard from 'components/Payment/CreditCard';
 // reactstrap components
 import {
     Card,
@@ -10,20 +7,12 @@ import {
     FormGroup,
     Form,
     Button,
-    Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
     Row,
     Col,
     NavLink
 } from "reactstrap";
 
 class RegisterUser1 extends React.Component {
-    
-constructor(props){
-      super(props);
-}
 
 state={
     bill: true,

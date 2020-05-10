@@ -41,12 +41,16 @@ app.post(`/RegisterWorker1/images`, (req, res) => {
     })
 });
 
-app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:password`, (req,res) => worker.createWorker(req,res, db))
+app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) => worker.createWorker(req,res, db))
 
 app.post(`/RegisterWorker2/:numberAccount/:bank/:type/:idCard/:phone`, (req,res) => worker.createBankAccount(req,res,db))
 
-app.post(`/RegisterWorker2/:idJob/:idCard/:phone/:price/:description/:status`, (req,res) => worker.createRealiza(req,res,db))
+app.post(`/RegisterWorker2_1/:idJob/:idCard/:phone/:price/:description/:status`, (req,res) => worker.createRealiza(req,res,db))
 
-app.post(`/RegisterWorker2/:idCard/:phone/:lat/:lng/:address/:city/:dpto`, (req,res) => worker.createAddress(req,res,db))
+app.post(`/RegisterWorker2_2/:idCard/:phone/:lat/:lng/:address/:city/:depto`, (req,res) => worker.createAddress(req,res,db))
+
+app.post(`/delete/:idCard`, (req, res) => worker.deleteAll(req,res,db))
+
+app.get(`/LoginAsWorker/:idCard/:pass`, (req,res) => worker.login(req,res,db))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))

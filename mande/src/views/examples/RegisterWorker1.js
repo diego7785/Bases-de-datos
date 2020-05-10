@@ -2,7 +2,6 @@ import React from "react";
 import Jobs from "components/Jobs/Jobs.js"
 import axios from 'axios'
 
-
 // reactstrap components
 import {
   Card,
@@ -42,7 +41,8 @@ class RegisterWorker1 extends React.Component {
        profilepic :  this.state.profilepic,
        front : this.state.front,
        back :  this.state.back,
-       name : this.props.location.state.name + ' ' + this.props.location.state.lastname,
+       name : this.props.location.state.name,
+       lastname: this.props.location.state.lastname,
        completeAddress : this.props.location.state.completeAddress,
        password : this.props.location.state.password,
        passwordR : this.props.location.state.passwordR,
@@ -79,7 +79,7 @@ onClickHandler = () => {
     data.append('file', this.state.front)
     axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=front", data, {})
       .then(res => {
-        if(res.statusText == "OK"){
+        if(res.statusText === "OK"){
           cont=1;
         }
       })
@@ -87,7 +87,7 @@ onClickHandler = () => {
     data.append('file', this.state.back)
     axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=back", data, {})
       .then(res => {
-        if(res.statusText == "OK"){
+        if(res.statusText === "OK"){
           cont++;
         }
       })
@@ -95,7 +95,7 @@ onClickHandler = () => {
     data.append('file', this.state.profilepic)
     axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=profilepic", data, {})
       .then(res => {
-        if(res.statusText == "OK"){
+        if(res.statusText === "OK"){
           cont++;
           if(cont === 3){
             alert('Imágenes cargadas con éxito');
