@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS Realiza CASCADE;
 DROP TABLE IF EXISTS Direccion CASCADE;
 DROP TABLE IF EXISTS Servicio CASCADE;
 DROP TABLE IF EXISTS Paga CASCADE;
+CREATE EXTENSION IF NOT EXISTS postgis;
 
 
 CREATE TABLE Trabajador(
@@ -88,11 +89,12 @@ CREATE TABLE Trabajador(
 	 celular_usuario VARCHAR(10),
 	 cedula_trabajador VARCHAR(10),
 	 celular_trabajador VARCHAR(10),
-	 direccion_latitud VARCHAR(20) NOT NULL,
- 	 direccion_longitud VARCHAR(20) NOT NULL,
+	 direccion_latitud DECIMAL(7,5) NOT NULL,
+ 	 direccion_longitud DECIMAL(7,5) NOT NULL,
 	 direccion_domicilio VARCHAR(40) NOT NULL,
 	 direccion_ciudad VARCHAR(40) NOT NULL,
 	 direccion_departamento VARCHAR(40) NOT NULL,
+	 direccion_ubicacion GEOGRAPHY(POINT,4686),
 	 CONSTRAINT pk_direccion PRIMARY KEY (id_direccion),
 	 CONSTRAINT fk_trabajador FOREIGN KEY (cedula_trabajador, celular_trabajador) REFERENCES Trabajador(cedula_trabajador, celular_trabajador) ON UPDATE CASCADE ON DELETE RESTRICT,
 	 CONSTRAINT fk_usuario FOREIGN KEY (cedula_usuario, celular_usuario) REFERENCES Usuario(cedula_usuario, celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT
@@ -124,9 +126,34 @@ CREATE TABLE Trabajador(
 	 CONSTRAINT fk_medio_pago FOREIGN KEY (numero_tarjeta_medio_pago) REFERENCES Medio_pago(numero_tarjeta_medio_pago) ON UPDATE CASCADE ON DELETE RESTRICT
  );
 
+ --TRIGGER
+
+CREATE FUNCTION add_geopint() RETURNS TRIGGER AS $$
+DECLARE
+BEGIN
+    NEW.direccion_ubicacion := ST_SetSRID(ST_MakePoint(NEW.direccion_longitud,NEW.direccion_latitud),4686);
+    RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_add_geopint BEFORE INSERT ON Direccion
+FOR EACH ROW
+EXECUTE PROCEDURE add_geopint();
+
 
 INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),
 																			('Paseador de perros'),
 																			('Profesor de matemáticas'),
 																			('Plomero'),
 																			('Electricista');
+
+--QUERY PARA SELECCIONAAR DISTANCIAS
+
+/*
+SELECT D.cedula_trabajador, ST_Distance(D.direccion_ubicacion, PL.direccion_ubicacion,true) AS distancia
+FROM Direccion D,
+LATERAL (
+    SELECT cedula_trabajador, direccion_ubicacion FROM Direccion WHERE id_direccion = 1
+) AS PL
+WHERE D.id_direccion = 2;
+*/
