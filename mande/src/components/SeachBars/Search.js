@@ -63,7 +63,7 @@ class SearchBar extends React.Component {
                                 <FormGroup className="mb-0">
                                     <Autocomplete
                                         id="jobs-selection"
-                                        style={{ minWidth: 200, width: 600}}
+                                        style={{ minWidth: 200, width: 600, borderColor: 'white', textEmphasisColor: 'white '}}
                                         options={labores}
                                         autoHighlight
                                         getOptionLabel={(option) => option.label}
@@ -77,6 +77,7 @@ class SearchBar extends React.Component {
                                                 {...params}
                                                 label="Escoja una labor"
                                                 variant="outlined"
+
                                                 inputProps={{
                                                     ...params.inputProps,
                                                     autoComplete: 'new-password', // disable autocomplete and autofill
@@ -89,7 +90,7 @@ class SearchBar extends React.Component {
                                     <div style={{ marginTop: 15 }}><AdvancedSearchBar /></div> :
                                     <div style={{ marginTop: 15 }}> </div>}
                             </Form>
-                            <Col style={{ marginTop: 20 }}>
+                            <Col style={{ marginTop: 10 }}>
                                 <Button type="submit" variant="contained" color="primary" style={{ marginLeft: 0 }} >
                                     Buscar
                             </Button>

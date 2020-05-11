@@ -17,10 +17,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Rating from '@material-ui/lab/Rating';
 import { CardBody, Col, Row } from "reactstrap";
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 1200,
+    minWidth: 300,
+    width: 1000,
     marginTop: 30,
     marginLeft: 30,
     marginRight: 30,
@@ -95,6 +98,9 @@ const ResultCard = (props) => {
             </Col>
             <Col>
               <Typography>Precio {props.tipoCobro}: ${props.precio}</Typography>
+            </Col>
+            <Col>
+              <Button variant="contained" color="primary">Pedir Servicio</Button>
             </Col>
           </Row>
         </CardContent>

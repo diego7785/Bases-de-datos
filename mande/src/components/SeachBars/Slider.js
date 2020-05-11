@@ -18,7 +18,7 @@ function ValueLabelComponent(props) {
   const { children, open, value } = props;
 
   return (
-    <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
+    <Tooltip open={open} enterTouchDelay={0} placement="bottom" title={value}>
       {children}
     </Tooltip>
   );
@@ -32,7 +32,7 @@ ValueLabelComponent.propTypes = {
 
 
 function valuetext(value) {
-  return `${value}°C`;
+  return `${value}`;
 }
 
  const RangeSlider = (props) => {
@@ -47,7 +47,7 @@ function valuetext(value) {
 
   return (
     <div className={classes.root}>
-      <Typography id="range-slider" gutterBottom>
+      <Typography id="range-slider" gutterBottom style = {{color: 'white'}}>
         Rango de precio: 
       </Typography>
       <Slider
@@ -59,7 +59,7 @@ function valuetext(value) {
         valueLabelDisplay="on"
         aria-labelledby="discrete-slider-always"
         getAriaValueText={valuetext}
-        style = {{marginTop: 20}}
+        style = {{marginTop: 9}}
 
       />
     </div>

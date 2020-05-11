@@ -60,7 +60,7 @@ class AdvancedSearchBar extends React.Component {
             <RangeSlider state = {this.state} onChange = {this.handleChange}/>
           </Col>
         <Col>
-          <FormGroup className="mb-0" style={{ marginTop: 20 }}>
+          <FormGroup className="mb-0" style={{ marginTop: -20 }}>
             <Autocomplete
               id="chargeType"
               style={{ width: 440 }}
