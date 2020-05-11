@@ -1,8 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 // reactstrap components
 import {
   DropdownMenu,
@@ -38,23 +35,65 @@ function isWorker(state){
     }
   }
 
-
 function getNotification(state){
   console.log(state)
   //Se adquiere algo desde la base de datos para verificar si se ha solicitado un servicio para este trabajador y se retorna un numero
   if(state.path === "/worker"){
     const status = state.status;
-    if(parseInt(status) === 1){
-      return (
-      <Badge badgeContent={0} color="secondary">
-        <NotificationsIcon />
-      </Badge>
+    if(parseInt(status) === 0){
+      return(
+        <Nav className="align-items-center d-none d-md-flex" navbar>
+          <UncontrolledDropdown nav>
+            <DropdownToggle className="pr-0" nav>
+              <Media className="align-items-center">
+                <span className="avatar avatar-sm rounded-circle">
+                  <img
+                    alt="1 Notificaciones"
+                    src={require("assets/img/icons/common/not.png")}
+                  />
+                </span>
+                <Media className="ml-2 d-none d-lg-block">
+                  <span className="mb-0 text-sm font-weight-bold">
+                    Tienes 1 Notificacion
+                  </span>
+                </Media>
+              </Media>
+            </DropdownToggle>
+            <DropdownMenu className="dropdown-menu-arrow" right>
+              <DropdownItem className="noti-title" header tag="div">
+                <h6 className="text-overflow m-0">Has sido escogido para blaaaa</h6>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        </Nav>
+
     );
   } else{
     return (
-    <Badge badgeContent={1} color="secondary">
-      <NotificationsIcon />
-    </Badge>
+      <Nav className="align-items-center d-none d-md-flex" navbar>
+        <UncontrolledDropdown nav>
+          <DropdownToggle className="pr-0" nav>
+            <Media className="align-items-center">
+              <span className="avatar avatar-sm rounded-circle">
+                <img
+                  alt="0 Notificaciones"
+                  src={require("assets/img/icons/common/no_not.png")}
+                />
+              </span>
+              <Media className="ml-2 d-none d-lg-block">
+                <span className="mb-0 text-sm font-weight-bold">
+                  Tienes 0 Notificaciones
+                </span>
+              </Media>
+            </Media>
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu-arrow" right>
+            <DropdownItem className="noti-title" header tag="div">
+              <h6 className="text-overflow m-0">No has sido escogido para labores</h6>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      </Nav>
   );
   }
 
@@ -77,9 +116,7 @@ class NavbarC extends React.Component {
       <>
         <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
           <Container fluid>
-              <IconButton className="align-items-right d-none d-md-flex" aria-label="show new notifications" color="secondaryy">
                 {getNotification(this.state)}
-            </IconButton>
             <Link
               className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
               to = {this.props.match.path + "/index"}
@@ -107,7 +144,7 @@ class NavbarC extends React.Component {
                   <DropdownItem className="noti-title" header tag="div">
                     <h6 className="text-overflow m-0">¡Hey!</h6>
                   </DropdownItem>
-                  <DropdownItem to={this.props.match.path+"/user-profile"} tag={Link}>
+                  <DropdownItem to={{pathname: this.props.match.path+"/user-profile", state: this.props.location.state}} tag={Link}>
                     <i className="ni ni-single-02" />
                     <span>Mi perfil</span>
                   </DropdownItem>

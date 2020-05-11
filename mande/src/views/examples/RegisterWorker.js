@@ -4,11 +4,11 @@ import Direccion from "components/Address/Direccion.js"
 import TextField from '@material-ui/core/TextField';
 import Geocode from "react-geocode";
 import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
-import axios from 'axios'
+import axios from 'axios';
+import Button from '@material-ui/core/Button';
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardBody,
   FormGroup,
@@ -21,6 +21,8 @@ import {
   Col,
   NavLink
 } from "reactstrap";
+
+
 
 var retornarDireccion = (state) => {
   if (state.completeAddress === true) {
@@ -63,6 +65,7 @@ class RegisterWorker extends React.Component {
     latitude: true,
     length: true,
     completeAddress: true,
+    open: false,
   }
 
   //Setea el state, correspondiente al id, trigger sets the variables for the map
@@ -126,7 +129,10 @@ class RegisterWorker extends React.Component {
                                                                                   for(var i=0; i<res.data.length; i++){
                                                                                     jobs.push({code: res.data[i].labor_nombre, label: res.data[i].labor_nombre});
                                                                                   }
-                                                                                })
+                                                                                });
+    if(this.state.passwordR !== this.state.password){
+      alert('Las contraseñas no coinciden');
+    } else{
     this.props.history.push({
       pathname: "/auth/RegisterWorker1/", state: {
         name: this.state.name,
@@ -144,6 +150,7 @@ class RegisterWorker extends React.Component {
         tjobs: jobs,
       }
     })
+  }
   }
 
   render() {
@@ -232,9 +239,9 @@ class RegisterWorker extends React.Component {
               {retornarDireccion(this.state)}
 
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="button" onClick={this.onClickNext}>
+                <Button className="mt-4" variant="contained" color="primary" onClick={this.onClickNext}>
                   Siguiente
-                  </Button>
+                </Button>
               </div>
               </Form>
             </CardBody>
