@@ -54,13 +54,12 @@ var createBankAccount = (req,res,db)=>{
 var createRealiza = (req,res,db)=>{
   const idJob = req.params.idJob;
   const idCard = req.params.idCard;
-  const phone = req.params.phone;
   const price = req.params.price;
   const description = req.params.description;
   const status = 1;
 
-  db.none(`INSERT INTO Realiza VALUES($1,$2,$3,$4,$5,$6)`,
-  [escape(idJob), escape(idCard), escape(phone), escape(price),
+  db.none(`INSERT INTO Realiza VALUES($1,$2,$3,$4,$5)`,
+  [escape(idJob), escape(idCard), escape(price),
     escape(description), escape(status)])
   .then((data) => {
     res.send(JSON.stringify(`Labor a realizar registrada éxitosamente`))
@@ -75,15 +74,14 @@ var createRealiza = (req,res,db)=>{
 
 var createAddress = (req,res,db)=>{
   const idCard = req.params.idCard;
-  const phone = req.params.phone;
   const lat = req.params.lat;
   const lng = req.params.lng;
   const address = req.params.address;
   const city = req.params.city;
   const depto = req.params.depto;
 
-  db.none(`INSERT INTO Direccion(cedula_trabajador, celular_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES($1,$2,$3,$4,$5,$6,$7)`,
-  [escape(idCard), escape(phone), escape(lat), escape(lng),
+  db.none(`INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES($1,$2,$3,$4,$5,$6)`,
+  [escape(idCard), escape(lat), escape(lng),
     escape(address), escape(city), escape(depto)])
   .then((data) => {
     res.send(JSON.stringify(`Dirección registrada éxitosamente`))
