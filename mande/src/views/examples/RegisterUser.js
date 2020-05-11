@@ -97,10 +97,9 @@ class RegisterUser extends React.Component {
       comp = "";
     }
 
-    var address = tipoVia +" "+ nombreVia +" # "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
-
+    var address = tipoVia +" "+ nombreVia +" No "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
     var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
-    this.setState({completeAddress: toConvert});
+    this.setState({completeAddress: address});
     Geocode.fromAddress(toConvert).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
@@ -114,7 +113,10 @@ class RegisterUser extends React.Component {
   }
   }
   onClickNext = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if(this.state.passwordR !== this.state.password){
+      alert('Las contraseñas no coinciden');
+    } else{
     this.props.history.push({
       pathname: "/auth/RegisterUser1/", state: {
         name: this.state.name,
@@ -137,6 +139,7 @@ class RegisterUser extends React.Component {
         length: this.state.length,
       }
     })
+  }
     console.log(this.state.name);
     console.log(this.state.password);
     console.log(this.state.passwordR);

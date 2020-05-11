@@ -65,6 +65,7 @@ class Sidebar extends React.Component {
   state = {
     collapseOpen: false,
     idCard: this.props.location.state.idCard,
+    path: this.props.match.path,
   };
 
   conostructor(props){
@@ -185,7 +186,7 @@ class Sidebar extends React.Component {
                   <span className="avatar avatar-sm rounded-circle">
                     <img
                       alt="..."
-                      src={require("assets/img/userImages/profilepic-"+this.state.idCard+".png")}
+                      src={require("assets/img/userImages"+this.state.path+"/profilepic-"+this.state.idCard+".png")}
                     />
                   </span>
                 </Media>
