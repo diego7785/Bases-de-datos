@@ -32,7 +32,19 @@ class Profile extends React.Component {
     description: true,
     type: true, //type of payment
     price: true,
-    idCard: this.props.location.state.idCard
+    idCard: this.props.location.state.state.workerInfo.cedula_trabajador,
+    name: this.props.location.state.state.workerInfo.trabajador_nombre,
+    lastname: this.props.location.state.state.workerInfo.trabajador_apellido,
+    email: this.props.location.state.state.workerInfo.trabajador_email,
+    address: this.props.location.state.state.addressInfo.direccion_domicilio,
+    city: this.props.location.state.state.addressInfo.direccion_ciudad,
+    depto: this.props.location.state.state.addressInfo.direccion_departamento,
+    labores: this.props.location.state.state.realizaInfo.labor_nombre,
+  }
+
+  constructor(props){
+    super(props);
+    console.log(props)
   }
 
   changeState = (id, event) => {
@@ -42,7 +54,7 @@ class Profile extends React.Component {
   render() {
     return (
       <>
-        <UserHeader />
+        <UserHeader state={this.props.location.state.state}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
@@ -81,11 +93,11 @@ class Profile extends React.Component {
                   </Row>
                   <div className="text-center">
                     <h3>
-                      Diego Bonilla
+                      {this.state.name}
                     </h3>
                     <div className="h5 font-weight-300">
                       <i className="ni location_pin mr-2" />
-                      Santander de Quilichao, Cauca, Colombia
+                        {this.state.city.replace(/%20/g,' ') +', '+this.state.depto.replace(/%20/g,' ')+', Colombia'}
                     </div>
                     <div className="h5 mt-4">
                       <i className="ni business_briefcase-24 mr-2" />
@@ -93,7 +105,7 @@ class Profile extends React.Component {
                     </div>
                     <div>
                       <i className="ni education_hat mr-2" />
-                      Lista de labores
+                      {this.state.labores}
                     </div>
                     <div>
                       <NewJob onHandleChange={this.changeState} state={this.state}/>
@@ -149,7 +161,7 @@ class Profile extends React.Component {
                               readOnly={true}
                               className="form-control-alternative"
                               id="input-email"
-                              placeholder="dianbovi@hotmail.com"
+                              placeholder={this.state.email}
                               type="email"
                             />
                           </FormGroup>
@@ -167,7 +179,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue="Diego Bonilla"
+                              defaultValue={this.state.name + ' '+this.state.lastname}
                               id="input-first-name"
                               placeholder="First name"
                               type="text"
@@ -194,7 +206,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue="Cra 15 # 1 sur 16"
+                              defaultValue={this.state.address.replace(/%20/g,' ')}
                               id="input-address"
                               placeholder="Dirección"
                               type="text"
@@ -214,7 +226,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue="Santander de Quilichao"
+                              defaultValue={this.state.city.replace(/%20/g,' ')}
                               id="input-city"
                               placeholder="Ciudad"
                               type="text"
@@ -232,7 +244,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue="Cauca"
+                              defaultValue={this.state.depto.replace(/%20/g,' ')}
                               id="input-deprtment"
                               placeholder="Departamento"
                               type="text"
