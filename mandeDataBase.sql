@@ -20,6 +20,8 @@ CREATE TABLE Trabajador(
 	trabajador_nombre VARCHAR(70) NOT NULL,
 	trabajador_apellido VARCHAR(70) NOT NULL,
 	trabajador_contrasenia VARCHAR(50) NOT NULL,
+	trabajador_foto_perfil VARCHAR(25),
+	trabajador_foto_documento VARCHAR(25) NOT NULL,
 	CONSTRAINT pk_trabajador PRIMARY KEY (cedula_trabajador)
  );
 
@@ -29,6 +31,9 @@ CREATE TABLE Trabajador(
 	 usuario_email VARCHAR(50) NOT NULL,
 	 usuario_nombre VARCHAR(70) NOT NULL,
 	 usuario_contrasenia VARCHAR(50) NOT NULL,
+	 usuario_foto_perfil VARCHAR(25),
+	 usuario_foto_documento VARCHAR(25) NOT NULL,
+	 usuario_foto_recibo VARCHAR(25) NOT NULL,
 	 CONSTRAINT pk_usuario PRIMARY KEY (celular_usuario)
  );
 
@@ -37,7 +42,6 @@ CREATE TABLE Trabajador(
 	 cuenta_bancaria_banco VARCHAR(50) NOT NULL,
 	 cuenta_bancaria_tipo VARCHAR(30) NOT NULL,
 	 cedula_trabajador VARCHAR(10) NOT NULL,
-	 celular_trabajador VARCHAR(10) NOT NULL,
 	 CONSTRAINT pk_cuenta_bancaria PRIMARY KEY (numero_cuenta_bancaria),
 	 CONSTRAINT fk_trabajador FOREIGN KEY (cedula_trabajador) REFERENCES Trabajador(cedula_trabajador) ON UPDATE CASCADE ON DELETE RESTRICT
  );
@@ -60,7 +64,7 @@ CREATE TABLE Trabajador(
  CREATE TABLE Tarjeta_credito(
 	 numero_tarjeta_medio_pago VARCHAR(20) NOT NULL,
 	 tarjeta_credito_fecha_vencimiento DATE NOT NULL,
-	 tarjeta_credito_cvc VARCHAR(3) NOT NULL,
+	 tarjeta_credito_cvc VARCHAR(4) NOT NULL,
 	 CONSTRAINT pk_tarjeta_credito PRIMARY KEY (numero_tarjeta_medio_pago),
 	 CONSTRAINT fK_medio_pago FOREIGN KEY (numero_tarjeta_medio_pago) REFERENCES Medio_pago(numero_tarjeta_medio_pago) ON UPDATE CASCADE ON DELETE RESTRICT
  );
@@ -102,7 +106,7 @@ CREATE TABLE Trabajador(
 	 celular_usuario VARCHAR(10) NOT NULL,
 	 cedula_trabajador VARCHAR(10) NOT NULL,
 	 labor_id INT NOT NULL,
-	 servicio_descripcion VARCHAR(100) NOT NULL,
+	 servicio_descripcion VARCHAR(200) NOT NULL,
 	 servicio_fecha DATE NOT NULL,
 	 servicio_hora_inicio TIME NOT NULL,
 	 servicio_hora_fin TIME NOT NULL,
