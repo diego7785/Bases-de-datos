@@ -185,7 +185,7 @@ class Sidebar extends React.Component {
                   <span className="avatar avatar-sm rounded-circle">
                     <img
                       alt="..."
-                      src={require("assets/img/userImages/profilepic-1007151952.png")}
+                      src={require("assets/img/userImages/profilepic-"+this.state.idCard+".png")}
                     />
                   </span>
                 </Media>
@@ -194,7 +194,7 @@ class Sidebar extends React.Component {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem to={this.props.match.path+"/user-profile"} tag={Link}>
+                <DropdownItem to={{pathname: this.props.match.path+"/user-profile", state: this.props.location.state}} tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>Mi perfil</span>
                 </DropdownItem>
