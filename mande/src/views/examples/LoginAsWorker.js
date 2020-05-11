@@ -34,11 +34,21 @@ class LoginAsWorker extends React.Component {
     const idCard = parseInt(this.state.idCard);
     const pass = this.state.pass;
 
-    var res = await axios.get(`http://localhost:5000/LoginAsWorker/${idCard}/${pass}/`);
+    const res = await axios.get(`http://localhost:5000/LoginAsWorker/${idCard}/${pass}/`);
     if(res.data){
+      const res1 = await axios.get(`http://localhost:5000/GetWorkerInfo/${idCard}/`);
+      const workerInfo = res1.data[0];
+      const res2 = await axios.get(`http://localhost:5000/GetAddressInfo/${idCard}/`);
+      const addressInfo = res2.data[0];
+      const res3 = await axios.get(`http://localhost:5000/GetRealizaInfo/${idCard}/`);
+      const realizaInfo = res3.data[0];
+
       this.props.history.push({
         pathname: "/worker/", state: {
-        idCard: this.state.idCard
+        idCard: this.state.idCard,
+        workerInfo : workerInfo,
+        addressInfo : addressInfo,
+        realizaInfo : realizaInfo,
         }
       })
     } else {

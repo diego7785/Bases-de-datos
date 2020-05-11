@@ -66,6 +66,10 @@ class Sidebar extends React.Component {
     collapseOpen: false,
     idCard: this.props.location.state.idCard,
   };
+
+  conostructor(props){
+    console.log(props);
+  }
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -89,7 +93,7 @@ class Sidebar extends React.Component {
           <NavLink to={{pathname: this.props.match.path + "/index", state: this.props.location.state}} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
             <i className="ni ni-planet"/><span className="nav-link-inner--text">Inicio</span>
           </NavLink>
-          <NavLink to={{pathname: this.props.match.path + "/user-profile", state: {idCard: this.state.idCard}}} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
+          <NavLink to={{pathname: this.props.match.path + "/user-profile", state: this.props.location.state}} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
           <i className="ni ni-single-02"/><span className="nav-link-inner--text">Perfil</span>
         </NavLink>
         <NavLink to="/auth" tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">

@@ -5,7 +5,7 @@ const worker = require('./src/worker');
 const multer = require('multer');
 
 const connectionAdminOptions = {
-  host: 'localhost', port: 5432, database: 'Mande',
+  host: 'localhost', port: 5433, database: 'Mande',
   user: 'postgres', password: 'pg123', poolSize: 20, poolIdleTimeout: 10000
 };
 
@@ -52,5 +52,11 @@ app.post(`/RegisterWorker2_2/:idCard/:phone/:lat/:lng/:address/:city/:depto`, (r
 app.post(`/delete/:idCard`, (req, res) => worker.deleteAll(req,res,db))
 
 app.get(`/LoginAsWorker/:idCard/:pass`, (req,res) => worker.login(req,res,db))
+
+app.get(`/GetWorkerInfo/:idCard`, (req,res) => worker.GetWorkerInfo(req,res,db))
+
+app.get(`/GetAddressInfo/:idCard`, (req,res) => worker.GetAddressInfo(req,res,db))
+
+app.get(`/GetRealizaInfo/:idCard`, (req,res) => worker.GetRealizaInfo(req,res,db))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))

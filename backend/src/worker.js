@@ -162,6 +162,42 @@ var login = (req,res,db) =>{
   })
 }
 
+var GetWorkerInfo = (req,res,db) => {
+  const idCard = req.params.idCard;
+  db.many(`SELECT * FROM Trabajador WHERE cedula_trabajador=$1`, [escape(idCard)])
+  .then((data) => {
+    res.send(JSON.stringify(data))
+  })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var GetAddressInfo = (req,res,db) => {
+  const idCard = req.params.idCard;
+  db.many(`SELECT * FROM Direccion WHERE cedula_trabajador=$1`, [escape(idCard)])
+  .then((data) => {
+    res.send(JSON.stringify(data))
+  })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var GetRealizaInfo = (req,res,db) => {
+  const idCard = req.params.idCard;
+  db.many(`SELECT * FROM Realiza, Labor WHERE cedula_trabajador=$1 AND Realiza.id_labor = Labor.id_labor`, [escape(idCard)])
+  .then((data) => {
+    res.send(JSON.stringify(data))
+  })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
 module.exports = {
   createWorker,
   getPreDefinedJobs,
@@ -170,4 +206,7 @@ module.exports = {
   createAddress,
   deleteAll,
   login,
+  GetWorkerInfo,
+  GetRealizaInfo,
+  GetAddressInfo,
 }

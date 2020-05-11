@@ -15,22 +15,42 @@ import {
   Media,
 } from "reactstrap";
 
-function isWorker(props){
-  if(props.match.path === "/worker"){
-    return(
-      <DropdownItem >
-        <i className="ni ni-bell-55"></i>
-        {/*EL ESTADO DEBE CAMBIAR SEGUN LA BDD*/}
-        <span>Disponible</span>
-        </DropdownItem>
-      )
+function isWorker(state){
+  if(state.path === "/worker"){
+    const status = state.status;
+    if(parseInt(status) === 1){
+      return(
+        <DropdownItem >
+          <i className="ni ni-bell-55"></i>
+          <span>Disponible</span>
+          </DropdownItem>
+        )
+    } else {
+      return(
+        <DropdownItem >
+          <i className="ni ni-bell-55"></i>
+          {/*EL ESTADO DEBE CAMBIAR SEGUN SERVICIO*/}
+          <span>Has sido escodigo par alguna labor</span>
+          </DropdownItem>
+        )
+    }
+
     }
   }
 
 
-function getNotification(props){
+function getNotification(state){
+  console.log(state)
   //Se adquiere algo desde la base de datos para verificar si se ha solicitado un servicio para este trabajador y se retorna un numero
-  if(props.match.path === "/worker"){
+  if(state.path === "/worker"){
+    const status = state.status;
+    if(parseInt(status) === 1){
+      return (
+      <Badge badgeContent={0} color="secondary">
+        <NotificationsIcon />
+      </Badge>
+    );
+  } else{
     return (
     <Badge badgeContent={1} color="secondary">
       <NotificationsIcon />
@@ -38,12 +58,18 @@ function getNotification(props){
   );
   }
 
+  }
+
 }
 class NavbarC extends React.Component {
 
   state={
     notification: true,
-    idCard: this.props.location.state.idCard
+    idCard: this.props.location.state.idCard,
+    name: this.props.location.state.workerInfo.trabajador_nombre,
+    lastname: this.props.location.state.workerInfo.trabajador_apellido,
+    status: this.props.location.state.realizaInfo.trabajador_estado,
+    path: this.props.match.path,
   }
 
   render() {
@@ -52,7 +78,7 @@ class NavbarC extends React.Component {
         <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
           <Container fluid>
               <IconButton className="align-items-right d-none d-md-flex" aria-label="show new notifications" color="secondaryy">
-                {getNotification(this.props)}
+                {getNotification(this.state)}
             </IconButton>
             <Link
               className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
@@ -72,7 +98,7 @@ class NavbarC extends React.Component {
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                        Diego Bonilla
+                        {this.state.name+' '+this.state.lastname}
                       </span>
                     </Media>
                   </Media>
@@ -85,7 +111,7 @@ class NavbarC extends React.Component {
                     <i className="ni ni-single-02" />
                     <span>Mi perfil</span>
                   </DropdownItem>
-                  {isWorker(this.props)}
+                  {isWorker(this.state)}
                   <DropdownItem divider />
                   <DropdownItem to="/auth/login" tag={Link}>
                     <i className="ni ni-user-run" />

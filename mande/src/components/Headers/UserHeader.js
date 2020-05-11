@@ -4,6 +4,11 @@ import React from "react";
 import {Container, Row, Col } from "reactstrap";
 
 class UserHeader extends React.Component {
+
+  state = {
+    name: this.props.state.workerInfo.trabajador_nombre,
+  }
+
   render() {
     return (
       <>
@@ -23,7 +28,7 @@ class UserHeader extends React.Component {
           <Container className="d-flex align-items-center" fluid>
             <Row>
               <Col lg="7" md="10">
-                <h1 className="display-2 text-white">Hola Diego</h1>
+                <h1 className="display-2 text-white">Hola {this.state.name}</h1>
                 <p className="text-white mt-0 mb-5">
                   Este es tu perfil, aquí puedes observar tu progreso en la aplicación y modificar tus datos.
                 </p>
