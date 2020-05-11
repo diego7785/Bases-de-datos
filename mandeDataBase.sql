@@ -127,7 +127,7 @@ CREATE TABLE Trabajador(
 	 CONSTRAINT fk_medio_pago FOREIGN KEY (numero_tarjeta_medio_pago) REFERENCES Medio_pago(numero_tarjeta_medio_pago) ON UPDATE CASCADE ON DELETE RESTRICT
  );
 
- --TRIGGER
+ --TRIGGERS
 
 CREATE FUNCTION add_geopint() RETURNS TRIGGER AS $$
 DECLARE
