@@ -13,10 +13,6 @@ import {
 } from "reactstrap";
 
 class RegisterWorker1 extends React.Component {
-  constructor(props){
-    super(props);
-    console.log(props.location.state);
-  }
 
   state={
     job: true,
@@ -58,26 +54,26 @@ class RegisterWorker1 extends React.Component {
     })
   }
 
-
   onChangeHandler = (id, event, type) =>{
-    this.setState({ [id]: event.target.files[0]})
-    switch (type) {
-      case 1: this.setState({ loaded1: true})
-        break;
-      case 2: this.setState({ loaded2: true})
-        break;
-      case 3: this.setState({ loaded3: true})
-        break;
-      default: return('Unknow index');
+   this.setState({ [id]: event.target.files[0]})
+   switch (type) {
+     case 1: this.setState({ loaded1: true})
+       break;
+     case 2: this.setState({ loaded2: true})
+       break;
+     case 3: this.setState({ loaded3: true})
+       break;
+     default: return('Unknow index');
 
-    }
+   }
 }
+
 
 onClickHandler = () => {
     var cont = 0;
     var data = new FormData()
     data.append('file', this.state.front)
-    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=front", data, {})
+    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=front&user=worker", data, {})
       .then(res => {
         if(res.statusText === "OK"){
           cont=1;
@@ -85,7 +81,7 @@ onClickHandler = () => {
       })
     data = new FormData()
     data.append('file', this.state.back)
-    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=back", data, {})
+    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=back&user=worker", data, {})
       .then(res => {
         if(res.statusText === "OK"){
           cont++;
@@ -93,7 +89,7 @@ onClickHandler = () => {
       })
     data = new FormData()
     data.append('file', this.state.profilepic)
-    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=profilepic", data, {})
+    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=profilepic&user=worker", data, {})
       .then(res => {
         if(res.statusText === "OK"){
           cont++;
@@ -104,9 +100,8 @@ onClickHandler = () => {
           }
         }
       })
-
-
 }
+
   render(){
     return(
       <>

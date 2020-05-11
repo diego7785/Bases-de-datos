@@ -40,6 +40,7 @@ class Profile extends React.Component {
     city: this.props.location.state.state.addressInfo.direccion_ciudad,
     depto: this.props.location.state.state.addressInfo.direccion_departamento,
     labores: this.props.location.state.state.realizaInfo.labor_nombre,
+    path: this.props.match.path,
   }
 
   constructor(props){
@@ -67,7 +68,7 @@ class Profile extends React.Component {
                         <img
                           alt="..."
                           className="rounded-circle"
-                          src={require("assets/img/userImages/profilepic-"+this.state.idCard+".png")}
+                          src={require("assets/img/userImages"+this.state.path+"/profilepic-"+this.state.idCard+".png")}
                         />
                       </a>
                     </div>

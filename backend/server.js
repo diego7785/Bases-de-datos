@@ -17,9 +17,10 @@ const port = 5000;
 app.use(cors())
 app.use(express.json());
 
+//GENERAL
 var storage = multer.diskStorage({
       destination: function (req, file, cb) {
-      cb(null, '../mande/src/assets/img/userImages')
+      cb(null, '../mande/src/assets/img/userImages/'+req.query.user)
     },
     filename: function (req, file, cb) {
       cb(null, req.query.type + '-' +req.query.idCard+'.png' )
@@ -28,6 +29,8 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single('file')
 
+
+//WORKER
 app.get(`/RegisterWorker1/:labores`, (req, res) => worker.getPreDefinedJobs(req,res,db))
 
 app.post(`/RegisterWorker1/images`, (req, res) => {
@@ -59,4 +62,15 @@ app.get(`/GetAddressInfo/:idCard`, (req,res) => worker.GetAddressInfo(req,res,db
 
 app.get(`/GetRealizaInfo/:idCard`, (req,res) => worker.GetRealizaInfo(req,res,db))
 
+//user
+app.post(`/RegisterUser1/images`, (req, res) => {
+  upload(req, res, function (err) {
+           if (err instanceof multer.MulterError) {
+               return res.status(500).json(err)
+           } else if (err) {
+               return res.status(500).json(err)
+           }
+      return res.status(200).send(req.file)
+    })
+});
 app.listen(port, () => console.log(`API listening on port ${port}!`))

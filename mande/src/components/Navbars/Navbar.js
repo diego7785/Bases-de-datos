@@ -130,7 +130,7 @@ class NavbarC extends React.Component {
                     <span className="avatar avatar-sm rounded-circle">
                       <img
                         alt="Profile pic"
-                        src={require("assets/img/userImages/profilepic-"+this.state.idCard+".png")}
+                        src={require("assets/img/userImages"+this.state.path+"/profilepic-"+this.state.idCard+".png")}
                       />
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
