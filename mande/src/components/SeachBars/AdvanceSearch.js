@@ -35,20 +35,29 @@ class AdvancedSearchBar extends React.Component {
     super(props);
     this.state = {
       activeNav: 1,
-      chartExample1Data: "data1"
+      chartExample1Data: "data1",
+      value: true,
+      minValue: true,
+      maxValue: true,
     };
   }
+
+  handleChange = (event,id) => {
+    this.setState({[id]: event});
+    console.log(this.state);
+  }
+
   render() {
     return (
       <>
         <Row>
           <Col xl="5">
             <div>
-              <Rater />
+              <Rater state = {this.state} onChange = {this.handleChange}/>
             </div>
           </Col>
           <Col xl="5">
-            <RangeSlider/>
+            <RangeSlider state = {this.state} onChange = {this.handleChange}/>
           </Col>
         <Col>
           <FormGroup className="mb-0" style={{ marginTop: 20 }}>

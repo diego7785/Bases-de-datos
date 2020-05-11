@@ -2,26 +2,25 @@ import React from 'react';
 import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
+import { Box } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& > * + *': {
-      marginTop: theme.spacing(1),
-    },
-  },
-}));
 
-export default function Rater() {
-  const classes = useStyles();
+
+const Rater = (props) => {
 
   return (
-    <div className={classes.root} >
-      <Typography id="range-slider" gutterBottom>
-        Calificación mínima:
-      </Typography>
-      <Rating name="half-rating" defaultValue={2.5} precision={0.50} style = {{marginTop: 20}}/>
-    </div>
+    <Box component="fieldset" mb={3} borderColor="transparent">
+      <Typography component="legend">Rating minimo:</Typography>
+      <Rating
+        name="simple-controlled"
+        value={props.state.value}
+        onChange={(event, newValue) => {
+          props.onChange(event.target.value,"value");
+        }}
+        style = {{marginTop: 27}}
+      />
+    </Box>
   );
 }
+
+export default Rater;

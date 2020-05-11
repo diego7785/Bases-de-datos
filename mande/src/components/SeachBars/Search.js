@@ -1,6 +1,8 @@
 import React from "react";
 import Button from '@material-ui/core/Button';
-
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 
 // reactstrap components
 import {
@@ -16,6 +18,18 @@ import {
 } from "reactstrap";
 
 import AdvancedSearchBar from "./AdvanceSearch"
+
+const useStyles = makeStyles({
+    root: {
+        width: 300
+    },
+});
+
+const labores = [{ code: "Profesor de ingles", label: "Profesor inglés" },
+{ code: "Paseador de perros", label: "Paseador de perros" },
+{ code: "Profesor de matematicas", label: "Profesor de matemáticas" },
+{ code: "Plomero", label: "Plomero" },
+{ code: "Electricista", label: "Electricista" },];
 
 
 class SearchBar extends React.Component {
@@ -35,7 +49,7 @@ class SearchBar extends React.Component {
     }
 
     openAdvancedSearch = () => {
-        this.setState({advancedSearch: !this.state.advancedSearch});
+        this.setState({ advancedSearch: !this.state.advancedSearch });
     }
 
     render() {
@@ -47,24 +61,39 @@ class SearchBar extends React.Component {
                         <Col xl="5">
                             <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto" onChange={this.buscar} onSubmit={e => { this.buscar(e) }} >
                                 <FormGroup className="mb-0">
-                                    <InputGroup className="input-group-alternative">
-                                        <InputGroupAddon addonType="prepend">
-                                            <InputGroupText>
-                                                <i className="fas fa-search" />
-                                            </InputGroupText>
-                                        </InputGroupAddon>
-                                        <Input placeholder="Busca trabajadores" name="busca" type="text" style={{ width: 600 }} ref={this.buscaRef} />
-                                    </InputGroup>
+                                    <Autocomplete
+                                        id="jobs-selection"
+                                        style={{ minWidth: 200, width: 600}}
+                                        options={labores}
+                                        autoHighlight
+                                        getOptionLabel={(option) => option.label}
+                                        renderOption={(option) => (
+                                            <React.Fragment>
+                                                {option.label}
+                                            </React.Fragment>
+                                        )}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                label="Escoja una labor"
+                                                variant="outlined"
+                                                inputProps={{
+                                                    ...params.inputProps,
+                                                    autoComplete: 'new-password', // disable autocomplete and autofill
+                                                }}
+                                            />
+                                        )}
+                                    />
                                 </FormGroup>
                                 {this.state.advancedSearch ?
-                                <div style={{ marginTop: 15 }}><AdvancedSearchBar/></div> :
-                                <div style={{ marginTop: 15 }}> </div>}
+                                    <div style={{ marginTop: 15 }}><AdvancedSearchBar /></div> :
+                                    <div style={{ marginTop: 15 }}> </div>}
                             </Form>
-                            <Col style={{ marginTop: 0 }}>
+                            <Col style={{ marginTop: 20 }}>
                                 <Button type="submit" variant="contained" color="primary" style={{ marginLeft: 0 }} >
                                     Buscar
                             </Button>
-                                <Button variant="contained" color="secondary" style={{ marginLeft: 20 }} onClick = {this.openAdvancedSearch} >
+                                <Button variant="contained" color="secondary" style={{ marginLeft: 20 }} onClick={this.openAdvancedSearch} >
                                     Busqueda avanzada
                             </Button>
                             </Col>
@@ -77,4 +106,4 @@ class SearchBar extends React.Component {
     }
 }
 
-export default SearchBar;
+export default (SearchBar);
