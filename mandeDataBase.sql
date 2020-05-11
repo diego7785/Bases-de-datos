@@ -21,7 +21,8 @@ CREATE TABLE Trabajador(
 	trabajador_apellido VARCHAR(70) NOT NULL,
 	trabajador_contrasenia VARCHAR(50) NOT NULL,
 	trabajador_foto_perfil VARCHAR(25),
-	trabajador_foto_documento VARCHAR(25) NOT NULL,
+	trabajador_foto_id_frente VARCHAR(25) NOT NULL,
+	trabajador_foto_id_atras VARCHAR(25) NOT NULL,
 	CONSTRAINT pk_trabajador PRIMARY KEY (cedula_trabajador)
  );
 
@@ -32,7 +33,8 @@ CREATE TABLE Trabajador(
 	 usuario_nombre VARCHAR(70) NOT NULL,
 	 usuario_contrasenia VARCHAR(50) NOT NULL,
 	 usuario_foto_perfil VARCHAR(25),
-	 usuario_foto_documento VARCHAR(25) NOT NULL,
+	 usuario_foto_id_frente VARCHAR(25) NOT NULL,
+	 usuario_foto_id_atras VARCHAR(25) NOT NULL,
 	 usuario_foto_recibo VARCHAR(25) NOT NULL,
 	 CONSTRAINT pk_usuario PRIMARY KEY (celular_usuario)
  );
