@@ -65,7 +65,7 @@ CREATE TABLE Trabajador(
 
  CREATE TABLE Tarjeta_credito(
 	 numero_tarjeta_medio_pago VARCHAR(20) NOT NULL,
-	 tarjeta_credito_fecha_vencimiento DATE NOT NULL,
+	 tarjeta_credito_fecha_vencimiento VARCHAR(5) NOT NULL,
 	 tarjeta_credito_cvc VARCHAR(4) NOT NULL,
 	 CONSTRAINT pk_tarjeta_credito PRIMARY KEY (numero_tarjeta_medio_pago),
 	 CONSTRAINT fK_medio_pago FOREIGN KEY (numero_tarjeta_medio_pago) REFERENCES Medio_pago(numero_tarjeta_medio_pago) ON UPDATE CASCADE ON DELETE RESTRICT
