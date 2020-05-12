@@ -68,7 +68,8 @@ class Sidebar extends React.Component {
     path: this.props.match.path,
   };
 
-  conostructor(props){
+  constructor(props){
+    super(props)
     console.log(props);
   }
   // verifies if routeName is the one active (in browser input)

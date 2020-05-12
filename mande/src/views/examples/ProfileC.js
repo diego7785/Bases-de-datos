@@ -24,7 +24,12 @@ class Profile extends React.Component {
     actualPass: true,
     newPass: true,
     newConfirmPass: true,
-    phone: this.props.location.state.idCard
+    phone: this.props.location.state.state.idCard
+  }
+
+  constructor(props){
+    super(props)
+    console.log(props)
   }
 
   changeState = (id, event) => {
@@ -34,7 +39,7 @@ class Profile extends React.Component {
   render() {
     return (
       <>
-        <UserHeader />
+        <UserHeader state={this.props} path={this.props.location.pathname} />
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
@@ -47,7 +52,7 @@ class Profile extends React.Component {
                         <img
                           alt="..."
                           className="rounded-circle"
-                          src={require("assets/img/userImages/profilepic-"+this.state.phone+".png")}
+                          src={require("assets/img/userImages/client/profilepic-"+this.state.phone+".png")}
                         />
                       </a>
                     </div>

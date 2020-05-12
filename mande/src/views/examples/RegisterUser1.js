@@ -162,7 +162,7 @@ onClickNext = (e) => {
                                 <div style={{ marginTop: 30 }}>
                                 </div>
                                 <div className="text-center">
-                                  <Button className="mt-4" color="primary" type="button" onClick={this.onHandleNext}>
+                                  <Button className="mt-4" color="primary" type="button" onClick={this.onClickNext}>
                                     Siguiente
                                   </Button>
                                 </div>

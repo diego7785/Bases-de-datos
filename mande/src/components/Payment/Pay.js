@@ -13,50 +13,26 @@ const medioPago = [{ code: "Tarjeta débito", label: "Tarjeta débito" },
 
 class Pay extends React.Component {
 
-  state = {
-    formaPago: '',
-    numeroTarjetaDebito: '',
-    numeroCuentaDebito: '',
-    bancoCredito: '',
-    numeroTarjetaCredito: '',
-    cvcCredito: '',
-    mesVencimientoCredito: '',
-    anioVencimientoCredito: '',
-    cedulaPropietarioCredito: ''
-  }
-
   selectPayment = (e) => {
-    this.setState({ formaPago: e.target.innerText });
-    console.log(this.state.formaPago);
+    this.props.onHandleChange('type', e.target.innerText);
   }
 
   selectDebit = (event, id) => {
     if (id === "bancoDebito") {
-      this.setState({ [id]: event.target.innerText })
+    this.props.onHandleChange('bank', event.target.innerText )
     }
     else {
-      this.setState({ [id]: event.target.value })
+      this.props.onHandleChange(id, event.target.value )
     }
-    /*
-    console.log(this.state.bancoDebito);
-    console.log(this.state.numeroTarjetaDebito);
-    console.log(this.state.numeroCuentaDebito);*/
   }
 
   selectCredit = (event, id) => {
     if (id === "bancoCredito") {
-      this.setState({ [id]: event.target.innerText })
+      this.props.onHandleChange('bank', event.target.innerText )
     }
     else {
-      this.setState({ [id]: event.target.value })
+      this.props.onHandleChange(id, event.target.value )
     }
-    /*
-    console.log(this.state.bancoCredito);
-    console.log(this.state.numeroTarjetaCredito);
-    console.log(this.state.cvcCredito);
-    console.log(this.state.mesVencimientoCredito);
-    console.log(this.state.anioVencimientoCredito);
-    console.log(this.state.cedulaPropietarioCredito);*/
   }
 
 
@@ -90,11 +66,11 @@ class Pay extends React.Component {
           />
           <div style={{ marginTop: 30 }}>
             {(() => {
-              switch (this.state.formaPago) {
+              switch (this.props.state.type) {
                 case "Tarjeta débito":
-                  return <DebitCard state={this.state} functionSetState={this.selectDebit} />;
+                  return <DebitCard state={this.props.state} state1={this.props.state1} functionSetState={this.selectDebit} />;
                 case "Tarjeta de crédito":
-                  return <CreditCard state={this.state} functionSetStateI={this.selectCredit} />;
+                  return <CreditCard state={this.props.state} state1={this.props.state1} functionSetStateI={this.selectCredit} />;
                 default:
                   return null;
               }

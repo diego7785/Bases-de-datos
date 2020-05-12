@@ -2,6 +2,7 @@ const express = require('express');
 const pgp = require('pg-promise')();
 const cors = require(`cors`);
 const worker = require('./src/worker');
+const user = require('./src/user');
 const multer = require('multer');
 
 const connectionAdminOptions = {
@@ -52,7 +53,7 @@ app.post(`/RegisterWorker2_1/:idJob/:idCard/:phone/:price/:description/:status`,
 
 app.post(`/RegisterWorker2_2/:idCard/:phone/:lat/:lng/:address/:city/:depto`, (req,res) => worker.createAddress(req,res,db))
 
-app.post(`/delete/:idCard`, (req, res) => worker.deleteAll(req,res,db))
+app.post(`/RegisterWorker2_3/delete/:idCard`, (req, res) => worker.deleteAll(req,res,db))
 
 app.get(`/LoginAsWorker/:idCard/:pass`, (req,res) => worker.login(req,res,db))
 
@@ -73,4 +74,19 @@ app.post(`/RegisterUser1/images`, (req, res) => {
       return res.status(200).send(req.file)
     })
 });
+
+app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:password`, (req,res) => user.createUser(req,res,db))
+
+app.post(`/RegisterUser2_1/:cardNumber/:phone/:bank`, (req,res) => user.createMedioPago(req,res,db))
+
+app.post(`/RegisterUser2_2/:cardNumber/:numberAccount`, (req,res) => user.createDebitCard(req,res,db))
+
+app.post(`/RegisterUser2_3/:phone/:lat/:lng/:address/:city/:depto`, (req,res)=> user.createAddress(req,res,db))
+
+app.post(`/RegisterUser2_4/:cardNumber/:endDate/:cvc` , (req,res) => user.createCreditCard(req,res,db))
+
+app.post(`/RegisterUser2_5/delete/:phone/:cardNumber/:credit`, (req, res) => user.deleteAll(req,res,db))
+
+app.get(`/LoginAsUser/:phone/:pass`, (req,res) => user.login(req,res,db))
+
 app.listen(port, () => console.log(`API listening on port ${port}!`))

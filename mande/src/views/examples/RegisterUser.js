@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Direccion from "components/Address/Direccion.js"
 import Geocode from "react-geocode";
 import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
@@ -16,9 +15,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Row,
   Col,
-  NavLink
 } from "reactstrap";
 
 var retornaMap = (state) => {
@@ -40,6 +37,7 @@ var retornarDireccion = (state) =>{
 }
 class RegisterUser extends React.Component {
   state = {
+    celular: true,
     name: true,
     lastname: true,
     email: true,
@@ -119,6 +117,7 @@ class RegisterUser extends React.Component {
     } else{
     this.props.history.push({
       pathname: "/auth/RegisterUser1/", state: {
+        celular: this.state.celular,
         name: this.state.name,
         lastname: this.state.lastname,
         email: this.state.email,
@@ -140,13 +139,7 @@ class RegisterUser extends React.Component {
       }
     })
   }
-    console.log(this.state.name);
-    console.log(this.state.password);
-    console.log(this.state.passwordR);
-    console.log(this.state.name);
-    console.log(this.state.tipoVia);
-    console.log(this.state.nombreVia);
-    console.log(this.state.latitude);
+
   }
   render() {
     return (
@@ -241,19 +234,6 @@ class RegisterUser extends React.Component {
               </Form>
             </CardBody>
           </Card>
-          <Row className="mt-3">
-            <Col className="text-right" xs="12">
-              <NavLink
-                className="nav-link-icon"
-                to="/auth/loginas"
-                tag={Link}
-              >
-                <div className="text-light">
-                  <small>Ingresar</small>
-                </div>
-              </NavLink>
-            </Col>
-          </Row>
         </Col>
       </>
     );

@@ -55,7 +55,7 @@ class Profile extends React.Component {
   render() {
     return (
       <>
-        <UserHeader state={this.props.location.state.state}/>
+        <UserHeader state={this.props.location.state.state} path={this.props.location.pathname}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
@@ -68,7 +68,7 @@ class Profile extends React.Component {
                         <img
                           alt="..."
                           className="rounded-circle"
-                          src={require("assets/img/userImages"+this.state.path+"/profilepic-"+this.state.idCard+".png")}
+                          src={require("assets/img/userImages"+this.state.path.substring(0,7)+"/profilepic-"+this.state.idCard+".png")}
                         />
                       </a>
                     </div>

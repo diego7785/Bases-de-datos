@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom'
+import axios from 'axios';
 
 // reactstrap components
 import {
@@ -28,13 +29,22 @@ class LoginAsUser extends React.Component {
     this.setState({ [id]: event.target.value})
   }
 
-  onHandleNext = (e) =>{
-    e.preventDefault();
-    this.props.history.push({
-      pathname: "/client/", state: {
-      idCard: this.state.phone
-      }
-    })
+  onHandleNext = async (e) =>{
+    e.preventDefault()
+    const phone = parseInt(this.state.phone);
+    const pass = this.state.pass;
+
+    const res = await axios.get(`http://localhost:5000/LoginAsUser/${phone}/${pass}/`)
+    if(res.data[0]){
+      this.props.history.push({
+        pathname: "/client/", state: {
+        idCard: res.data[1]
+        }
+      })
+    } else {
+      alert('Credenciales incorrectas');
+    }
+
 }
 
   render() {
