@@ -3,10 +3,11 @@ var createUser = (req,res,db) => {
   const phone=req.params.phone;
   const email=req.params.email;
   const name=req.params.name;
+  const lastname = req.params.lastname;
   const password=req.params.password;
 
-  db.none(`INSERT INTO Usuario VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
-  [escape(idCard), escape(phone), escape(email), escape(name), escape(password),
+  db.none(`INSERT INTO Usuario VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+  [escape(idCard), escape(phone), escape(email), escape(name), escape(lastname), escape(password),
   escape('profilepic-'+idCard), escape('front-'+idCard), escape('back-'+idCard), escape('bill-'+idCard)])
   .then((data) => {
     res.send(JSON.stringify(`Usuario registrado exitosamente`))
@@ -18,30 +19,16 @@ var createUser = (req,res,db) => {
   })
 }
 
-var createMedioPago = (req,res,db)=>{
-  const cardNumber=req.params.cardNumber;
-  const phone=req.params.phone;
-  const bank=req.params.bank;
-
-  db.none(`INSERT INTO Medio_pago VALUES($1,$2,$3)`,
-  [escape(cardNumber), escape(phone), escape(bank)])
-  .then((data) => {
-    res.send(JSON.stringify(`Medio de pago registrado exitosamente`))
-  })
-  .catch((error) => {
-    console.log(req.params)
-    console.log(`ERROR INSERTANDO MEDIO DE PAGO`, error)
-    res.send(JSON.stringify(error.detail))
-  })
-}
-
 
 var createDebitCard = (req,res,db)=>{
   const cardNumber=req.params.cardNumber;
+  const phone=req.params.phone;
+  const bank=req.params.bank;
   const numberAccount=req.params.numberAccount;
+  const type='debito';
 
-  db.none(`INSERT INTO Tarjeta_debito VALUES($1,$2)`,
-  [escape(cardNumber), escape(numberAccount)])
+  db.none(`INSERT INTO Tarjeta_debito VALUES($1,$2,$3,$4,$5)`,
+  [escape(cardNumber), escape(phone), escape(type), escape(bank), escape(numberAccount)])
   .then((data) => {
     res.send(JSON.stringify(`Tarjeta debito registrada exitosamente`))
   })
@@ -55,11 +42,14 @@ var createDebitCard = (req,res,db)=>{
 
 var createCreditCard = (req,res,db)=>{
   const cardNumber = req.params.cardNumber;
+  const phone=req.params.phone;
+  const bank = req.params.bank;
   const endDate = req.params.endDate;
   const cvc = req.params.cvc;
+  const type='credito';
 
-  db.none(`INSERT INTO Tarjeta_credito VALUES($1,$2,$3)`,
-  [escape(cardNumber), escape(endDate), escape(cvc)])
+  db.none(`INSERT INTO Tarjeta_credito VALUES($1,$2,$3,$4,$5,$6)`,
+  [escape(cardNumber), escape(phone), escape(type), escape(bank), escape(endDate), escape(cvc)])
   .then((data) => {
     res.send(JSON.stringify(`Tarjeta credito registrada exitosamente`))
   })
@@ -174,7 +164,6 @@ var login = (req,res,db) =>{
 }
 module.exports = {
   createUser,
-  createMedioPago,
   createDebitCard,
   createCreditCard,
   createAddress,

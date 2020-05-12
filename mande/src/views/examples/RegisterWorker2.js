@@ -45,7 +45,9 @@ FinalRegister = async () => {
 
   var res = await axios.post(`http://localhost:5000/RegisterWorker2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
   console.log(res);
-  exito=exito+1;
+  if(res.statusText === "OK"){
+    exito=exito+1;
+  }
 
   const numberAccount = this.state.numeroCuenta;
   const bank = this.state.bancoCuenta;
@@ -53,7 +55,9 @@ FinalRegister = async () => {
 
   res = await axios.post(`http://localhost:5000/RegisterWorker2/${numberAccount}/${bank}/${type}/${idCard}/${phone}`)
   console.log(res);
-  exito=exito+1;
+  if(res.statusText === "OK"){
+    exito=exito+1;
+  }
 
   const lat = this.props.location.state.latitude;
   const lng = this.props.location.state.length;
@@ -63,7 +67,9 @@ FinalRegister = async () => {
 
   res = await axios.post(`http://localhost:5000/RegisterWorker2_2/${idCard}/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
   console.log(res);
-  exito=exito+1;
+  if(res.statusText === "OK"){
+    exito=exito+1;
+  }
 
   const idJob = this.props.location.state.job;
   const price = this.props.location.state.price;
@@ -72,7 +78,9 @@ FinalRegister = async () => {
 
   res = await axios.post(`http://localhost:5000/RegisterWorker2_1/${idJob}/${idCard}/${phone}/${price}/${description}/${status}`)
   console.log(res);
-  exito=exito+1;
+  if(res.statusText === "OK"){
+    exito=exito+1;
+  }
 
   if(exito === 4){
     alert('Registro exitoso');

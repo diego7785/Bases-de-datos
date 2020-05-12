@@ -69,37 +69,33 @@ class RegisterWorker1 extends React.Component {
 }
 
 
-onClickHandler = () => {
+onClickHandler = async () => {
     var cont = 0;
     var data = new FormData()
     data.append('file', this.state.front)
-    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=front&user=worker", data, {})
-      .then(res => {
-        if(res.statusText === "OK"){
+    var res = await axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=front&user=worker", data, {})
+    if(res.statusText === "OK"){
           cont=1;
-        }
-      })
+    }
+
     data = new FormData()
     data.append('file', this.state.back)
-    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=back&user=worker", data, {})
-      .then(res => {
-        if(res.statusText === "OK"){
+    res = await axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=back&user=worker", data, {})
+    if(res.statusText === "OK"){
           cont++;
-        }
-      })
+
+    }
     data = new FormData()
     data.append('file', this.state.profilepic)
-    axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=profilepic&user=worker", data, {})
-      .then(res => {
-        if(res.statusText === "OK"){
-          cont++;
-          if(cont === 3){
-            alert('Imágenes cargadas con éxito');
-          } else{
-            alert('Fallo al cargar una de las imágenes');
-          }
+    res = await axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=profilepic&user=worker", data, {})
+    if(res.statusText === "OK"){
+        cont++;
+        if(cont === 3){
+          alert('Imágenes cargadas con éxito');
+        } else{
+          alert('Fallo al cargar una de las imágenes');
         }
-      })
+      }
 }
 
   render(){

@@ -75,15 +75,13 @@ app.post(`/RegisterUser1/images`, (req, res) => {
     })
 });
 
-app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:password`, (req,res) => user.createUser(req,res,db))
+app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) => user.createUser(req,res,db))
 
-app.post(`/RegisterUser2_1/:cardNumber/:phone/:bank`, (req,res) => user.createMedioPago(req,res,db))
-
-app.post(`/RegisterUser2_2/:cardNumber/:numberAccount`, (req,res) => user.createDebitCard(req,res,db))
+app.post(`/RegisterUser2_2/:cardNumber/:phone/:bank/:numberAccount`, (req,res) => user.createDebitCard(req,res,db))
 
 app.post(`/RegisterUser2_3/:phone/:lat/:lng/:address/:city/:depto`, (req,res)=> user.createAddress(req,res,db))
 
-app.post(`/RegisterUser2_4/:cardNumber/:endDate/:cvc` , (req,res) => user.createCreditCard(req,res,db))
+app.post(`/RegisterUser2_4/:cardNumber/:phone/:bank/:endDate/:cvc` , (req,res) => user.createCreditCard(req,res,db))
 
 app.post(`/RegisterUser2_5/delete/:phone/:cardNumber/:credit`, (req, res) => user.deleteAll(req,res,db))
 
