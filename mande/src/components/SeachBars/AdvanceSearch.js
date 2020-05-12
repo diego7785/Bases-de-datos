@@ -2,29 +2,16 @@ import React from "react";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Slider from "@material-ui/core/Slider";
 import RangeSlider from './Slider';
 import Rater from '../RatingSelector/RatingSelector'
 
 // reactstrap components
 import {
-  Container,
-  Form,
   FormGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  InputGroup,
   Row,
   Col,
 } from "reactstrap";
 
-const useStyles = makeStyles({
-  root: {
-    width: 300
-  }
-});
 
 
 
@@ -83,7 +70,7 @@ class AdvancedSearchBar extends React.Component {
                   }}
                 />
               )}
-              onChange={(event) => { }}
+              onChange={() => { }}
             />
           </FormGroup>
         </Col>

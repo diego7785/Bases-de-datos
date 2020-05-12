@@ -1,6 +1,6 @@
 import React from "react";
 import Button from '@material-ui/core/Button';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
@@ -9,21 +9,12 @@ import {
     Container,
     Form,
     FormGroup,
-    InputGroupAddon,
-    InputGroupText,
-    Input,
-    InputGroup,
     Row,
     Col,
 } from "reactstrap";
 
 import AdvancedSearchBar from "./AdvanceSearch"
 
-const useStyles = makeStyles({
-    root: {
-        width: 300
-    },
-});
 
 const labores = [{ code: "Profesor de ingles", label: "Profesor inglés" },
 { code: "Paseador de perros", label: "Paseador de perros" },
