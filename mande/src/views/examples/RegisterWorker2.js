@@ -78,7 +78,7 @@ FinalRegister = async () => {
     alert('Registro exitoso');
     this.props.history.push({pathname: "/auth/"})
   }else{
-    res = await axios.post(`http://localhost:5000/delete/${idCard}`)
+    res = await axios.post(`http://localhost:5000/RegisterWorker2_3/delete/${idCard}`)
 
     alert('No se ha podido realizar el registro, por favor intente de nuevo');
 
@@ -116,7 +116,7 @@ render(){
           <Button className="mt-4" color="primary" type="button" onClick={this.FinalRegister}>
             Finalizar
           </Button>
-        </div>´
+        </div>
       </CardBody>
     </Card>
   </Col>

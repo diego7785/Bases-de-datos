@@ -1,18 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Pay from 'components/Payment/Pay';
 // reactstrap components
 import {
     Card,
     CardBody,
     Form,
-    Row,
     Col,
-    NavLink
 } from "reactstrap";
 
 class RegisterUser2 extends React.Component {
 
+  state={
+    type: true,
+    bank: true,
+    cardNumber: true,
+    numberAccount: true,
+    cvc: true,
+    month: true,
+    year: true,
+    idCardCredit: true,
+  }
+
+  onHandleChange = (id, event) => {
+    this.setState({ [id]: event})
+    console.log(this.state);
+    console.log(this.props)
+  }
     render() {
         return (
             <>
@@ -28,25 +41,12 @@ class RegisterUser2 extends React.Component {
                                     <label>
                                         Para empezar a usar nuestros servicios, debes añadir un medio de pago
                                     </label>
-                                    <Pay />
+                                    <Pay state={this.state} state1={this.props} onHandleChange={this.onHandleChange}/>
                                 </div>
                             </div>
                             </Form>
                         </CardBody>
                     </Card>
-                    <Row className="mt-3">
-                        <Col className="text-right" xs="12">
-                            <NavLink
-                                className="nav-link-icon"
-                                to="/auth/loginas"
-                                tag={Link}
-                            >
-                                <div className="text-light">
-                                    <small>Ingresar</small>
-                                </div>
-                            </NavLink>
-                        </Col>
-                    </Row>
                 </Col>
             </>
         );

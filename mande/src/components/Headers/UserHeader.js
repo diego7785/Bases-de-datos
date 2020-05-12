@@ -6,9 +6,13 @@ import {Container, Row, Col } from "reactstrap";
 class UserHeader extends React.Component {
 
   state = {
-    name: this.props.state.workerInfo.trabajador_nombre,
+    name: this.props.path === '/worker/user-profile' ? this.props.state.workerInfo.trabajador_nombre : 'Andres',
   }
 
+  constructor(props){
+    super(props)
+    console.log(props)
+  }
   render() {
     return (
       <>

@@ -36,7 +36,6 @@ function isWorker(state){
   }
 
 function getNotification(state){
-  console.log(state)
   //Se adquiere algo desde la base de datos para verificar si se ha solicitado un servicio para este trabajador y se retorna un numero
   if(state.path === "/worker"){
     const status = state.status;
@@ -105,9 +104,9 @@ class NavbarC extends React.Component {
   state={
     notification: true,
     idCard: this.props.location.state.idCard,
-    name: this.props.location.state.workerInfo.trabajador_nombre,
-    lastname: this.props.location.state.workerInfo.trabajador_apellido,
-    status: this.props.location.state.realizaInfo.trabajador_estado,
+    name: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_nombre : 'Andres',
+    lastname: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_apellido : 'Viafara',
+    status: this.props.match.path === '/worker' ? this.props.location.state.realizaInfo.trabajador_estado : 1,
     path: this.props.match.path,
   }
 

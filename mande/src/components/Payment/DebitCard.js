@@ -2,7 +2,7 @@ import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-
+import axios from 'axios';
 
 import {
   Button,
@@ -58,6 +58,50 @@ const bancos = [{ code: "Banco Agrario de Colombia", label: "Banco Agrario de Co
 
 export default function CreditCard(props) {
   const classes = useStyles();
+
+  const finalRegister = async () => {    
+    var exito = 0;
+    const idCard = props.state1.location.state.idCard;
+    const phone = props.state1.location.state.celular;
+    const email = props.state1.location.state.email;
+    const name = props.state1.location.state.name+' '+props.state1.location.state.lastname;
+    const password = props.state1.location.state.password;
+
+    var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${password}`)
+    console.log(res)
+    exito=exito+1; //CAMBIAR ESTO PARA QUE SOLO SUME SI DEVOLVIO MELO, IGUAL REGISTERWORKER2
+
+    const cardNumber = props.state.cardNumber;
+    const bank = props.state.bank;
+    res = await axios.post(`http://localhost:5000/RegisterUser2_1/${cardNumber}/${phone}/${bank}`)
+    console.log(res)
+    exito = exito+1;
+
+    const numberAccount = props.state.numberAccount;
+    res = await axios.post(`http://localhost:5000/RegisterUser2_2/${cardNumber}/${numberAccount}`)
+    console.log(res)
+    exito=exito+1;
+
+    const lat = props.state1.location.state.latitude;
+    const lng = props.state1.location.state.length;
+    const address = props.state1.location.state.completeAddress;
+    const city = props.state1.location.state.city;
+    const depto = props.state1.location.state.depto;
+
+    res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
+    console.log(res)
+    exito=exito+1;
+
+    if(exito === 4){
+      alert('Registro exitoso');
+      props.state1.history.push({pathname: "/auth/"})
+    }else{
+      const credit=0;
+      res = await axios.post(`http://localhost:5000/RegisterUser2_5/delete/${phone}/${cardNumber}/${credit}`)
+      alert('No se ha podido realizar el registro, por favor intente de nuevo');
+    }
+  }
+
   return (
     <>
       <FormGroup>
@@ -93,7 +137,7 @@ export default function CreditCard(props) {
               <i className="ni ni-credit-card" />
             </InputGroupText>
           </InputGroupAddon>
-          <Input placeholder="Número de Tarjeta" type="text" id="numeroTarjetaDebito" onChange={e => props.functionSetState(e, 'numeroTarjetaDebito')} required maxLength="16" />
+          <Input placeholder="Número de Tarjeta" type="text" id="numeroTarjetaDebito" onChange={e => props.functionSetState(e, 'cardNumber')} required maxLength="16" />
         </InputGroup>
       </FormGroup>
 
@@ -104,12 +148,12 @@ export default function CreditCard(props) {
               <i className="ni ni-credit-card" />
             </InputGroupText>
           </InputGroupAddon>
-          <Input placeholder="Número de cuenta" type="text" id="numeroCuentaDebito" required maxLength="20" onChange={e => props.functionSetState(e, 'numeroCuentaDebito')} />
+          <Input placeholder="Número de cuenta" type="text" id="numeroCuentaDebito" required maxLength="20" onChange={e => props.functionSetState(e, 'numberAccount')} />
         </InputGroup>
       </FormGroup>
 
       <div className="text-center">
-        <Button className="mt-4" color="primary" type="button">
+        <Button className="mt-4" color="primary" type="button" onClick={finalRegister}>
           Finalizar
         </Button>
       </div>
