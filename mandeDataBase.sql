@@ -2,13 +2,13 @@ DROP TABLE IF EXISTS Trabajador CASCADE;
 DROP TABLE IF EXISTS Usuario CASCADE;
 DROP TABLE IF EXISTS Labor CASCADE;
 DROP TABLE IF EXISTS Cuenta_bancaria CASCADE;
-DROP TABLE IF EXISTS Medio_pago CASCADE;
 DROP TABLE IF EXISTS Tarjeta_debito CASCADE;
 DROP TABLE IF EXISTS Tarjeta_credito CASCADE;
 DROP TABLE IF EXISTS Realiza CASCADE;
 DROP TABLE IF EXISTS Direccion CASCADE;
 DROP TABLE IF EXISTS Servicio CASCADE;
 DROP TABLE IF EXISTS Paga CASCADE;
+DROP TABLE IF EXISTS Servicio_pago CASCADE;
 CREATE EXTENSION IF NOT EXISTS postgis;
 DROP FUNCTION IF EXISTS add_geopint;
 DROP TRIGGER IF EXISTS trigger_add_geopint ON Direccion;
@@ -47,31 +47,8 @@ CREATE TABLE Trabajador(
 	 CONSTRAINT pk_cuenta_bancaria PRIMARY KEY (numero_cuenta_bancaria),
 	 CONSTRAINT fk_trabajador FOREIGN KEY (cedula_trabajador) REFERENCES Trabajador(cedula_trabajador) ON UPDATE CASCADE ON DELETE RESTRICT
  );
-
- CREATE TABLE Medio_pago(
-	 numero_tarjeta_medio_pago VARCHAR(20) NOT NULL,
-	 celular_usuario VARCHAR(10) NOT NULL,
-	 medio_pago_banco VARCHAR(50) NOT NULL,
-	 CONSTRAINT pk_medio_pago PRIMARY KEY (numero_tarjeta_medio_pago),
-	 CONSTRAINT fk_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT
- );
-
- CREATE TABLE Tarjeta_debito(
-	 numero_tarjeta_medio_pago VARCHAR(20) NOT NULL,
-	 tarjeta_debito_numero_cuenta VARCHAR(20) NOT NULL,
-	 CONSTRAINT pk_tarjeta_debito PRIMARY KEY (numero_tarjeta_medio_pago),
-	 CONSTRAINT fK_medio_pago FOREIGN KEY (numero_tarjeta_medio_pago) REFERENCES Medio_pago(numero_tarjeta_medio_pago) ON UPDATE CASCADE ON DELETE RESTRICT
- );
-
- CREATE TABLE Tarjeta_credito(
-	 numero_tarjeta_medio_pago VARCHAR(20) NOT NULL,
-	 tarjeta_credito_fecha_vencimiento VARCHAR(5) NOT NULL,
-	 tarjeta_credito_cvc VARCHAR(4) NOT NULL,
-	 CONSTRAINT pk_tarjeta_credito PRIMARY KEY (numero_tarjeta_medio_pago),
-	 CONSTRAINT fK_medio_pago FOREIGN KEY (numero_tarjeta_medio_pago) REFERENCES Medio_pago(numero_tarjeta_medio_pago) ON UPDATE CASCADE ON DELETE RESTRICT
- );
-
- CREATE TABLE Labor(
+ 
+  CREATE TABLE Labor(
 	 id_labor SERIAL NOT NULL,
 	 labor_nombre VARCHAR(50) NOT NULL,
 	 CONSTRAINT pk_labor PRIMARY KEY (id_labor)
@@ -112,19 +89,43 @@ CREATE TABLE Trabajador(
 	 servicio_fecha DATE NOT NULL,
 	 servicio_hora_inicio TIME NOT NULL,
 	 servicio_hora_fin TIME NOT NULL,
+	 paga_fecha_pago DATE NOT NULL,
+	 paga_valor_pago INT NOT NULL,
 	 CONSTRAINT pk_servicio PRIMARY KEY (id_servicio),
 	 CONSTRAINT fk_trabajador FOREIGN KEY (cedula_trabajador) REFERENCES Trabajador(cedula_trabajador) ON UPDATE CASCADE ON DELETE RESTRICT,
 	 CONSTRAINT fk_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT,
 	 CONSTRAINT fk_labor FOREIGN KEY (labor_id) REFERENCES Labor(id_labor) ON UPDATE CASCADE ON DELETE RESTRICT
  );
 
- CREATE TABLE Paga(
-	 numero_tarjeta_medio_pago VARCHAR(20) NOT NULL,
-	 id_servicio INT NOT NULL,
-	 paga_fecha_pago DATE NOT NULL,
-	 CONSTRAINT pk_paga PRIMARY KEY (numero_tarjeta_medio_pago, id_servicio),
-	 CONSTRAINT fk_servicio FOREIGN KEY (id_servicio) REFERENCES Servicio(id_servicio) ON UPDATE CASCADE ON DELETE RESTRICT,
-	 CONSTRAINT fk_medio_pago FOREIGN KEY (numero_tarjeta_medio_pago) REFERENCES Medio_pago(numero_tarjeta_medio_pago) ON UPDATE CASCADE ON DELETE RESTRICT
+ CREATE TABLE Servicio_pago(
+ 	id_servicio INT UNIQUE NOT NULL,
+	numero_tarjeta VARCHAR(20) UNIQUE NOT NULL,
+	paga_tipo VARCHAR(8) UNIQUE NOT NULL,
+	CONSTRAINT pk_servicio_pago PRIMARY KEY (id_servicio, numero_tarjeta),
+	CONSTRAINT fK_servicio FOREIGN KEY (id_servicio) REFERENCES Servicio(id_servicio) ON UPDATE CASCADE ON DELETE RESTRICT
+ );
+ CREATE TABLE Tarjeta_debito(
+	 numero_tarjeta_debito VARCHAR(20) NOT NULL,
+	 celular_usuario VARCHAR(10) NOT NULL,
+	 paga_tipo VARCHAR(8) NOT NULL DEFAULT ('debito'),
+	 tarjeta_debito_banco VARCHAR(50) NOT NULL,
+	 tarjeta_debito_numero_cuenta VARCHAR(20) NOT NULL,
+	 CONSTRAINT pk_tarjeta_debito PRIMARY KEY (numero_tarjeta_debito),
+	 CONSTRAINT fK_servicio_pago FOREIGN KEY (numero_tarjeta_debito) REFERENCES Servicio_pago(numero_tarjeta) ON UPDATE CASCADE ON DELETE RESTRICT,
+	 CONSTRAINT fK_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT,
+	 CONSTRAINT fK_servicio_pago_tipo FOREIGN KEY (paga_tipo) REFERENCES Servicio_pago(paga_tipo) ON UPDATE CASCADE ON DELETE RESTRICT
+ );
+
+ CREATE TABLE Tarjeta_credito(
+	 numero_tarjeta_credito VARCHAR(20) NOT NULL,
+	 celular_usuario VARCHAR(10) NOT NULL,
+	 paga_tipo VARCHAR(8) NOT NULL DEFAULT ('credito'),
+	 tarjeta_credito_fecha_vencimiento VARCHAR(5) NOT NULL,
+	 tarjeta_credito_cvc VARCHAR(4) NOT NULL,
+	 CONSTRAINT pk_tarjeta_credito PRIMARY KEY (numero_tarjeta_credito),
+	 CONSTRAINT fK_servicio_pago FOREIGN KEY (numero_tarjeta_credito) REFERENCES Servicio_pago(numero_tarjeta) ON UPDATE CASCADE ON DELETE RESTRICT,
+	 CONSTRAINT fK_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT,
+	 CONSTRAINT fK_servicio_pago_tipo FOREIGN KEY (paga_tipo) REFERENCES Servicio_pago(paga_tipo) ON UPDATE CASCADE ON DELETE RESTRICT
  );
 
  --TRIGGERS
