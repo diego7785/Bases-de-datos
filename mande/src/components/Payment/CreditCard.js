@@ -65,24 +65,25 @@ const finalRegister = async() => {
   const idCard = props.state1.location.state.idCard;
   const phone = props.state1.location.state.celular;
   const email = props.state1.location.state.email;
-  const name = props.state1.location.state.name+' '+props.state1.location.state.lastname;
+  const name = props.state1.location.state.name;
+  const lastname = props.state1.location.state.lastname;
   const password = props.state1.location.state.password;
 
-  var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${password}`)
+  var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
   console.log(res)
-  exito=exito+1; //CAMBIAR ESTO PARA QUE SOLO SUME SI DEVOLVIO MELO, IGUAL REGISTERWORKER2
-
-  const cardNumber = props.state.cardNumber;
-  const bank = props.state.bank;
-  res = await axios.post(`http://localhost:5000/RegisterUser2_1/${cardNumber}/${phone}/${bank}`)
-  console.log(res)
-  exito = exito+1;
+  if(res.statusText === "OK"){
+    exito=exito+1;
+  }
 
   const endDate = props.state.month+'/'+props.state.year;
   const cvc = props.state.cvc;
-  res = await axios.post(`http://localhost:5000/RegisterUser2_4/${cardNumber}/${endDate}/${cvc}`)
+  const cardNumber=props.state.cardNumber;
+  const bank=props.state.bank;
+  res = await axios.post(`http://localhost:5000/RegisterUser2_4/${cardNumber}/${phone}/${bank}/${endDate}/${cvc}`)
   console.log(res)
-  exito=exito+1;
+  if(res.statusText === "OK"){
+    exito=exito+1;
+  }
 
   const lat = props.state1.location.state.latitude;
   const lng = props.state1.location.state.length;
@@ -92,9 +93,11 @@ const finalRegister = async() => {
 
   res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
   console.log(res)
-  exito=exito+1;
+  if(res.statusText === "OK"){
+    exito=exito+1;
+  }
 
-  if(exito === 4){
+  if(exito === 3){
     alert('Registro exitoso');
     props.state1.history.push({pathname: "/auth/"})
   }else{

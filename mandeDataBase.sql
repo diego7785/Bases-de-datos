@@ -31,6 +31,7 @@ CREATE TABLE Trabajador(
 	 celular_usuario VARCHAR(10) NOT NULL,
 	 usuario_email VARCHAR(50) NOT NULL,
 	 usuario_nombre VARCHAR(70) NOT NULL,
+	 usuario_apellido VARCHAR(70) NOT NULL,
 	 usuario_contrasenia VARCHAR(50) NOT NULL,
 	 usuario_foto_perfil VARCHAR(25),
 	 usuario_foto_id_frente VARCHAR(25) NOT NULL,
@@ -47,7 +48,7 @@ CREATE TABLE Trabajador(
 	 CONSTRAINT pk_cuenta_bancaria PRIMARY KEY (numero_cuenta_bancaria),
 	 CONSTRAINT fk_trabajador FOREIGN KEY (cedula_trabajador) REFERENCES Trabajador(cedula_trabajador) ON UPDATE CASCADE ON DELETE RESTRICT
  );
- 
+
   CREATE TABLE Labor(
 	 id_labor SERIAL NOT NULL,
 	 labor_nombre VARCHAR(50) NOT NULL,
@@ -98,12 +99,13 @@ CREATE TABLE Trabajador(
  );
 
  CREATE TABLE Servicio_pago(
- 	id_servicio INT UNIQUE NOT NULL,
+ 	id_servicio SERIAL UNIQUE NOT NULL,
 	numero_tarjeta VARCHAR(20) UNIQUE NOT NULL,
 	paga_tipo VARCHAR(8) UNIQUE NOT NULL,
 	CONSTRAINT pk_servicio_pago PRIMARY KEY (id_servicio, numero_tarjeta),
 	CONSTRAINT fK_servicio FOREIGN KEY (id_servicio) REFERENCES Servicio(id_servicio) ON UPDATE CASCADE ON DELETE RESTRICT
  );
+
  CREATE TABLE Tarjeta_debito(
 	 numero_tarjeta_debito VARCHAR(20) NOT NULL,
 	 celular_usuario VARCHAR(10) NOT NULL,
@@ -120,6 +122,7 @@ CREATE TABLE Trabajador(
 	 numero_tarjeta_credito VARCHAR(20) NOT NULL,
 	 celular_usuario VARCHAR(10) NOT NULL,
 	 paga_tipo VARCHAR(8) NOT NULL DEFAULT ('credito'),
+	 tarjeta_credito_banco VARCHAR(50) NOT NULL,
 	 tarjeta_credito_fecha_vencimiento VARCHAR(5) NOT NULL,
 	 tarjeta_credito_cvc VARCHAR(4) NOT NULL,
 	 CONSTRAINT pk_tarjeta_credito PRIMARY KEY (numero_tarjeta_credito),

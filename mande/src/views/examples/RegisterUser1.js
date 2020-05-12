@@ -63,45 +63,40 @@ onClickNext = (e) => {
    }
 }
 
-  onClickHandler = () => {
+  onClickHandler = async () => {
       var cont = 0;
       var data = new FormData()
       data.append('file', this.state.bill)
-      axios.post("http://localhost:5000/RegisterUser1/images?idCard="+this.props.location.state.idCard+"&type=recibo&user=client", data, {})
-        .then(res => {
-          if(res.statusText === "OK"){
-            cont=1;
-          }
-        })
+      var res = await axios.post("http://localhost:5000/RegisterUser1/images?idCard="+this.props.location.state.idCard+"&type=recibo&user=client", data, {})
+      if(res.statusText === "OK"){
+          cont=1;
+      }
+
       data = new FormData()
       data.append('file', this.state.frontID)
-      axios.post("http://localhost:5000/RegisterUser1/images?idCard="+this.props.location.state.idCard+"&type=front&user=client", data, {})
-        .then(res => {
-          if(res.statusText === "OK"){
-            cont++;
-          }
-        })
-        data = new FormData()
-        data.append('file', this.state.backID)
-        axios.post("http://localhost:5000/RegisterUser1/images?idCard="+this.props.location.state.idCard+"&type=back&user=client", data, {})
-          .then(res => {
-            if(res.statusText === "OK"){
-              cont++;
-            }
-          })
+      res = await axios.post("http://localhost:5000/RegisterUser1/images?idCard="+this.props.location.state.idCard+"&type=front&user=client", data, {})
+      if(res.statusText === "OK"){
+          cont++;
+      }
+
+      data = new FormData()
+      data.append('file', this.state.backID)
+      res = await axios.post("http://localhost:5000/RegisterUser1/images?idCard="+this.props.location.state.idCard+"&type=back&user=client", data, {})
+      if(res.statusText === "OK"){
+          cont++;
+      }
+
       data = new FormData()
       data.append('file', this.state.profilePic)
-      axios.post("http://localhost:5000/RegisterUser1/images?idCard="+this.props.location.state.idCard+"&type=profilepic&user=client", data, {})
-        .then(res => {
-          if(res.statusText === "OK"){
-            cont++;
-            if(cont === 4){
+      res = await axios.post("http://localhost:5000/RegisterUser1/images?idCard="+this.props.location.state.idCard+"&type=profilepic&user=client", data, {})
+      if(res.statusText === "OK"){
+          cont++;
+          if(cont === 4){
               alert('Imágenes cargadas con éxito');
-            } else{
+          } else{
               alert('Fallo al cargar una de las imágenes');
-            }
           }
-        })
+        }
   }
 
     render() {
