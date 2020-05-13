@@ -1,7 +1,7 @@
 import React from "react";
 
 // reactstrap components
-import {Card, CardBody, CardHeader, Row, Col } from "reactstrap";
+import {Card, CardBody, CardHeader } from "reactstrap";
 import WorkerCardRating from "components/RatingSelector/WorkerCardRating"
 
 class WorkerRater extends React.Component {

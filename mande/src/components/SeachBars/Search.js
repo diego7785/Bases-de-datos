@@ -1,6 +1,5 @@
 import React from "react";
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
@@ -27,7 +26,7 @@ const style = {
     borderRadius: 3,
     border: 0,
     color: 'white',
-    minWidth: 200, 
+    minWidth: 200,
     width: 800,
   };
 

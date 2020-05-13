@@ -6,9 +6,6 @@ import {
   Container,
   Row,
   Col,
-  Table,
-  Card,
-  CardHeader,
 } from "reactstrap";
 
 import Header from "components/Headers/Header.js";

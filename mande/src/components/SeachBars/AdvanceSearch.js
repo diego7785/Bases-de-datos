@@ -1,7 +1,6 @@
 import React from "react";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from "@material-ui/core/styles";
 import RangeSlider from './Slider';
 import Rater from '../RatingSelector/RatingSelector'
 
