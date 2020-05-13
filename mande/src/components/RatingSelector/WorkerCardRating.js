@@ -12,19 +12,18 @@ const useStyles = makeStyles(() => ({
   root: {
     maxWidth: 400,
     minWidth: 200,
-   
+
     marginTop: 30,
     marginLeft: 30,
     marginRight: 30,
   },
   avatar: {
     backgroundColor: red[500],
-  },  
+  },
 }));
 
 const WorkerRating = (props) => {
   const classes = useStyles();
-  const [] = React.useState(false);
 console.log(props.src)
   return (
     <Card className={classes.root} >
