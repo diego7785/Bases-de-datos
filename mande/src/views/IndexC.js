@@ -35,7 +35,7 @@ class IndexC extends React.Component {
     return (
       <div>
 
-        <Header />
+        <Header location={this.props.match.path}/>
         <SearchBar />
         <Container className = "mt--7" fluid>
           <Row style = {{marginTop: 80}}>
@@ -59,7 +59,7 @@ class IndexC extends React.Component {
                   precio="70000"
                   src = "/assets/img/profilePics/RodrigoPerez.jpg"
                 />
-              </Row>  
+              </Row>
             </Col>
             <Col xl="4" style = {{marginTop: 30}}>
               <WorkerRater/>

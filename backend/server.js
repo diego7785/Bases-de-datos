@@ -81,10 +81,18 @@ app.post(`/RegisterUser2_2/:cardNumber/:phone/:bank/:numberAccount`, (req,res) =
 
 app.post(`/RegisterUser2_3/:phone/:lat/:lng/:address/:city/:depto`, (req,res)=> user.createAddress(req,res,db))
 
-app.post(`/RegisterUser2_4/:cardNumber/:phone/:bank/:endDate/:cvc` , (req,res) => user.createCreditCard(req,res,db))
+app.post(`/RegisterCreditCard/:cardNumber/:phone/:bank/:endDate/:cvc` , (req,res) => user.createCreditCard(req,res,db))
 
 app.post(`/RegisterUser2_5/delete/:phone/:cardNumber/:credit`, (req, res) => user.deleteAll(req,res,db))
 
 app.get(`/LoginAsUser/:phone/:pass`, (req,res) => user.login(req,res,db))
+
+app.get(`/GetUserInfo/:phone`, (req,res)=> user.getUserInfo(req,res,db))
+
+app.get(`/GetUserAddressInfo/:phone`, (req,res) => user.getUserAddressInfo(req,res,db))
+
+app.get(`/GetCreditCardInfo/:phone`, (req,res) => user.getCreditCardInfo(req,res,db))
+
+app.get(`/GetDebitCardInfo/:phone`, (req,res) => user.getDebitCardInfo(req,res,db))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))

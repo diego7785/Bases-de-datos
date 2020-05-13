@@ -104,8 +104,8 @@ class NavbarC extends React.Component {
   state={
     notification: true,
     idCard: this.props.location.state.idCard,
-    name: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_nombre : 'Andres',
-    lastname: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_apellido : 'Viafara',
+    name: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_nombre : this.props.location.state.userInfo.usuario_nombre,
+    lastname: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_apellido : this.props.location.state.userInfo.usuario_apellido,
     status: this.props.match.path === '/worker' ? this.props.location.state.realizaInfo.trabajador_estado : 1,
     path: this.props.match.path,
   }

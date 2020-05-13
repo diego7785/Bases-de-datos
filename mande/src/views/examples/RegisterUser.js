@@ -136,6 +136,7 @@ class RegisterUser extends React.Component {
         barrio: this.state.barrio,
         latitude: this.state.latitude,
         length: this.state.length,
+        completeAddress: this.state.completeAddress,
       }
     })
   }

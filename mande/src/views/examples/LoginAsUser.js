@@ -36,9 +36,36 @@ class LoginAsUser extends React.Component {
 
     const res = await axios.get(`http://localhost:5000/LoginAsUser/${phone}/${pass}/`)
     if(res.data[0]){
+      const res1 = await axios.get(`http://localhost:5000/GetUserInfo/${phone}/`)
+      const userInfo = res1.data
+      const res2 = await axios.get(`http://localhost:5000/GetUserAddressInfo/${phone}/`)
+      const addressInfo = res2.data
+      const res3 = await axios.get(`http://localhost:5000/GetCreditCardInfo/${phone}/`)
+      const creditCardInfo = res3.data
+      const res4 = await axios.get(`http://localhost:5000/GetDebitCardInfo/${phone}/`)
+      const debitCardInfo = res4.data
+
+      var paymentMethod;
+      var type;
+      console.log(userInfo)
+      console.log(addressInfo)
+      if(debitCardInfo === "" ){
+        paymentMethod=creditCardInfo;
+        type='Credito'
+      } else{
+        paymentMethod=debitCardInfo;
+        type='Debito'
+      }
+      console.log(paymentMethod)
+
+
       this.props.history.push({
         pathname: "/client/", state: {
-        idCard: res.data[1]
+        idCard: res.data[1],
+        userInfo: userInfo,
+        addressInfo: addressInfo,
+        paymentMethod: paymentMethod,
+        type: type,
         }
       })
     } else {
