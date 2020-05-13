@@ -9,7 +9,7 @@ import Geocode from "react-geocode";
 const AnyReactComponent = ({ text }) => <div><img src={require("assets/img/icons/common/dropPin.png")} alt={text} width="50"/></div>;
 
 
-Geocode.setApiKey('GEOCODING KEY');
+Geocode.setApiKey('AIzaSyA3QdJU4tDb58Vvx46uIDEsJR-vcW8tF0w');
 Geocode.setLanguage("es");
 Geocode.setRegion("co");
 Geocode.enableDebug();
@@ -29,7 +29,7 @@ class SimpleMap extends Component {
     return (
       <div style={{ height: '50vh', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'GOOGLE MAPS KEY' }}
+          bootstrapURLKeys={{ key: 'AIzaSyA3QdJU4tDb58Vvx46uIDEsJR-vcW8tF0w' }}
           defaultCenter={{lat: this.props.state.latitude, lng: this.props.state.length}}
           defaultZoom={15}
         >

@@ -4,10 +4,11 @@ import Direccion from "components/Address/Direccion.js"
 import TextField from '@material-ui/core/TextField';
 import Geocode from "react-geocode";
 import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
+import axios from 'axios';
+import Button from '@material-ui/core/Button';
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardBody,
   FormGroup,
@@ -20,6 +21,8 @@ import {
   Col,
   NavLink
 } from "reactstrap";
+
+
 
 var retornarDireccion = (state) => {
   if (state.completeAddress === true) {
@@ -44,8 +47,10 @@ class RegisterWorker extends React.Component {
     name: true,
     lastname: true,
     email: true,
+    celular: true,
     idCard: true,
     password: true,
+    passwordR: true,
     departamento: true,
     municipio: true,
     tipoVia: true,
@@ -60,6 +65,7 @@ class RegisterWorker extends React.Component {
     latitude: true,
     length: true,
     completeAddress: true,
+    open: false,
   }
 
   //Setea el state, correspondiente al id, trigger sets the variables for the map
@@ -96,21 +102,20 @@ class RegisterWorker extends React.Component {
         comp = "";
       }
 
-      var address = tipoVia + " " + nombreVia + " # " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
-
-      var toConvert = address + ", " + municipio + ", " + departamento + ", " + "Colombia";
-      this.setState({ completeAddress: toConvert });
-      Geocode.fromAddress(toConvert).then(
-        response => {
-          const { lat, lng } = response.results[0].geometry.location;
-          this.setState({ latitude: lat });
-          this.setState({ length: lng });
-        },
-        error => {
-          console.error(error);
-        }
-      );
-    }
+    var address = tipoVia + " " + nombreVia + " No " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
+    var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
+    this.setState({completeAddress: address});
+    Geocode.fromAddress(toConvert).then(
+      response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        this.setState({ latitude: lat});
+        this.setState({ length: lng});
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
   }
 
   changeViaState = () => {
@@ -118,28 +123,34 @@ class RegisterWorker extends React.Component {
   }
 
   onClickNext = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    var jobs=[];
+    axios.get(`http://localhost:5000/RegisterWorker1/${"labores"}/`).then(res => {
+                                                                                  for(var i=0; i<res.data.length; i++){
+                                                                                    jobs.push({code: res.data[i].labor_nombre, label: res.data[i].labor_nombre});
+                                                                                  }
+                                                                                });
+    if(this.state.passwordR !== this.state.password){
+      alert('Las contraseñas no coinciden');
+    } else{
     this.props.history.push({
       pathname: "/auth/RegisterWorker1/", state: {
         name: this.state.name,
         lastname: this.state.lastname,
+        celular: this.state.celular,
         email: this.state.email,
         idCard: this.state.idCard,
         password: this.state.password,
+        passwordR: this.state.passwordR,
         departamento: this.state.departamento,
         municipio: this.state.municipio,
-        tipoVia: this.state.tipoVia,
-        nombreVia: this.state.nombreVia,
-        viaSec: this.state.viaSec,
-        nombreViaSec: this.state.nombreViaSec,
-        compViaSec: this.state.compViaSec,
-        numeroCasa: this.state.numeroCasa,
-        comp: this.state.comp,
-        barrio: this.state.barrio,
+        completeAddress: this.state.completeAddress,
         latitude: this.state.latitude,
         length: this.state.length,
+        tjobs: jobs,
       }
     })
+  }
   }
 
   render() {
@@ -149,7 +160,7 @@ class RegisterWorker extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>Registro</small>
+                <small>PASO 1: Ingresar información personal</small>
               </div>
               <Form role="form">
               <FormGroup>
@@ -219,7 +230,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-lock-circle-open" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e, 'password', 1)} />
+                  <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e, 'passwordR', 1)} />
                 </InputGroup>
               </FormGroup>
 
@@ -228,9 +239,9 @@ class RegisterWorker extends React.Component {
               {retornarDireccion(this.state)}
 
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="button" onClick={this.onClickNext}>
+                <Button className="mt-4" variant="contained" color="primary" onClick={this.onClickNext}>
                   Siguiente
-                  </Button>
+                </Button>
               </div>
               </Form>
             </CardBody>

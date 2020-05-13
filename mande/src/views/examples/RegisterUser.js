@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Direccion from "components/Address/Direccion.js"
 import Geocode from "react-geocode";
 import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
@@ -16,9 +15,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Row,
   Col,
-  NavLink
 } from "reactstrap";
 
 var retornaMap = (state) => {
@@ -40,11 +37,13 @@ var retornarDireccion = (state) =>{
 }
 class RegisterUser extends React.Component {
   state = {
+    celular: true,
     name: true,
     lastname: true,
     email: true,
     idCard: true,
     password: true,
+    passwordR:true,
     departamento: true,
     municipio: true,
     tipoVia: true,
@@ -77,7 +76,6 @@ class RegisterUser extends React.Component {
     var compViaSec = this.state.compViaSec;
     var numeroCasa = this.state.numeroCasa;
     var comp = this.state.comp;
-
     if(tipoVia === true ||  tipoVia === "Select"){
       tipoVia = "";
     }
@@ -97,10 +95,9 @@ class RegisterUser extends React.Component {
       comp = "";
     }
 
-    var address = tipoVia +" "+ nombreVia +" # "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
-
+    var address = tipoVia +" "+ nombreVia +" No "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
     var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
-    this.setState({completeAddress: toConvert});
+    this.setState({completeAddress: address});
     Geocode.fromAddress(toConvert).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
@@ -113,7 +110,37 @@ class RegisterUser extends React.Component {
     );
   }
   }
+  onClickNext = (e) => {
+    e.preventDefault();
+    if(this.state.passwordR !== this.state.password){
+      alert('Las contraseñas no coinciden');
+    } else{
+    this.props.history.push({
+      pathname: "/auth/RegisterUser1/", state: {
+        celular: this.state.celular,
+        name: this.state.name,
+        lastname: this.state.lastname,
+        email: this.state.email,
+        idCard: this.state.idCard,
+        password: this.state.password,
+        passwordR: this.state.passwordR,
+        departamento: this.state.departamento,
+        municipio: this.state.municipio,
+        tipoVia: this.state.tipoVia,
+        nombreVia: this.state.nombreVia,
+        viaSec: this.state.viaSec,
+        nombreViaSec: this.state.nombreViaSec,
+        compViaSec: this.state.compViaSec,
+        numeroCasa: this.state.numeroCasa,
+        comp: this.state.comp,
+        barrio: this.state.barrio,
+        latitude: this.state.latitude,
+        length: this.state.length,
+      }
+    })
+  }
 
+  }
   render() {
     return (
       <>
@@ -121,7 +148,7 @@ class RegisterUser extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>REGÍSTRESE</small>
+                <small>PASO 1: Ingresar información personal</small>
               </div>
               <Form role="form">
               <FormGroup>
@@ -131,7 +158,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-tablet-button" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Celular" type="text" />
+                    <Input placeholder="Celular" type="text" onChange={e => this.onHandleChange(e, 'celular', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -141,7 +168,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Nombre" type="text" />
+                    <Input placeholder="Nombre" type="text" onChange={e => this.onHandleChange(e, 'name', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -151,7 +178,7 @@ class RegisterUser extends React.Component {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Apellido" type="text" />
+                  <Input placeholder="Apellido" type="text" onChange={e => this.onHandleChange(e, 'lastname', 1)}/>
                 </InputGroup>
               </FormGroup>
                 <FormGroup>
@@ -161,7 +188,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email" />
+                    <Input placeholder="Email" type="email" autoComplete="new-email" onChange={e => this.onHandleChange(e, 'email', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -171,7 +198,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-key-25" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Cedula" type="text" id="idCard"/>
+                    <Input placeholder="Cedula" type="text" id="idCard" onChange={e => this.onHandleChange(e, 'idCard', 1)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -181,7 +208,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" />
+                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" onChange={e => this.onHandleChange(e, 'password', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -191,7 +218,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" />
+                    <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" onChange={e => this.onHandleChange(e, 'passwordR', 1)} />
                   </InputGroup>
                 </FormGroup>
 
@@ -200,26 +227,13 @@ class RegisterUser extends React.Component {
                   {retornaMap(this.state)}
                   {retornarDireccion(this.state)}
                 <div className="text-center">
-                  <Button className="mt-4" color="primary" type="button">
-                    Continuar
+                  <Button className="mt-4" color="primary" type="button" onClick={this.onClickNext}>
+                    Siguiente
                   </Button>
                 </div>
               </Form>
             </CardBody>
           </Card>
-          <Row className="mt-3">
-            <Col className="text-right" xs="12">
-              <NavLink
-                className="nav-link-icon"
-                to="/auth/loginas"
-                tag={Link}
-              >
-                <div className="text-light">
-                  <small>Ingresar</small>
-                </div>
-              </NavLink>
-            </Col>
-          </Row>
         </Col>
       </>
     );

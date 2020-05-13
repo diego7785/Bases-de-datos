@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom'
+import axios from 'axios';
 
 // reactstrap components
 import {
@@ -18,6 +19,34 @@ import {
 } from "reactstrap";
 
 class LoginAsUser extends React.Component {
+
+  state = {
+    phone: true,
+    pass: true,
+  }
+
+  onHandleChange = (id, event) =>{
+    this.setState({ [id]: event.target.value})
+  }
+
+  onHandleNext = async (e) =>{
+    e.preventDefault()
+    const phone = parseInt(this.state.phone);
+    const pass = this.state.pass;
+
+    const res = await axios.get(`http://localhost:5000/LoginAsUser/${phone}/${pass}/`)
+    if(res.data[0]){
+      this.props.history.push({
+        pathname: "/client/", state: {
+        idCard: res.data[1]
+        }
+      })
+    } else {
+      alert('Credenciales incorrectas');
+    }
+
+}
+
   render() {
     return (
       <>
@@ -25,7 +54,7 @@ class LoginAsUser extends React.Component {
           <Card className="bg-secondary shadow border-0">
             <CardBody className="px-lg-5 py-lg-5">
               <div className="text-center text-muted mb-4">
-                <small>SIGN IN </small>
+                <small>Ingresar </small>
               </div>
               <Form role="form">
                 <FormGroup className="mb-3">
@@ -35,7 +64,7 @@ class LoginAsUser extends React.Component {
                         <i className="ni ni-mobile-button" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Celular" type="text"/>
+                    <Input placeholder="Celular" type="text" onChange={e => this.onHandleChange('phone', e)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -45,11 +74,11 @@ class LoginAsUser extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password" />
+                    <Input placeholder="Password" type="password" autoComplete="new-password" onChange={e => this.onHandleChange('pass', e)}/>
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button" href="/client/index">
+                  <Button className="my-4" color="primary" type="button" onClick={e => this.onHandleNext(e)}>
                     Ingresar
                   </Button>
                 </div>
@@ -58,22 +87,23 @@ class LoginAsUser extends React.Component {
           </Card>
           <Row className="mt-3">
             <Col xs="6">
-              <a
+              <NavLink
                 className="text-light"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
+                to="/auth/ForgotPassword"
+                tag={Link}
               >
-                <small>Forgot password?</small>
-              </a>
+              <div className="text-light">
+                <small>¿Olvidaste tu contraseña?</small>
+              </div>
+              </NavLink>
             </Col>
             <Col className="text-right" xs="6">
               <NavLink
                 className="nav-link-icon"
-                to="/auth/RegisterAs"
-                tag={Link}
-              >
+                to='/auth/ForgotPassword'
+                >
                 <div className="text-light">
-                  <small>Create new account</small>
+                  <small>Crear cuenta</small>
                 </div>
 
               </NavLink>

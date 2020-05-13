@@ -6,6 +6,9 @@ import {
   Container,
   Row,
   Col,
+  Table,
+  Card,
+  CardHeader,
 } from "reactstrap";
 
 import Header from "components/Headers/Header.js";
@@ -37,7 +40,6 @@ class IndexC extends React.Component {
         <Container className = "mt--7" fluid>
           <Row style = {{marginTop: 80}}>
             <Col>
-              
               <Row>
                 <ResultCard name="David Lopez"
                   descripcion="Profesor de inglés para todas las edades y niveles. Preparación para el EITLS o el TOEFL, traducción de documentos, clases personalizadas"

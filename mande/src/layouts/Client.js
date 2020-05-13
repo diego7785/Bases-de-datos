@@ -61,7 +61,7 @@ class Client extends React.Component {
           />
           <Switch>
             {this.getRoutes(routes)}
-            <Redirect from="*" to="/client/index" />
+            <Redirect from="*" to={{ pathname: "/client/index", state: {path: 'client',  state: this.props.location.state}}} />
           </Switch>
           <Container fluid>
             <Footer />

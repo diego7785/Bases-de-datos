@@ -43,6 +43,7 @@ class IndexW extends React.Component {
       parseOptions(Chart, chartOptions());
     }
   }
+
   toggleNavs = (e, index) => {
     e.preventDefault();
     this.setState({

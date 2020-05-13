@@ -1,7 +1,6 @@
 import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import DebitCard from './DebitCard';
 import CreditCard from './CreditCard';
 
@@ -12,38 +11,35 @@ import {
 const medioPago = [{ code: "Tarjeta débito", label: "Tarjeta débito" },
 { code: "Tarjeta de crédito", label: "Tarjeta de crédito" },]
 
-const useStyles = makeStyles(theme => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-  marginN: {
-    marginTop: theme.spacing(-1.6),
-  },
-  fab: {
-    margin: theme.spacing(2),
-  },
-  absolute: {
-    position: 'absolute',
-    bottom: theme.spacing(2),
-    right: theme.spacing(3),
-  },
-}));
-
 class Pay extends React.Component {
 
-  state = {
-    selection: ''
+  selectPayment = (e) => {
+    this.props.onHandleChange('type', e.target.innerText);
   }
 
-  selectPayment = (e) => {
-    this.setState({ selection: e.target.innerText });
-    console.log(this.state.selection);
+  selectDebit = (event, id) => {
+    if (id === "bancoDebito") {
+    this.props.onHandleChange('bank', event.target.innerText )
+    }
+    else {
+      this.props.onHandleChange(id, event.target.value )
+    }
   }
+
+  selectCredit = (event, id) => {
+    if (id === "bancoCredito") {
+      this.props.onHandleChange('bank', event.target.innerText )
+    }
+    else {
+      this.props.onHandleChange(id, event.target.value )
+    }
+  }
+
 
   render() {
     return (
       <>
-        <FormGroup>
+        <FormGroup style={{ marginTop: 20}}>
           <Autocomplete
             id="pay-selection"
             style={{ width: 440 }}
@@ -68,13 +64,13 @@ class Pay extends React.Component {
             )}
             onChange={(event) => { this.selectPayment(event); }}
           />
-          <div style = {{marginTop:30}}>
+          <div style={{ marginTop: 30 }}>
             {(() => {
-              switch (this.state.selection) {
+              switch (this.props.state.type) {
                 case "Tarjeta débito":
-                  return <DebitCard />;
+                  return <DebitCard state={this.props.state} state1={this.props.state1} functionSetState={this.selectDebit} />;
                 case "Tarjeta de crédito":
-                  return <CreditCard />;
+                  return <CreditCard state={this.props.state} state1={this.props.state1} functionSetStateI={this.selectCredit} />;
                 default:
                   return null;
               }
@@ -86,4 +82,3 @@ class Pay extends React.Component {
   }
 }
 export default Pay;
-

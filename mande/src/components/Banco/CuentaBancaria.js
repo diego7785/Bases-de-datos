@@ -58,13 +58,13 @@ const bancos = [ {code:"Banco Agrario de Colombia", label:"Banco Agrario de Colo
 const tipoCuenta = [{code: "Cuenta de ahorros", label: "Cuenta de ahorros"},
                     {code: "Cuenta corriente", label: "Cuenta corriente"},]
 
-export default function CuentaBancaria(){
+export default function CuentaBancaria(props){
 const classes = useStyles();
   return(
     <>
     <FormGroup>
     <Autocomplete
-      id="jobs-selection"
+      id="bank-selection"
       style={{ width: 440 }}
       options={bancos}
       classes={{
@@ -88,6 +88,7 @@ const classes = useStyles();
           }}
         />
     )}
+    onChange={e =>  props.functionSetState(e, 'bancoCuenta')  }
     />
     </FormGroup>
     <FormGroup>
@@ -110,12 +111,9 @@ const classes = useStyles();
           {...params}
           label="Escoja un tipo de cuenta bancaria"
           variant="outlined"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
-          }}
         />
     )}
+    onChange={e => props.functionSetState(e, 'tipoCuenta')  }
     />
     </FormGroup>
     <FormGroup>
@@ -125,7 +123,7 @@ const classes = useStyles();
             <i className="ni ni-credit-card" />
           </InputGroupText>
         </InputGroupAddon>
-        <Input placeholder="Número de cuenta" type="text" />
+        <Input placeholder="Número de cuenta" type="text" required maxLength="20" onChange={e => props.functionSetState(e, 'numeroCuenta')} />
       </InputGroup>
     </FormGroup>
     </>

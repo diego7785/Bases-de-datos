@@ -27,14 +27,50 @@ import {
   Media
 } from "reactstrap";
 
+function getNotification(props){
+  //Si ha sido seleccionado se retorna una cara feliz, si no se retorna una campana
+  //<i className="ni ni-bell-55"></i>
+  if(props.match.path === "/worker"){
+    return(<i className="ni ni-satisfied"></i>);
+  }
+
+}
+
+function getBusy(props){
+  //Si ha sido contratado para algo se retorna que ha sido contratado y a qué ha sido contratado
+  //Si no ha sido contratado se retorna que no hay contratos activos
+  if(props.match.path === "/worker"){
+  return(
+    <>
+  <h6>Usted ha sido seleccionado para: </h6>
+  <h6>Profesor de matemáticas</h6>
+  </>
+);
+}
+}
+
+function isWorker(props){
+  if(props.match.path === "/worker"){
+    return(
+      <DropdownItem >
+        <i className="ni ni-bell-55"></i>
+        {/*EL ESTADO DEBE CAMBIAR SEGUN LA BDD*/}
+        <span>Dispoble</span>
+        </DropdownItem>
+      )
+    }
+}
 
 class Sidebar extends React.Component {
   state = {
-    collapseOpen: false
+    collapseOpen: false,
+    idCard: this.props.location.state.idCard,
+    path: this.props.match.path,
   };
-  constructor(props) {
-    super(props);
-    this.activeRoute.bind(this);
+
+  constructor(props){
+    super(props)
+    console.log(props);
   }
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
@@ -56,10 +92,10 @@ class Sidebar extends React.Component {
   createLinks = routes => {
       return(
         <NavItem>
-          <NavLink to={this.props.match.path + "/index"} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
+          <NavLink to={{pathname: this.props.match.path + "/index", state: this.props.location.state}} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
             <i className="ni ni-planet"/><span className="nav-link-inner--text">Inicio</span>
           </NavLink>
-          <NavLink to={this.props.match.path + "/user-profile"} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
+          <NavLink to={{pathname: this.props.match.path + "/user-profile", state: this.props.location.state}} tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
           <i className="ni ni-single-02"/><span className="nav-link-inner--text">Perfil</span>
         </NavLink>
         <NavLink to="/auth" tag={NavLinkRRD} onClick={this.closeCollapse} activeClassName="active">
@@ -72,20 +108,24 @@ class Sidebar extends React.Component {
   };
 
   searchBar = (props) =>{
-    if(props.match.path === '/worker'){
-      return(<Input
-        aria-label="Search"
-        className="form-control-rounded form-control-prepended"
-        placeholder="Busca trabajos"
-        type="search"
-      />)
-  } else {
-    return(<Input
-      aria-label="Search"
-      className="form-control-rounded form-control-prepended"
-      placeholder="Busca un trabajador"
-      type="search"
-    />)
+    if(props.match.path === '/client'){
+    return(
+      <Form className="mt-4 mb-3 d-md-none">
+        <InputGroup className="input-group-rounded input-group-merge">
+          <Input
+          aria-label="Search"
+          className="form-control-rounded form-control-prepended"
+          placeholder="Busca un trabajador"
+          type="search"
+        />
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <span className="fa fa-search" />
+            </InputGroupText>
+          </InputGroupAddon>
+        </InputGroup>
+        <Button variant="contained" color="primary" style={{marginTop: 5}}>Busqueda avanzada</Button>
+      </Form>)
   }
   }
   render() {
@@ -130,27 +170,24 @@ class Sidebar extends React.Component {
           {/* User */}
           <Nav className="align-items-center d-md-none">
             <UncontrolledDropdown nav>
-              <DropdownToggle nav className="nav-link-icon">
-                <i className="ni ni-bell-55" />
-              </DropdownToggle>
-              <DropdownMenu
-                aria-labelledby="navbar-default_dropdown_1"
-                className="dropdown-menu-arrow"
-                right
-              >
-                <DropdownItem>Action</DropdownItem>
-                <DropdownItem>Another action</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Something else here</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            <DropdownToggle nav>
+              {getNotification(this.props)}
+            </DropdownToggle>
+            <DropdownMenu className="dropdown-menu-arrow" right>
+              <DropdownItem className="noti-title" header tag="div">
+                {getBusy(this.props)}
+              </DropdownItem>
+            </DropdownMenu>
+
+
+          </UncontrolledDropdown>
             <UncontrolledDropdown nav>
               <DropdownToggle nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
                     <img
                       alt="..."
-                      src={require("assets/img/theme/iconprofile.png")}
+                      src={require("assets/img/userImages"+this.state.path+"/profilepic-"+this.state.idCard+".png")}
                     />
                   </span>
                 </Media>
@@ -159,24 +196,13 @@ class Sidebar extends React.Component {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to={{pathname: this.props.match.path+"/user-profile", state: this.props.location.state}} tag={Link}>
                   <i className="ni ni-single-02" />
-                  <span>My profile</span>
+                  <span>Mi perfil</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-settings-gear-65" />
-                  <span>Settings</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-calendar-grid-58" />
-                  <span>Activity</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-support-16" />
-                  <span>Support</span>
-                </DropdownItem>
+                  {isWorker(this.props)}
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                <DropdownItem href="/auth/login" onClick={e => e.preventDefault()}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>
@@ -214,17 +240,7 @@ class Sidebar extends React.Component {
               </Row>
             </div>
             {/* Form */}
-            <Form className="mt-4 mb-3 d-md-none">
-              <InputGroup className="input-group-rounded input-group-merge">
-                {this.searchBar(this.props)}
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    <span className="fa fa-search" />
-                  </InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-              <Button variant="contained" color="primary" style={{marginTop: 5}}>Busqueda avanzada</Button>
-            </Form>
+            {this.searchBar(this.props)}
             {/* Navigation */}
             <Nav navbar>{this.createLinks(routes)}</Nav>
             {/* Divider */}

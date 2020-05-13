@@ -11,12 +11,13 @@ import routes from "routes.js";
 
 
 class Worker extends React.Component {
+
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.mainContent.scrollTop = 0;
   }
-  getRoutes = routes => {
+  getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/worker") {
         return (
@@ -63,11 +64,9 @@ class Worker extends React.Component {
             brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>
-            {this.getRoutes(routes)}
-            <Redirect from="*" to={{ pathname: "/worker/index", state: {path: 'worker'}}}/>
-
+            {this.getRoutes(routes,this.props)}
+            <Redirect from="*" to={{ pathname: "/worker/index", state: {path: 'worker', state: this.props.location.state}}}/>
           </Switch>
-
           <Container fluid>
 
             <Footer />
