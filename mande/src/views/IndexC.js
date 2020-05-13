@@ -1,15 +1,9 @@
 import React from "react";
-import Button from '@material-ui/core/Button';
+import SearchBar from '../components/SeachBars/Search.js'
 
 // reactstrap components
 import {
   Container,
-  Form,
-  FormGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  InputGroup,
   Row,
   Col,
   Table,
@@ -17,12 +11,12 @@ import {
   CardHeader,
 } from "reactstrap";
 
-
 import Header from "components/Headers/Header.js";
-
+import WorkerRater from "components/RatingSelector/WorkerRate"
+import ResultCard from "components/SeachBars/SearchResult.js";
 
 class IndexC extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       activeNav: 1,
@@ -39,66 +33,41 @@ class IndexC extends React.Component {
   };
   render() {
     return (
-      <>
-        <Header/>
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-          <Row>
-            <Col xl="5">
-              <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto" >
-                <FormGroup className="mb-0">
-                  <InputGroup className="input-group-alternative">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="fas fa-search" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Busca trabajadores" type="text" style={{width: 600}}/>
-                  </InputGroup>
-                </FormGroup>
+      <div>
 
-              </Form>
-            </Col>
+        <Header />
+        <SearchBar />
+        <Container className = "mt--7" fluid>
+          <Row style = {{marginTop: 80}}>
             <Col>
-              <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-                <Button variant="contained" color="primary" style={{marginLeft: 30}}>Buscar</Button>
-                <Button variant="contained" color="secondary" style={{marginLeft: 50}}>Busqueda avanzada</Button>
-              </Form>
+              <Row>
+                <ResultCard name="David Lopez"
+                  descripcion="Profesor de inglés para todas las edades y niveles. Preparación para el EITLS o el TOEFL, traducción de documentos, clases personalizadas"
+                  titulo="Profesor de inglés"
+                  rating="4"
+                  tipoCobro="por hora"
+                  precio="30000"
+                  src = "/assets/img/profilePics/DavidLopez.jpg"
+                />
+              </Row>
+              <Row>
+                <ResultCard name="Rodrigo Perez"
+                  descripcion="Plomero profesional con más de 20 años de experiencia en la industria. Se realizan tuberías para el hogar, se destapan caños, etc."
+                  titulo="Plomeria para el hogar"
+                  rating="4.5"
+                  tipoCobro="por labor"
+                  precio="70000"
+                  src = "/assets/img/profilePics/RodrigoPerez.jpg"
+                />
+              </Row>  
             </Col>
-          </Row>
-          <Row style={{ marginTop: 50}}>
-            <Col xl="4">
-              <Card className="shadow">
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Labor activa</h3>
-                    </div>
-                  </Row>
-                </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Icono</th>
-                    <th scope="col">Nombre labor</th>
-                    <th scope="col">Terminar labor</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">Icono profesor</th>
-                    <td>Profesor matemáticas</td>
-                    <td>
-                      <Button variant="contained" color="primary">Terminar</Button>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-              </Card>
+            <Col xl="4" style = {{marginTop: 30}}>
+              <WorkerRater/>
             </Col>
           </Row>
         </Container>
-      </>
+      </div>
+
     );
   }
 }
