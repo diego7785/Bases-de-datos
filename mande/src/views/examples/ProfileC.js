@@ -24,7 +24,18 @@ class Profile extends React.Component {
     actualPass: true,
     newPass: true,
     newConfirmPass: true,
-    phone: this.props.location.state.state.idCard
+    phone: this.props.location.state.state.idCard,
+    phonee: this.props.location.state.state.userInfo.celular_usuario,
+    name: this.props.location.state.state.userInfo.usuario_nombre,
+    lastname: this.props.location.state.state.userInfo.usuario_apellido,
+    email: this.props.location.state.state.userInfo.usuario_email,
+    address: this.props.location.state.state.addressInfo.direccion_domicilio,
+    city: this.props.location.state.state.addressInfo.direccion_ciudad,
+    depto: this.props.location.state.state.addressInfo.direccion_departamento,
+    path: this.props.match.path,
+    typeCard: this.props.location.state.state.type,
+    numberCard: this.props.location.state.state.type === 'Credito' ? this.props.location.state.state.paymentMethod.numero_tarjeta_credito : this.props.location.state.state.paymentMethod.numero_tarjeta_debito,
+    bank: this.props.location.state.state.type === 'Credito' ? this.props.location.state.state.paymentMethod.tarjeta_credito_banco : this.props.location.state.state.paymentMethod.tarjeta_debito_banco,
   }
 
   constructor(props){
@@ -78,11 +89,11 @@ class Profile extends React.Component {
                   </Row>
                   <div className="text-center">
                     <h3>
-                      Diego Bonilla
+                      {this.state.name + ' ' + this.state.lastname}
                     </h3>
                     <div className="h5 font-weight-300">
                       <i className="ni location_pin mr-2" />
-                      Santander de Quilichao, Cauca, Colombia
+                        {this.state.city.replace(/%20/g,' ') +', '+this.state.depto.replace(/%20/g,' ')+', Colombia'}
                     </div>
                     <hr className="my-4" />
                   </div>
@@ -116,7 +127,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue={this.state.phone}
+                              defaultValue={this.state.phonee}
                               id="input-username"
                               placeholder="Username"
                               type="text"
@@ -135,7 +146,7 @@ class Profile extends React.Component {
                               readOnly={true}
                               className="form-control-alternative"
                               id="input-email"
-                              placeholder="dianbovi@hotmail.com"
+                              placeholder={this.state.email}
                               type="email"
                             />
                           </FormGroup>
@@ -153,7 +164,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue="Diego Bonilla"
+                              defaultValue={this.state.name + ' '+this.state.lastname}
                               id="input-first-name"
                               placeholder="First name"
                               type="text"
@@ -180,7 +191,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue="Cra 15 # 1 sur 16"
+                              defaultValue={this.state.address.replace(/%20/g,' ')}
                               id="input-address"
                               placeholder="Dirección"
                               type="text"
@@ -200,7 +211,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue="Santander de Quilichao"
+                              defaultValue={this.state.city.replace(/%20/g,' ')}
                               id="input-city"
                               placeholder="Ciudad"
                               type="text"
@@ -218,7 +229,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue="Cauca"
+                              defaultValue={this.state.depto.replace(/%20/g,' ')}
                               id="input-deprtment"
                               placeholder="Departamento"
                               type="text"
@@ -245,7 +256,69 @@ class Profile extends React.Component {
                         </Col>
                       </Row>
                     </div>
+                    {/* Payment */}
                     <hr className="my-4" />
+                    <h6 className="heading-small text-muted mb-4">
+                      Información de pagos
+                    </h6>
+                      <div className="pl-lg-4">
+                        <Row>
+                          <Col lg="4">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="input-address"
+                              >
+                                Tipo de tarjeta
+                              </label>
+                              <Input
+                                readOnly={true}
+                                className="form-control-alternative"
+                                defaultValue={this.state.typeCard}
+                                id="input-address"
+                                placeholder="Dirección"
+                                type="text"
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col lg="4">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="input-address"
+                              >
+                                Numero tarjeta
+                              </label>
+                              <Input
+                                readOnly={true}
+                                className="form-control-alternative"
+                                defaultValue={this.state.numberCard}
+                                id="input-address"
+                                placeholder="Dirección"
+                                type="text"
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col lg="4">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="input-address"
+                              >
+                                Banco
+                              </label>
+                              <Input
+                                readOnly={true}
+                                className="form-control-alternative"
+                                defaultValue={this.state.bank.replace(/%20/g,' ')}
+                                id="input-address"
+                                placeholder="Dirección"
+                                type="text"
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                      </div>
                     {/* Description */}
 
                     <ChangePassword changePass={this.changeState} state={this.state}/>

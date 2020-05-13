@@ -25,10 +25,9 @@ var createDebitCard = (req,res,db)=>{
   const phone=req.params.phone;
   const bank=req.params.bank;
   const numberAccount=req.params.numberAccount;
-  const type='debito';
 
-  db.none(`INSERT INTO Tarjeta_debito VALUES($1,$2,$3,$4,$5)`,
-  [escape(cardNumber), escape(phone), escape(type), escape(bank), escape(numberAccount)])
+  db.none(`INSERT INTO Tarjeta_debito VALUES($1,$2,$3,$4)`,
+  [escape(cardNumber), escape(phone), escape(bank), escape(numberAccount)])
   .then((data) => {
     res.send(JSON.stringify(`Tarjeta debito registrada exitosamente`))
   })
@@ -46,10 +45,9 @@ var createCreditCard = (req,res,db)=>{
   const bank = req.params.bank;
   const endDate = req.params.endDate;
   const cvc = req.params.cvc;
-  const type='credito';
 
-  db.none(`INSERT INTO Tarjeta_credito VALUES($1,$2,$3,$4,$5,$6)`,
-  [escape(cardNumber), escape(phone), escape(type), escape(bank), escape(endDate), escape(cvc)])
+  db.none(`INSERT INTO Tarjeta_credito VALUES($1,$2,$3,$4,$5)`,
+  [escape(cardNumber), escape(phone), escape(bank), escape(endDate), escape(cvc)])
   .then((data) => {
     res.send(JSON.stringify(`Tarjeta credito registrada exitosamente`))
   })
@@ -86,7 +84,7 @@ var deleteAll = (req,res,db) => {
   const cardNumber = req.params.cardNumber;
 
   if(credit===1){
-    db.none(`DELETE FROM Tarjeta_credito WHERE numero_tarjeta_medio_pago = $1`,
+    db.none(`DELETE FROM Tarjeta_credito WHERE numero_tarjeta_credito = $1`,
     [escape(cardNumber)])
     .then((data) => {
       res.send(JSON.stringify(`Borrado éxitoso`))
@@ -97,7 +95,7 @@ var deleteAll = (req,res,db) => {
       res.send(error.detail)
     })
   } else {
-    db.none(`DELETE FROM Tarjeta_debito WHERE numero_tarjeta_medio_pago = $1`,
+    db.none(`DELETE FROM Tarjeta_debito WHERE numero_tarjeta_debito = $1`,
     [escape(cardNumber)])
     .then((data) => {
       res.send(JSON.stringify(`Borrado éxitoso`))
@@ -108,18 +106,6 @@ var deleteAll = (req,res,db) => {
       res.send(error.detail)
     })
   }
-
-
-  db.none(`DELETE FROM Medio_pago WHERE numero_tarjeta_medio_pago = $1`,
-  [escape(cardNumber)])
-  .then((data) => {
-    res.send(JSON.stringify(`Borrado éxitoso`))
-  })
-  .catch((error) => {
-    console.log(req.params)
-    console.log(`ERROR BORRANDO`, error)
-    res.send(error.detail)
-  })
 
   db.none(`DELETE FROM Direccion WHERE celular_usuario = $1`,
   [escape(phone)])
@@ -162,11 +148,65 @@ var login = (req,res,db) =>{
     res.send(JSON.stringify(error.detail))
   })
 }
+
+var getUserInfo = (req,res,db) => {
+  const phone = req.params.phone;
+  db.many(`SELECT * FROM Usuario WHERE celular_usuario=$1`,[escape(phone)])
+  .then(function (data) {
+      res.send(data[0])
+    })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+
+}
+
+var getUserAddressInfo = (req,res,db) =>{
+  const phone = req.params.phone;
+  db.many(`SELECT * FROM Direccion WHERE celular_usuario=$1`,[escape(phone)])
+  .then(function (data) {
+      res.send(data[0])
+    })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var getCreditCardInfo = (req,res,db) =>{
+  const phone = req.params.phone;
+  db.many(`SELECT * FROM Tarjeta_credito WHERE celular_usuario=$1`,[escape(phone)])
+  .then(function (data) {
+      res.send(data[0])
+    })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var getDebitCardInfo = (req,res,db) => {
+  const phone = req.params.phone;
+  db.many(`SELECT * FROM Tarjeta_debito WHERE celular_usuario=$1`,[escape(phone)])
+  .then(function (data) {
+      res.send(data[0])
+    })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
 module.exports = {
   createUser,
   createDebitCard,
   createCreditCard,
   createAddress,
   deleteAll,
-  login
+  login,
+  getUserInfo,
+  getUserAddressInfo,
+  getCreditCardInfo,
+  getDebitCardInfo
 }

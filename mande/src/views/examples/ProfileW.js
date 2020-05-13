@@ -94,7 +94,7 @@ class Profile extends React.Component {
                   </Row>
                   <div className="text-center">
                     <h3>
-                      {this.state.name}
+                      {this.state.name + ' ' + this.state.lastname}
                     </h3>
                     <div className="h5 font-weight-300">
                       <i className="ni location_pin mr-2" />

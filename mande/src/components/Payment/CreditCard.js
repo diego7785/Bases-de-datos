@@ -75,11 +75,11 @@ const finalRegister = async() => {
     exito=exito+1;
   }
 
-  const endDate = props.state.month+'/'+props.state.year;
+  const endDate = props.state.month+'-'+props.state.year;
   const cvc = props.state.cvc;
   const cardNumber=props.state.cardNumber;
   const bank=props.state.bank;
-  res = await axios.post(`http://localhost:5000/RegisterUser2_4/${cardNumber}/${phone}/${bank}/${endDate}/${cvc}`)
+  res = await axios.post(`http://localhost:5000/RegisterCreditCard/${cardNumber}/${phone}/${bank}/${endDate}/${cvc}`)
   console.log(res)
   if(res.statusText === "OK"){
     exito=exito+1;
