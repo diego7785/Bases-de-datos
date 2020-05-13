@@ -81,6 +81,25 @@ CREATE TABLE Trabajador(
 	 CONSTRAINT fk_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT
  );
 
+CREATE TABLE Tarjeta_debito(
+	 numero_tarjeta_debito VARCHAR(20) NOT NULL,
+	 celular_usuario VARCHAR(10) NOT NULL,
+	 tarjeta_debito_banco VARCHAR(50) NOT NULL,
+	 tarjeta_debito_numero_cuenta VARCHAR(20) NOT NULL,
+	 CONSTRAINT pk_tarjeta_debito PRIMARY KEY (numero_tarjeta_debito),
+	 CONSTRAINT fK_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT
+ );
+
+ CREATE TABLE Tarjeta_credito(
+	 numero_tarjeta_credito VARCHAR(20) NOT NULL,
+	 celular_usuario VARCHAR(10) NOT NULL,
+	 tarjeta_credito_banco VARCHAR(50) NOT NULL,
+	 tarjeta_credito_fecha_vencimiento VARCHAR(5) NOT NULL,
+	 tarjeta_credito_cvc VARCHAR(4) NOT NULL,
+	 CONSTRAINT pk_tarjeta_credito PRIMARY KEY (numero_tarjeta_credito),
+	 CONSTRAINT fK_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT
+ );
+
  CREATE TABLE Servicio(
 	 id_servicio SERIAL NOT NULL,
 	 celular_usuario VARCHAR(10) NOT NULL,
@@ -92,44 +111,17 @@ CREATE TABLE Trabajador(
 	 servicio_hora_fin TIME NOT NULL,
 	 paga_fecha_pago DATE NOT NULL,
 	 paga_valor_pago INT NOT NULL,
+	 numero_tarjeta_debito VARCHAR(20) NOT NULL,
+	 numero_tarjeta_credito VARCHAR(20) NOT NULL,
 	 CONSTRAINT pk_servicio PRIMARY KEY (id_servicio),
 	 CONSTRAINT fk_trabajador FOREIGN KEY (cedula_trabajador) REFERENCES Trabajador(cedula_trabajador) ON UPDATE CASCADE ON DELETE RESTRICT,
 	 CONSTRAINT fk_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT,
-	 CONSTRAINT fk_labor FOREIGN KEY (labor_id) REFERENCES Labor(id_labor) ON UPDATE CASCADE ON DELETE RESTRICT
+	 CONSTRAINT fk_labor FOREIGN KEY (labor_id) REFERENCES Labor(id_labor) ON UPDATE CASCADE ON DELETE RESTRICT,
+	 CONSTRAINT fk_tarjeta_debito FOREIGN KEY (numero_tarjeta_debito) REFERENCES Tarjeta_debito(numero_tarjeta_debito) ON UPDATE CASCADE ON DELETE RESTRICT,
+	 CONSTRAINT fk_tarjeta_credito FOREIGN KEY (numero_tarjeta_credito) REFERENCES Tarjeta_credito(numero_tarjeta_credito) ON UPDATE CASCADE ON DELETE RESTRICT
  );
 
- CREATE TABLE Servicio_pago(
- 	id_servicio SERIAL UNIQUE NOT NULL,
-	numero_tarjeta VARCHAR(20) UNIQUE NOT NULL,
-	paga_tipo VARCHAR(8) UNIQUE NOT NULL,
-	CONSTRAINT pk_servicio_pago PRIMARY KEY (id_servicio, numero_tarjeta),
-	CONSTRAINT fK_servicio FOREIGN KEY (id_servicio) REFERENCES Servicio(id_servicio) ON UPDATE CASCADE ON DELETE RESTRICT
- );
-
- CREATE TABLE Tarjeta_debito(
-	 numero_tarjeta_debito VARCHAR(20) NOT NULL,
-	 celular_usuario VARCHAR(10) NOT NULL,
-	 paga_tipo VARCHAR(8) NOT NULL DEFAULT ('debito'),
-	 tarjeta_debito_banco VARCHAR(50) NOT NULL,
-	 tarjeta_debito_numero_cuenta VARCHAR(20) NOT NULL,
-	 CONSTRAINT pk_tarjeta_debito PRIMARY KEY (numero_tarjeta_debito),
-	 CONSTRAINT fK_servicio_pago FOREIGN KEY (numero_tarjeta_debito) REFERENCES Servicio_pago(numero_tarjeta) ON UPDATE CASCADE ON DELETE RESTRICT,
-	 CONSTRAINT fK_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT,
-	 CONSTRAINT fK_servicio_pago_tipo FOREIGN KEY (paga_tipo) REFERENCES Servicio_pago(paga_tipo) ON UPDATE CASCADE ON DELETE RESTRICT
- );
-
- CREATE TABLE Tarjeta_credito(
-	 numero_tarjeta_credito VARCHAR(20) NOT NULL,
-	 celular_usuario VARCHAR(10) NOT NULL,
-	 paga_tipo VARCHAR(8) NOT NULL DEFAULT ('credito'),
-	 tarjeta_credito_banco VARCHAR(50) NOT NULL,
-	 tarjeta_credito_fecha_vencimiento VARCHAR(5) NOT NULL,
-	 tarjeta_credito_cvc VARCHAR(4) NOT NULL,
-	 CONSTRAINT pk_tarjeta_credito PRIMARY KEY (numero_tarjeta_credito),
-	 CONSTRAINT fK_servicio_pago FOREIGN KEY (numero_tarjeta_credito) REFERENCES Servicio_pago(numero_tarjeta) ON UPDATE CASCADE ON DELETE RESTRICT,
-	 CONSTRAINT fK_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT,
-	 CONSTRAINT fK_servicio_pago_tipo FOREIGN KEY (paga_tipo) REFERENCES Servicio_pago(paga_tipo) ON UPDATE CASCADE ON DELETE RESTRICT
- );
+ 
 
  --TRIGGERS
 
