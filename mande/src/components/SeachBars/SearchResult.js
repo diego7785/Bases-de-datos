@@ -57,8 +57,8 @@ const ResultCard = (props) => {
     <Card className={classes.root} >
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+          <Avatar alt={props.name} src = {props.src}>
+
           </Avatar>
         }
         title={props.titulo}

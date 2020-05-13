@@ -45,6 +45,7 @@ class IndexC extends React.Component {
                   rating="4"
                   tipoCobro="por hora"
                   precio="30000"
+                  src = "/assets/img/profilePics/DavidLopez.jpg"
                 />
               </Row>
               <Row>
@@ -54,6 +55,7 @@ class IndexC extends React.Component {
                   rating="4.5"
                   tipoCobro="por labor"
                   precio="70000"
+                  src = "/assets/img/profilePics/RodrigoPerez.jpg"
                 />
               </Row>  
             </Col>

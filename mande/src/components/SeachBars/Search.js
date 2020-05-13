@@ -22,6 +22,14 @@ const labores = [{ code: "Profesor de ingles", label: "Profesor inglés" },
 { code: "Plomero", label: "Plomero" },
 { code: "Electricista", label: "Electricista" },];
 
+const style = {
+    background: 'white',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    minWidth: 200, 
+    width: 800,
+  };
 
 class SearchBar extends React.Component {
     constructor(props) {
@@ -54,7 +62,7 @@ class SearchBar extends React.Component {
                                 <FormGroup className="mb-0">
                                     <Autocomplete
                                         id="jobs-selection"
-                                        style={{ minWidth: 200, width: 600, borderColor: 'white', textEmphasisColor: 'white '}}
+                                        style={style}
                                         options={labores}
                                         autoHighlight
                                         getOptionLabel={(option) => option.label}

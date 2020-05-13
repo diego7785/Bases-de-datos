@@ -15,8 +15,7 @@ class WorkerRater extends React.Component {
                   </div>
                 </CardHeader>
                 <CardBody>
-                    <WorkerCardRating name = "Alejandro Murillo" titulo = "Paseador de perros"/>
-                    
+                    <WorkerCardRating name = "Alejandra Murillo" titulo = "Paseadora de perros" src = "/assets/img/profilePics/AlejandraMurillo.jpg"/>
                 </CardBody>
               </Card>
       </>

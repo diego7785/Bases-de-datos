@@ -11,8 +11,8 @@ import Rating from '@material-ui/lab/Rating';
 const useStyles = makeStyles(() => ({
   root: {
     maxWidth: 400,
-    minWidth: 300,
-    width: 400,
+    minWidth: 200,
+   
     marginTop: 30,
     marginLeft: 30,
     marginRight: 30,
@@ -25,14 +25,12 @@ const useStyles = makeStyles(() => ({
 const WorkerRating = (props) => {
   const classes = useStyles();
   const [] = React.useState(false);
-
+console.log(props.src)
   return (
     <Card className={classes.root} >
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            A
-          </Avatar>
+          <Avatar alt = {props.name} src = {props.src}></Avatar>
         }
         title={props.titulo}
         subheader={props.name}
