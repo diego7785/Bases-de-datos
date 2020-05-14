@@ -59,6 +59,7 @@ CREATE TABLE Trabajador(
 	 id_labor INT NOT NULL,
 	 cedula_trabajador VARCHAR(10) NOT NULL,
 	 realiza_precio INT NOT NULL,
+	 realiza_tipo VARCHAR(10) NOT NULL,
 	 labor_descripcion VARCHAR(200) NOT NULL,
 	 trabajador_estado BIT NOT NULL,
 	 CONSTRAINT pk_realiza PRIMARY KEY (cedula_trabajador,id_labor),
@@ -121,7 +122,7 @@ CREATE TABLE Tarjeta_debito(
 	 CONSTRAINT fk_tarjeta_credito FOREIGN KEY (numero_tarjeta_credito) REFERENCES Tarjeta_credito(numero_tarjeta_credito) ON UPDATE CASCADE ON DELETE RESTRICT
  );
 
- 
+
 
  --TRIGGERS
 

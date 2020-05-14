@@ -74,9 +74,10 @@ FinalRegister = async () => {
   const idJob = this.props.location.state.job;
   const price = this.props.location.state.price;
   const description = this.props.location.state.description;
+  const typePay = this.props.location.state.type;
   const status = true;
 
-  res = await axios.post(`http://localhost:5000/RegisterWorker2_1/${idJob}/${idCard}/${phone}/${price}/${description}/${status}`)
+  res = await axios.post(`http://localhost:5000/RegisterWorker2_1/${idJob}/${idCard}/${phone}/${price}/${typePay}/${description}/${status}`)
   console.log(res);
   if(res.statusText === "OK"){
     exito=exito+1;

@@ -39,17 +39,30 @@ class Profile extends React.Component {
     address: this.props.location.state.state.addressInfo.direccion_domicilio,
     city: this.props.location.state.state.addressInfo.direccion_ciudad,
     depto: this.props.location.state.state.addressInfo.direccion_departamento,
-    labores: this.props.location.state.state.realizaInfo.labor_nombre,
+    bank: this.props.location.state.state.accountInfo.cuenta_bancaria_banco,
+    typeBank: this.props.location.state.state.accountInfo.cuenta_bancaria_tipo,
+    numberAccount: this.props.location.state.state.accountInfo.numero_cuenta_bancaria,
+    phone: this.props.location.state.state.workerInfo.celular_trabajador,
     path: this.props.match.path,
   }
 
   constructor(props){
     super(props);
     console.log(props)
+    console.log(this.state)
+    for(var i = 0; i < this.props.location.state.state.realizaInfo.length; i++){
+    this.setState({labores: this.props.location.state.state.realizaInfo[i].labor_nombre})
+  }
   }
 
   changeState = (id, event) => {
     this.setState({ [id]: event })
+  }
+
+  log = () => {
+    for(var i = 0; i < this.props.location.state.state.realizaInfo.length; i++){
+    console.log( this.props.location.state.state.realizaInfo[i].labor_nombre)
+  }
   }
 
   render() {
@@ -106,7 +119,11 @@ class Profile extends React.Component {
                     </div>
                     <div>
                       <i className="ni education_hat mr-2" />
-                      {this.state.labores}
+                      {
+                        this.props.location.state.state.realizaInfo.map((item) => {
+                          return(<div className='text-center'>{item.labor_nombre}<br/></div> );
+                        })
+                    }
                     </div>
                     <div>
                       <NewJob onHandleChange={this.changeState} state={this.state}/>
@@ -273,11 +290,73 @@ class Profile extends React.Component {
                       </Row>
                     </div>
                     <hr className="my-4" />
+                    {/*Payment Info*/}
+                    <h6 className="heading-small text-muted mb-4">Información de cuenta</h6>
+                      <div className="pl-lg-4">
+                        <Row>
+                          <Col lg="4">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="input-address"
+                              >
+                                Numero de cuenta
+                              </label>
+                              <Input
+                                readOnly={true}
+                                className="form-control-alternative"
+                                defaultValue={this.state.numberAccount}
+                                id="input-address"
+                                placeholder="Dirección"
+                                type="text"
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col lg="4">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="input-address"
+                              >
+                                Tipo de cuenta
+                              </label>
+                              <Input
+                                readOnly={true}
+                                className="form-control-alternative"
+                                defaultValue={this.state.typeBank.replace(/%20/g,' ')}
+                                id="input-address"
+                                placeholder="Dirección"
+                                type="text"
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col lg="4">
+                            <FormGroup>
+                              <label
+                                className="form-control-label"
+                                htmlFor="input-address"
+                              >
+                                Banco
+                              </label>
+                              <Input
+                                readOnly={true}
+                                className="form-control-alternative"
+                                defaultValue={this.state.bank.replace(/%20/g,' ')}
+                                id="input-address"
+                                placeholder="Dirección"
+                                type="text"
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                      </div>
+
+                    <hr className="my-4" />
                     {/* Description */}
                     <h6 className="heading-small text-muted mb-4">Acerca de mí</h6>
 
                     <Box component="fieldset" mb={3} borderColor="transparent">
-                      <Typography component="legend">Calificación</Typography>
+                      <Typography component="legend">Calificación promedio</Typography>
                       <Rating name="read-only" value={4.4} precision={0.1} readOnly/>
                     </Box>
 

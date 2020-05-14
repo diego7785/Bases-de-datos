@@ -5,6 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import axios from 'axios';
 
 export default function ChangePassword(props) {
   const [open, setOpen] = React.useState(false);
@@ -17,17 +18,30 @@ export default function ChangePassword(props) {
     setOpen(false);
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     if(props.state.actualPass === true || props.state.newPass === true || props.state.newConfirmPass === true){
       alert("Por favor llene todos los campos");
     } else{
     if(props.state.newPass === props.state.newConfirmPass){
-      //Hacer vainitas para verificar la contraseña dada y el cambio de contraseña
+      var res;
+      const newPass = props.state.newPass;
+      if(props.state.path.substring(0,7) === '/worker'){
+        const idCard = props.state.idCard;
+        res = await axios.post(`http://localhost:5000/ChangePasswordWorker/${idCard}/${newPass}`)
+      } else{
+        const phone = props.state.phonee;
+        console.log(phone);
+        res = await axios.post(`http://localhost:5000/ChangePasswordUser/${phone}/${newPass}`)
+        console.log(res)
+      }
       setOpen(false);
-      alert("Contraeña cambiada éxitosamente");
-      props.changePass('actualPass', true);
-      props.changePass('newPass', true);
-      props.changePass('newConfirmPass', true);
+      if(res.statusText === 'OK'){
+        alert("Contraeña cambiada éxitosamente");
+        console.log(props)
+      } else {
+        alert("Error al cambiar la contraseña, intente de nuevo");
+      }
+
     } else {
       alert("La nueva contraseña no coincide con su confirmación");
     }

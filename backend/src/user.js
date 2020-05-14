@@ -198,6 +198,21 @@ var getDebitCardInfo = (req,res,db) => {
   })
 }
 
+var ChangePassword = (req,res,db)=>{
+  const phone = req.params.phone;
+  const newPass = req.params.newPass;
+  db.none(`UPDATE Usuario SET usuario_contrasenia = $1 WHERE celular_usuario = $2`,
+  [escape(newPass), escape(phone)])
+  .then((data) => {
+    res.send(JSON.stringify(`Contraseña cambiada éxitosamente`))
+  })
+  .catch((error) => {
+    console.log(req.params)
+    console.log(`ERROR CAMBIANDO CONTRASENIA`, error)
+    res.send(error.detail)
+  })
+}
+
 module.exports = {
   createUser,
   createDebitCard,
@@ -208,5 +223,6 @@ module.exports = {
   getUserInfo,
   getUserAddressInfo,
   getCreditCardInfo,
-  getDebitCardInfo
+  getDebitCardInfo,
+  ChangePassword,
 }
