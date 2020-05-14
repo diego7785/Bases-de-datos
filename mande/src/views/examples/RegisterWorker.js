@@ -103,9 +103,10 @@ class RegisterWorker extends React.Component {
       }
 
     var address = tipoVia + " " + nombreVia + " No " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
-    var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
+    var addressPass = tipoVia + " " + nombreVia + " # " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp + ", "+municipio+", "+departamento+", Colombia"
     this.setState({completeAddress: address});
-    Geocode.fromAddress(toConvert).then(
+    console.log(addressPass)
+    Geocode.fromAddress(addressPass).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
         this.setState({ latitude: lat});

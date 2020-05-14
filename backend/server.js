@@ -49,7 +49,7 @@ app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:lastname/:password`, (re
 
 app.post(`/RegisterWorker2/:numberAccount/:bank/:type/:idCard/:phone`, (req,res) => worker.createBankAccount(req,res,db))
 
-app.post(`/RegisterWorker2_1/:idJob/:idCard/:phone/:price/:description/:status`, (req,res) => worker.createRealiza(req,res,db))
+app.post(`/RegisterWorker2_1/:idJob/:idCard/:phone/:price/:typePay/:description/:status`, (req,res) => worker.createRealiza(req,res,db))
 
 app.post(`/RegisterWorker2_2/:idCard/:phone/:lat/:lng/:address/:city/:depto`, (req,res) => worker.createAddress(req,res,db))
 
@@ -62,6 +62,10 @@ app.get(`/GetWorkerInfo/:idCard`, (req,res) => worker.GetWorkerInfo(req,res,db))
 app.get(`/GetAddressInfo/:idCard`, (req,res) => worker.GetAddressInfo(req,res,db))
 
 app.get(`/GetRealizaInfo/:idCard`, (req,res) => worker.GetRealizaInfo(req,res,db))
+
+app.get(`/GetAccountInfo/:idCard`, (req,res) => worker.GetAccountInfo(req,res,db))
+
+app.post(`/ChangePasswordWorker/:idCard/:newPass`, (req,res) => worker.ChangePassword(req,res,db))
 
 //user
 app.post(`/RegisterUser1/images`, (req, res) => {
@@ -94,5 +98,7 @@ app.get(`/GetUserAddressInfo/:phone`, (req,res) => user.getUserAddressInfo(req,r
 app.get(`/GetCreditCardInfo/:phone`, (req,res) => user.getCreditCardInfo(req,res,db))
 
 app.get(`/GetDebitCardInfo/:phone`, (req,res) => user.getDebitCardInfo(req,res,db))
+
+app.post(`/ChangePasswordUser/:phone/:newPass`, (req,res) => user.ChangePassword(req,res,db))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))

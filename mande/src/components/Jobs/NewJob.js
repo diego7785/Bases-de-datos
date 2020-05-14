@@ -5,11 +5,20 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Job from 'components/Jobs/Jobs.js'
+import axios from 'axios';
 
 export default function AddNewJob(props) {
   const [open, setOpen] = React.useState(false);
+  const [jobs, setJobs] = React.useState(true);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = async () => {
+    var tjobs=[];
+    var res = await axios.get(`http://localhost:5000/RegisterWorker1/${"labores"}/`)
+
+    for(var i=0; i<res.data.length; i++){
+      tjobs.push({code: res.data[i].labor_nombre, label: res.data[i].labor_nombre});
+    }
+    setJobs(tjobs)
     setOpen(true);
   };
 
@@ -17,17 +26,23 @@ export default function AddNewJob(props) {
     setOpen(false);
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     if(props.state.job === true || props.state.description === true || props.state.type === true || props.state.price === true){
       alert("Llene todos los campos por favor");
     } else{
-      //Hacer vainitas para agregar la labor
-      alert("Labor agregada con éxito");
       setOpen(false);
-      props.onHandleChange('job', true);
-      props.onHandleChange('description', true);
-      props.onHandleChange('type', true);
-      props.onHandleChange('price', true);
+      const idJob = props.state.job;
+      const idCard = props.state.idCard;
+      const phone = props.state.phone;
+      const price = props.state.price;
+      const typePay = props.state.type;
+      const description = props.state.description;
+      const status = true;
+      var res = await axios.post(`http://localhost:5000/RegisterWorker2_1/${idJob}/${idCard}/${phone}/${price}/${typePay}/${description}/${status}`)
+      console.log(res);
+      if(res.statusText === "OK"){
+        alert("Labor agregada con éxito");
+      }
     }
   };
 
@@ -39,14 +54,14 @@ export default function AddNewJob(props) {
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Agregar nuevo trabajo</DialogTitle>
         <DialogContent>
-          <Job onHandleChange={props.onHandleChange}/>
+          <Job onHandleChange={props.onHandleChange} jobs={jobs}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel} color="primary">
-            Cancel
+            Cancelar
           </Button>
           <Button onClick={handleClose} color="primary">
-            Cambiar
+            Agregar
           </Button>
         </DialogActions>
       </Dialog>

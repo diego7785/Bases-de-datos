@@ -55,12 +55,13 @@ var createRealiza = (req,res,db)=>{
   const idJob = req.params.idJob;
   const idCard = req.params.idCard;
   const price = req.params.price;
+  const type = req.params.typePay;
   const description = req.params.description;
   const status = 1;
 
-  db.none(`INSERT INTO Realiza VALUES($1,$2,$3,$4,$5)`,
+  db.none(`INSERT INTO Realiza VALUES($1,$2,$3,$4,$5,$6)`,
   [escape(idJob), escape(idCard), escape(price),
-    escape(description), escape(status)])
+    escape(type), escape(description), escape(status)])
   .then((data) => {
     res.send(JSON.stringify(`Labor a realizar registrada éxitosamente`))
   })
@@ -196,6 +197,34 @@ var GetRealizaInfo = (req,res,db) => {
   })
 }
 
+var GetAccountInfo = (req,res,db)=>{
+  const idCard = req.params.idCard;
+  db.many(`SELECT * FROM Cuenta_bancaria WHERE cedula_trabajador=$1`, [escape(idCard)])
+  .then((data) => {
+    res.send(JSON.stringify(data))
+  })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var ChangePassword = (req,res,db)=>{
+  const idCard = req.params.idCard;
+  const newPass = req.params.newPass;
+
+  db.none(`UPDATE Trabajador SET trabajador_contrasenia = $1 WHERE cedula_trabajador = $2`,
+  [escape(newPass), escape(idCard)])
+  .then((data) => {
+    res.send(JSON.stringify(`Contraseña cambiada éxitosamente`))
+  })
+  .catch((error) => {
+    console.log(req.params)
+    console.log(`ERROR CAMBIANDO CONTRASENIA`, error)
+    res.send(error.detail)
+  })
+}
+
 module.exports = {
   createWorker,
   getPreDefinedJobs,
@@ -207,4 +236,6 @@ module.exports = {
   GetWorkerInfo,
   GetRealizaInfo,
   GetAddressInfo,
+  GetAccountInfo,
+  ChangePassword,
 }

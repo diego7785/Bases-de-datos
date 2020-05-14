@@ -41,7 +41,9 @@ class LoginAsWorker extends React.Component {
       const res2 = await axios.get(`http://localhost:5000/GetAddressInfo/${idCard}/`);
       const addressInfo = res2.data[0];
       const res3 = await axios.get(`http://localhost:5000/GetRealizaInfo/${idCard}/`);
-      const realizaInfo = res3.data[0];
+      const realizaInfo = res3.data;
+      const res4 = await axios.get(`http://localhost:5000/GetAccountInfo/${idCard}/`)
+      const accountInfo = res4.data[0];
 
       this.props.history.push({
         pathname: "/worker/", state: {
@@ -49,6 +51,7 @@ class LoginAsWorker extends React.Component {
         workerInfo : workerInfo,
         addressInfo : addressInfo,
         realizaInfo : realizaInfo,
+        accountInfo : accountInfo,
         }
       })
     } else {
