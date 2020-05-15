@@ -17,6 +17,12 @@
 try: 
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 
+
+Front based on: Argon Dashboard React - v1.1.0 of Creative Tim
+
+https://www.creative-tim.com
+
+
 ## Developers
 
 Angélica María Muñoz Benávides
