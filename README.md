@@ -1,6 +1,6 @@
 # MANDE
 
-[![postgreSQL version](https://img.shields.io/badge/PostgreSQL-v11.2-blue.svg?style=flat-square)](https://www.postgresql.org/) [![node version](https://img.shields.io/badge/Node-v11.12.0-green.svg?style=flat-square)](https://nodejs.org/en/) [![react version](https://img.shields.io/badge/Reactjs-v16.8.3-blue.svg?style=flat-square)](https://reactjs.org/) [![express version](https://img.shields.io/badge/Expressjs-v4.16.4-blue.svg?style=flat-square)](https://expressjs.com/) [![docker version](https://img.shields.io/badge/Docker-v18.09.4-blue.svg?style=flat-square)](https://www.docker.com/)
+[![postgreSQL version](https://img.shields.io/badge/PostgreSQL-v11.2-blue.svg?style=flat-square)](https://www.postgresql.org/) [![node version](https://img.shields.io/badge/Node-v12.15.0-green.svg?style=flat-square)](https://nodejs.org/en/) [![react version](https://img.shields.io/badge/Reactjs-v16.13.1-blue.svg?style=flat-square)](https://reactjs.org/) [![express version](https://img.shields.io/badge/Expressjs-v4.17.1-blue.svg?style=flat-square)](https://expressjs.com/) [![docker version](https://img.shields.io/badge/Docker-v19.03.6-blue.svg?style=flat-square)](https://www.docker.com/)
 
 
 ## Modules
@@ -12,7 +12,7 @@
 
 ### In case or errors:
 
-Error: ENOSPC: System limit for number of file watchers reached
+:warning: Error: ENOSPC: System limit for number of file watchers reached :warning:
 
 try: 
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
