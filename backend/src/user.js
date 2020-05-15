@@ -213,6 +213,17 @@ var ChangePassword = (req,res,db)=>{
   })
 }
 
+var getJobsWithWorker = (req,res,db) =>{
+  db.many('SELECT DISTINCT labor_nombre FROM Realiza NATURAL JOIN Labor')
+  .then(function (data) {
+      res.send(JSON.stringify(data))
+    })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
 module.exports = {
   createUser,
   createDebitCard,
@@ -225,4 +236,5 @@ module.exports = {
   getCreditCardInfo,
   getDebitCardInfo,
   ChangePassword,
+  getJobsWithWorker,
 }

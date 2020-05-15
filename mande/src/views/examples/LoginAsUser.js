@@ -44,6 +44,11 @@ class LoginAsUser extends React.Component {
       const creditCardInfo = res3.data
       const res4 = await axios.get(`http://localhost:5000/GetDebitCardInfo/${phone}/`)
       const debitCardInfo = res4.data
+      const res5 = await axios.get(`http://localhost:5000/GetJobsWithWorker/${'jobs'}`)
+      var dutiesWithWorker=[];
+      for(var i=0; i<res5.data.length; i++){
+        dutiesWithWorker.push({code: res5.data[i].labor_nombre, label: res5.data[i].labor_nombre});
+      }
 
       var paymentMethod;
       var type;
@@ -66,6 +71,7 @@ class LoginAsUser extends React.Component {
         addressInfo: addressInfo,
         paymentMethod: paymentMethod,
         type: type,
+        wjobs: dutiesWithWorker,
         }
       })
     } else {

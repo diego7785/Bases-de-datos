@@ -101,4 +101,6 @@ app.get(`/GetDebitCardInfo/:phone`, (req,res) => user.getDebitCardInfo(req,res,d
 
 app.post(`/ChangePasswordUser/:phone/:newPass`, (req,res) => user.ChangePassword(req,res,db))
 
+app.get(`/GetJobsWithWorker/:jobs`, (req,res) => user.getJobsWithWorker(req,res,db))
+
 app.listen(port, () => console.log(`API listening on port ${port}!`))

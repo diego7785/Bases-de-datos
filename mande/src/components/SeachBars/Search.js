@@ -14,13 +14,6 @@ import {
 
 import AdvancedSearchBar from "./AdvanceSearch"
 
-
-const labores = [{ code: "Profesor de ingles", label: "Profesor inglés" },
-{ code: "Paseador de perros", label: "Paseador de perros" },
-{ code: "Profesor de matematicas", label: "Profesor de matemáticas" },
-{ code: "Plomero", label: "Plomero" },
-{ code: "Electricista", label: "Electricista" },];
-
 const style = {
     background: 'white',
     borderRadius: 3,
@@ -31,13 +24,12 @@ const style = {
   };
 
 class SearchBar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            advancedSearch: false,
-            search: ''
-        };
-    }
+
+    state = {
+        advancedSearch: false,
+        search: '',
+        jobs: this.props.jobs,
+    };
 
     buscar = (e) => {
         //this.state({username: e.target.value});
@@ -62,7 +54,7 @@ class SearchBar extends React.Component {
                                     <Autocomplete
                                         id="jobs-selection"
                                         style={style}
-                                        options={labores}
+                                        options={this.state.jobs}
                                         autoHighlight
                                         getOptionLabel={(option) => option.label}
                                         renderOption={(option) => (
