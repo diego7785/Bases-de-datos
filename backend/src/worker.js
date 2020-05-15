@@ -6,7 +6,7 @@ var createWorker = (req, res, db) => {
   const lastname = req.params.lastname;
   const password = req.params.password;
 
-  db.none(`INSERT INTO Trabajador VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+  db.none(`INSERT INTO Trabajador VALUES($1,$2,$3,$4,$5,PGP_SYM_ENCRYPT($6, 'AES_KEY'),$7,$8,$9)`,
   [escape(idCard), escape(phone), escape(email), escape(name), escape(lastname), escape(password),
   escape('profilepic-'+idCard), escape('front-'+idCard), escape('back-'+idCard)])
   .then((data) => {
@@ -38,7 +38,7 @@ var createBankAccount = (req,res,db)=>{
   const type = req.params.type;
   const idCard = req.params.idCard;
 
-  db.none(`INSERT INTO Cuenta_bancaria VALUES($1,$2,$3,$4)`,
+  db.none(`INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT($1, 'AES_KEY'),$2,$3,$4)`,
   [escape(numberAccount), escape(bank), escape(type), escape(idCard)])
   .then((data) => {
     res.send(JSON.stringify(`Cuenta registrada éxitosamente`))

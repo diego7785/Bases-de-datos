@@ -6,7 +6,7 @@ var createUser = (req,res,db) => {
   const lastname = req.params.lastname;
   const password=req.params.password;
 
-  db.none(`INSERT INTO Usuario VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+  db.none(`INSERT INTO Usuario VALUES($1,$2,$3,$4,$5,PGP_SYM_ENCRYPT($6, 'AES_KEY'),$7,$8,$9,$10)`,
   [escape(idCard), escape(phone), escape(email), escape(name), escape(lastname), escape(password),
   escape('profilepic-'+idCard), escape('front-'+idCard), escape('back-'+idCard), escape('bill-'+idCard)])
   .then((data) => {
@@ -26,7 +26,7 @@ var createDebitCard = (req,res,db)=>{
   const bank=req.params.bank;
   const numberAccount=req.params.numberAccount;
 
-  db.none(`INSERT INTO Tarjeta_debito VALUES($1,$2,$3,$4)`,
+  db.none(`INSERT INTO Tarjeta_debito VALUES(PGP_SYM_ENCRYPT($1, 'AES_KEY'),$2,$3,PGP_SYM_ENCRYPT($4, 'AES_KEY'))`,
   [escape(cardNumber), escape(phone), escape(bank), escape(numberAccount)])
   .then((data) => {
     res.send(JSON.stringify(`Tarjeta debito registrada exitosamente`))
@@ -46,7 +46,7 @@ var createCreditCard = (req,res,db)=>{
   const endDate = req.params.endDate;
   const cvc = req.params.cvc;
 
-  db.none(`INSERT INTO Tarjeta_credito VALUES($1,$2,$3,$4,$5)`,
+  db.none(`INSERT INTO Tarjeta_credito VALUES(PGP_SYM_ENCRYPT($1, 'AES_KEY'),$2,$3,$4,PGP_SYM_ENCRYPT($5, 'AES_KEY'))`,
   [escape(cardNumber), escape(phone), escape(bank), escape(endDate), escape(cvc)])
   .then((data) => {
     res.send(JSON.stringify(`Tarjeta credito registrada exitosamente`))
