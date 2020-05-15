@@ -145,7 +145,7 @@ var deleteAll = (req,res,db) => {
 var login = (req,res,db) =>{
   const idCard = req.params.idCard;
   const pass = req.params.pass;
-  db.many(`SELECT cedula_trabajador, trabajador_contrasenia FROM Trabajador WHERE cedula_trabajador=$1`,[escape(idCard)])
+  db.many(`SELECT cedula_trabajador, PGP_SYM_DECRYPT(trabajador_contrasenia::bytea, 'AES_KEY') AS trabajador_contrasenia FROM Trabajador WHERE cedula_trabajador=$1`,[escape(idCard)])
   .then(function (data) {
     const idCardDB = data[0].cedula_trabajador;
     const passDB =data[0].trabajador_contrasenia;
@@ -163,7 +163,8 @@ var login = (req,res,db) =>{
 
 var GetWorkerInfo = (req,res,db) => {
   const idCard = req.params.idCard;
-  db.many(`SELECT * FROM Trabajador WHERE cedula_trabajador=$1`, [escape(idCard)])
+  db.many(`SELECT cedula_trabajador, celular_trabajador, trabajador_email, trabajador_nombre, trabajador_apellido,
+    PGP_SYM_DECRYPT(trabajador_contrasenia::bytea, 'AES_KEY') AS trabajador_contrasenia FROM Trabajador WHERE cedula_trabajador=$1`, [escape(idCard)])
   .then((data) => {
     res.send(JSON.stringify(data))
   })
@@ -199,7 +200,8 @@ var GetRealizaInfo = (req,res,db) => {
 
 var GetAccountInfo = (req,res,db)=>{
   const idCard = req.params.idCard;
-  db.many(`SELECT * FROM Cuenta_bancaria WHERE cedula_trabajador=$1`, [escape(idCard)])
+  db.many(`SELECT PGP_SYM_DECRYPT(numero_cuenta_bancaria::bytea, 'AES_KEY') AS numero_cuenta_bancaria, cuenta_bancaria_banco, cuenta_bancaria_tipo, cedula_trabajador
+     FROM Cuenta_bancaria WHERE cedula_trabajador=$1`, [escape(idCard)])
   .then((data) => {
     res.send(JSON.stringify(data))
   })

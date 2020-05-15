@@ -133,7 +133,7 @@ var deleteAll = (req,res,db) => {
 var login = (req,res,db) =>{
   const phone = req.params.phone;
   const pass = req.params.pass;
-  db.many(`SELECT celular_usuario, usuario_contrasenia, cedula_usuario FROM Usuario WHERE celular_usuario=$1`,[escape(phone)])
+  db.many(`SELECT celular_usuario, PGP_SYM_DECRYPT(usuario_contrasenia::bytea, 'AES_KEY') AS usuario_contrasenia, cedula_usuario FROM Usuario WHERE celular_usuario=$1`,[escape(phone)])
   .then(function (data) {
     const phoneDB = data[0].celular_usuario;
     const passDB =data[0].usuario_contrasenia;
@@ -151,7 +151,8 @@ var login = (req,res,db) =>{
 
 var getUserInfo = (req,res,db) => {
   const phone = req.params.phone;
-  db.many(`SELECT * FROM Usuario WHERE celular_usuario=$1`,[escape(phone)])
+  db.many(`SELECT cedula_usuario, celular_usuario, usuario_email, usuario_nombre, usuario_apellido,
+    PGP_SYM_DECRYPT(usuario_contrasenia::bytea, 'AES_KEY') AS usuario_contrasenia FROM Usuario WHERE celular_usuario=$1`,[escape(phone)])
   .then(function (data) {
       res.send(data[0])
     })
@@ -176,7 +177,8 @@ var getUserAddressInfo = (req,res,db) =>{
 
 var getCreditCardInfo = (req,res,db) =>{
   const phone = req.params.phone;
-  db.many(`SELECT * FROM Tarjeta_credito WHERE celular_usuario=$1`,[escape(phone)])
+  db.many(`SELECT PGP_SYM_DECRYPT(numero_tarjeta_credito::bytea, 'AES_KEY') AS numero_tarjeta_credito, celular_usuario, tarjeta_credito_banco,
+    tarjeta_credito_fecha_vencimiento, PGP_SYM_DECRYPT(tarjeta_credito_cvc::bytea, 'AES_KEY') AS tarjeta_credito_cvc FROM Tarjeta_credito WHERE celular_usuario=$1`,[escape(phone)])
   .then(function (data) {
       res.send(data[0])
     })
@@ -188,7 +190,8 @@ var getCreditCardInfo = (req,res,db) =>{
 
 var getDebitCardInfo = (req,res,db) => {
   const phone = req.params.phone;
-  db.many(`SELECT * FROM Tarjeta_debito WHERE celular_usuario=$1`,[escape(phone)])
+  db.many(`SELECT PGP_SYM_DECRYPT(numero_tarjeta_debito::bytea, 'AES_KEY') AS numero_tarjeta_debito, celular_usuario, tarjeta_debito_banco,
+    PGP_SYM_DECRYPT(tarjeta_debito_numero_cuenta::bytea, 'AES_KEY') AS tarjeta_debito_numero_cuenta FROM Tarjeta_debito WHERE celular_usuario=$1`,[escape(phone)])
   .then(function (data) {
       res.send(data[0])
     })

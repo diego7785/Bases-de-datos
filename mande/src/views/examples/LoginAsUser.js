@@ -133,7 +133,8 @@ class LoginAsUser extends React.Component {
             <Col className="text-right" xs="6">
               <NavLink
                 className="nav-link-icon"
-                to='/auth/ForgotPassword'
+                to='/auth/RegisterAs'
+                tag={Link}
                 >
                 <div className="text-light">
                   <small>Crear cuenta</small>
