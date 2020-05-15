@@ -96,7 +96,7 @@ class RegisterUser extends React.Component {
     }
 
     var address = tipoVia +" "+ nombreVia +" No "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
-    var toConvert = address + ", "+municipio+", "+departamento+", Colombia";
+    var toConvert = tipoVia +" "+ nombreVia +" # "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp + ", "+municipio+", "+departamento+", Colombia";
     this.setState({completeAddress: address});
     Geocode.fromAddress(toConvert).then(
       response => {

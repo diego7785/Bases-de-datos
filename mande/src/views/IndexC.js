@@ -19,6 +19,7 @@ class IndexC extends React.Component {
       activeNav: 1,
       chartExample1Data: "data1"
     };
+    console.log(props)
   }
   toggleNavs = (e, index) => {
     e.preventDefault();
@@ -33,7 +34,7 @@ class IndexC extends React.Component {
       <div>
 
         <Header location={this.props.match.path}/>
-        <SearchBar />
+        <SearchBar jobs={this.props.location.state.state.wjobs}/>
         <Container className = "mt--7" fluid>
           <Row style = {{marginTop: 80}}>
             <Col>
