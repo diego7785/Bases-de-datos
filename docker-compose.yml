@@ -1,0 +1,27 @@
+version: '3.1'
+
+services: 
+  front:
+    image: front
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+    depends_on:
+      - back
+  back:
+    image: back
+    ports:
+      - 5000:5000
+    depends_on:
+      - database
+    environment:
+      - DATABASE_URL=postgres://postgres:pg123@db:5432/mandeDataBase
+  database:
+    image: postgres
+    ports:
+      - 5433:5432    
+    environment:
+      POSTGRES_DB: Mande
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pg123
