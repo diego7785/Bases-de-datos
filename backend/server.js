@@ -6,7 +6,7 @@ const user = require('./src/user');
 const multer = require('multer');
 
 const connectionAdminOptions = {
-  host: 'localhost', port: 5433, database: 'Mande',
+  host: 'database', port: 5433, database: 'Mande',
   user: 'postgres', password: 'pg123', poolSize: 20, poolIdleTimeout: 10000
 };
 
@@ -14,7 +14,7 @@ const db = pgp(connectionAdminOptions);
 
 const app = express();
 const port = 5000;
-
+const {check, validationResult} = require('express-validator');
 app.use(cors())
 app.use(express.json());
 
@@ -45,7 +45,7 @@ app.post(`/RegisterWorker1/images`, (req, res) => {
     })
 });
 
-app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) => worker.createWorker(req,res, db))
+app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) => worker.createWorker(req,res, validationResult, db))
 
 app.post(`/RegisterWorker2/:numberAccount/:bank/:type/:idCard/:phone`, (req,res) => worker.createBankAccount(req,res,db))
 
