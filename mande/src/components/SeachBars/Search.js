@@ -21,7 +21,7 @@ const style = {
     color: 'white',
     minWidth: 200,
     width: 800,
-  };
+};
 
 class SearchBar extends React.Component {
 
@@ -32,14 +32,17 @@ class SearchBar extends React.Component {
     };
 
     buscar = (e) => {
-        //this.state({username: e.target.value});
-        e.preventDefault();
-        this.setState({ search: e.target.value })
-        console.log(e.target.value);
+        //accion del boton para buscar
     }
 
     openAdvancedSearch = () => {
         this.setState({ advancedSearch: !this.state.advancedSearch });
+    }
+
+    handleChange = (e) => {
+        console.log("hey");
+        this.setState({search: e.target.value});
+        console.log(this.state.search);
     }
 
     render() {
@@ -49,7 +52,8 @@ class SearchBar extends React.Component {
                 <Container className="mt--7" fluid>
                     <Row>
                         <Col xl="5">
-                            <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto" onChange={this.buscar} onSubmit={e => { this.buscar(e) }} >
+                            <div>{this.state.search}</div>
+                            <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto" onChange={e => this.handleChange(e)}>
                                 <FormGroup className="mb-0">
                                     <Autocomplete
                                         id="jobs-selection"
