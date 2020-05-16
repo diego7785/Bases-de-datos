@@ -6,7 +6,7 @@ const user = require('./src/user');
 const multer = require('multer');
 
 const connectionAdminOptions = {
-  host: 'database', port: 5432, database: 'Mande',
+  host: 'localhost', port: 5433, database: 'Mande',
   user: 'postgres', password: 'pg123', poolSize: 20, poolIdleTimeout: 10000
 };
 
@@ -102,5 +102,7 @@ app.get(`/GetDebitCardInfo/:phone`, (req,res) => user.getDebitCardInfo(req,res,d
 app.post(`/ChangePasswordUser/:phone/:newPass`, (req,res) => user.ChangePassword(req,res,db))
 
 app.get(`/GetJobsWithWorker/:jobs`, (req,res) => user.getJobsWithWorker(req,res,db))
+
+app.get(`/SearchWorkers/:workersToSearch`, (req,res) => user.getWorkersWithXJob(req,res,db))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))
