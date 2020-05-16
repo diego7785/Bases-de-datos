@@ -1,4 +1,9 @@
-var createWorker = (req, res, db) => {
+var createWorker = (req, res, validationResult, db) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    console.log({ errors: errors.array() })
+    return res.send(JSON.stringify('Credenciales invalidas'));
+  }
   const idCard = req.params.idCard;
   const phone = req.params.phone;
   const email = req.params.email;
@@ -215,7 +220,7 @@ var ChangePassword = (req,res,db)=>{
   const idCard = req.params.idCard;
   const newPass = req.params.newPass;
 
-  db.none(`UPDATE Trabajador SET trabajador_contrasenia = $1 WHERE cedula_trabajador = $2`,
+  db.none(`UPDATE Trabajador SET trabajador_contrasenia = PGP_SYM_ENCRYPT($1, 'AES_KEY') WHERE cedula_trabajador = $2`,
   [escape(newPass), escape(idCard)])
   .then((data) => {
     res.send(JSON.stringify(`Contraseña cambiada éxitosamente`))
