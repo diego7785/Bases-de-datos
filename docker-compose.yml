@@ -16,7 +16,7 @@ services:
     depends_on:
       - database
     environment:
-      - DATABASE_URL=postgres://postgres:pg123@db:5432/mandeDataBase
+      - DATABASE_URL=postgres://postgres:pg123@database:5432/Mande
   database:
     image: postgres
     ports:
