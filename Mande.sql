@@ -13,16 +13,6 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 DROP FUNCTION IF EXISTS add_geopint;
 DROP TRIGGER IF EXISTS trigger_add_geopint ON Direccion;
-DROP FUNCTION IF EXISTS encrypt_Wpass;
-DROP TRIGGER IF EXISTS trigger_encrypt_Wpass ON Trabajador;
-DROP FUNCTION IF EXISTS encrypt_Upass;
-DROP TRIGGER IF EXISTS trigger_encrypt_Upass ON Usuario;
-DROP FUNCTION IF EXISTS encrypt_bankAccount;
-DROP TRIGGER IF EXISTS trigger_encrypt_bankAccount ON Cuenta_bancaria;
-DROP FUNCTION IF EXISTS encrypt_Tdebit;
-DROP TRIGGER IF EXISTS trigger_encrypt_Tdebit ON Tarjeta_debito;
-DROP FUNCTION IF EXISTS encrypt_Tcredit;
-DROP TRIGGER IF EXISTS trigger_encrypt_Tcredit ON Tarjeta_credito;
 
 CREATE TABLE Trabajador(
 	cedula_trabajador VARCHAR(10) NOT NULL,
@@ -84,7 +74,7 @@ CREATE TABLE Trabajador(
 	 cedula_trabajador VARCHAR(10),
 	 direccion_latitud DECIMAL(7,5) NOT NULL,
  	 direccion_longitud DECIMAL(7,5) NOT NULL,
-	 direccion_domicilio VARCHAR(40) NOT NULL,
+	 direccion_domicilio VARCHAR(70) NOT NULL,
 	 direccion_ciudad VARCHAR(40) NOT NULL,
 	 direccion_departamento VARCHAR(40) NOT NULL,
 	 direccion_ubicacion GEOGRAPHY(POINT,4686),
@@ -157,6 +147,19 @@ INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),
 																			('Plomero'),
 																			('Electricista');
 
+INSERT INTO Usuario VALUES('1234567890', '1987654321', 'admin@admin.com', 'Admin', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 'profilepic-1234567890', 'front-1234567890', 'back-1234567890', 'recibo-1234567890');
+
+INSERT INTO Direccion(celular_usuario, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('0987654321', 3.376804, -76.530432, 'Calle 2c No 92 - 133', 'Cali', 'Valle del Cauca');
+
+INSERT INTO Tarjeta_debito VALUES (PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'), '0987654321', 'Bancolombia', PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'));
+
+INSERT INTO Trabajador VALUES('1234567890', '1987654321', 'admin@admin.com', 'Admin', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 'profilepic-1234567890', 'front-1234567890', 'back-11234567890');
+
+INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'), 'Bancolombia', 'Cuenta de ahorros', '1234567890');
+
+INSERT INTO Realiza VALUES(3, '1234567890', 23000, 'Por hora', 'Quiero ensenar mates', B'1');
+
+INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('1234567890', 3.546146, -76.290326, 'Cra 25 # 54 - 56', 'Palmira', 'Valle del Cauca')
 --QUERY PARA SELECCIONAAR DISTANCIAS
 
 /*
