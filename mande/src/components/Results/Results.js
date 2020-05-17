@@ -30,13 +30,15 @@ class Results extends React.Component {
 
       <Row>
         {this.props.results.data.map((user) => {
-          return <li key={user.cedula_trabajador}><ResultCard name={user.trabajador_nombre}
+          return <li key={user.cedula_trabajador} style = {{listStyle: "none"}}><ResultCard name={user.trabajador_nombre}
             descripcion={user.labor_descripcion}
             titulo={user.labor_nombre}
-            rating="4"
+            rating={user.trabajador_calificacion}
             tipoCobro={user.realiza_tipo}
             precio={user.realiza_precio}
             src={user.trabajador_foto_perfil}
+            distancia = {user.distancia}
+            estado = {user.trabajador_estado}
           /></li>
         })}
 

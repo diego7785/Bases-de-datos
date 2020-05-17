@@ -235,9 +235,12 @@ var getJobsWithWorker = (req,res,db) =>{
 
 var getWorkersWithXJob = (req,res,db) => {
   const workersToSearch = req.params.workersToSearch;
-  db.many(`WITH all_realiza_labor AS (SELECT * FROM Realiza NATURAL JOIN Trabajador)
-	SELECT * FROM all_realiza_labor, labor WHERE labor_nombre = '${workersToSearch}' AND Labor.id_labor = all_realiza_labor.id_labor`)
+  const userSearch = req.params.idCardU;
+  db.many(`SELECT * FROM get_workers_results('${workersToSearch}', '${userSearch}')`)
   .then(function (data) {
+
+    console.log(JSON.stringify(data));
+    console.log(data)
     res.send(JSON.stringify(data))
   })
   .catch(function(error) {

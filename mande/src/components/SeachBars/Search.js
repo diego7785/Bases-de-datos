@@ -34,7 +34,8 @@ class SearchBar extends React.Component {
 
     onHandleSearch = async () => {
       const workersToSearch = this.state.search;
-      const res = await axios.get(`http://localhost:5000/SearchWorkers/${workersToSearch}`)
+      const idCard = this.props.idCard;
+      const res = await axios.get(`http://localhost:5000/SearchWorkers/${workersToSearch}/${idCard}`)
       this.props.onHandleChange('results', res)
       this.props.onHandleChange('openResults', true)
       console.log(this.props)
