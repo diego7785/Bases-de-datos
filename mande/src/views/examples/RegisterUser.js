@@ -159,7 +159,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-tablet-button" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Celular" type="text" onChange={e => this.onHandleChange(e, 'celular', 1)} />
+                    <Input placeholder="Celular" type="text" required maxLength="10" onChange={e => this.onHandleChange(e, 'celular', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -199,7 +199,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-key-25" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Cedula" type="text" id="idCard" onChange={e => this.onHandleChange(e, 'idCard', 1)}/>
+                    <Input placeholder="Cedula" type="text" id="idCard" required maxLength="10" onChange={e => this.onHandleChange(e, 'idCard', 1)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>

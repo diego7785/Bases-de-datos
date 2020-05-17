@@ -104,15 +104,19 @@ export default function Jobs(props) {
       </FormGroup>
       <FormGroup>
         <FormControl className={classes.marginN}>
+          <div style={{ marginTop: 15 }}>
           <TextField
           id="outlined-multiline-static"
           label="Descripción"
           multiline
-          rows="4"
+          rows="8"
+          style = {{width: 360}}
+          inputProps={{ maxLength: 200 }}
           placeholder="Por favor, escriba una corta descripción de su labor"
           variant="outlined"
           onChange={e => props.onHandleChange('description', e.target.value)}
         />
+        </div>
         </FormControl>
       </FormGroup>
       <FormGroup>

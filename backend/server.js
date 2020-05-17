@@ -14,7 +14,7 @@ const db = pgp(connectionAdminOptions);
 
 const app = express();
 const port = 5000;
-
+const { check,validationResult } = require('express-validator'); 
 app.use(cors())
 app.use(express.json());
 
@@ -79,7 +79,15 @@ app.post(`/RegisterUser1/images`, (req, res) => {
     })
 });
 
-app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) => user.createUser(req,res,db))
+app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`, 
+[
+  check('idCard')
+         .isNumeric().isLength({min:10, max:10}),
+         //.withMessage('phone should not be empty, minimum eight characters, at least one letter, one number and one special character')
+],
+(req,res) =>{user.createUser(req,res,validationResult,db);
+  console.log('AHHHHHHHHHHH');
+})
 
 app.post(`/RegisterUser2_2/:cardNumber/:phone/:bank/:numberAccount`, (req,res) => user.createDebitCard(req,res,db))
 

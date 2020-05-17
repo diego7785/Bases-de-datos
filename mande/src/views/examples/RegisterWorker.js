@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import Direccion from "components/Address/Direccion.js"
 import TextField from '@material-ui/core/TextField';
 import Geocode from "react-geocode";
-import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
-import axios from 'axios';
-import Button from '@material-ui/core/Button';
+import Map from 'components/Maps/map.js'; 
+import ValidationSnackbarsRW from 'components/Snackbars/ValidationSnackbarsRW';
 
 // reactstrap components
 import {
@@ -21,8 +20,6 @@ import {
   Col,
   NavLink
 } from "reactstrap";
-
-
 
 var retornarDireccion = (state) => {
   if (state.completeAddress === true) {
@@ -51,6 +48,7 @@ class RegisterWorker extends React.Component {
     idCard: true,
     password: true,
     passwordR: true,
+    complemento: true,
     departamento: true,
     municipio: true,
     tipoVia: true,
@@ -68,12 +66,17 @@ class RegisterWorker extends React.Component {
     open: false,
   }
 
+  setOpen = (id,val)=>
+  {
+    this.setState({[id] : val})
+  }
   //Setea el state, correspondiente al id, trigger sets the variables for the map
   onHandleChange = (event, id, trigger) => {
     if (trigger === 1) {
       this.setState({ [id]: event.target.value })
     } else {
       this.setState({ [id]: event.target.value })
+      var complemento = this.state.complemento;
       var departamento = this.state.departamento;
       var municipio = this.state.municipio;
       var tipoVia = this.state.tipoVia;
@@ -105,7 +108,7 @@ class RegisterWorker extends React.Component {
     var address = tipoVia + " " + nombreVia + " No " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
     var addressPass = tipoVia + " " + nombreVia + " # " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp + ", "+municipio+", "+departamento+", Colombia"
     this.setState({completeAddress: address});
-    console.log(addressPass)
+    //console.log(addressPass)
     Geocode.fromAddress(addressPass).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
@@ -121,37 +124,6 @@ class RegisterWorker extends React.Component {
 
   changeViaState = () => {
     this.setState({ via: true })
-  }
-
-  onClickNext = (e) => {
-    e.preventDefault();
-    var jobs=[];
-    axios.get(`http://localhost:5000/RegisterWorker1/${"labores"}/`).then(res => {
-                                                                                  for(var i=0; i<res.data.length; i++){
-                                                                                    jobs.push({code: res.data[i].labor_nombre, label: res.data[i].labor_nombre});
-                                                                                  }
-                                                                                });
-    if(this.state.passwordR !== this.state.password){
-      alert('Las contraseñas no coinciden');
-    } else{
-    this.props.history.push({
-      pathname: "/auth/RegisterWorker1/", state: {
-        name: this.state.name,
-        lastname: this.state.lastname,
-        celular: this.state.celular,
-        email: this.state.email,
-        idCard: this.state.idCard,
-        password: this.state.password,
-        passwordR: this.state.passwordR,
-        departamento: this.state.departamento,
-        municipio: this.state.municipio,
-        completeAddress: this.state.completeAddress,
-        latitude: this.state.latitude,
-        length: this.state.length,
-        tjobs: jobs,
-      }
-    })
-  }
   }
 
   render() {
@@ -171,7 +143,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-tablet-button" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Celular" type="text" id="celular" onChange={e => this.onHandleChange(e, 'celular', 1)} />
+                  <Input placeholder="Celular" type="text" id="celular" required maxLength="10" onChange={e => this.onHandleChange(e, 'celular', 1)} />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -211,7 +183,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-key-25" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Cedula" type="text" id="idCard" onChange={e => this.onHandleChange(e, 'idCard', 1)} />
+                  <Input placeholder="Cedula" type="text" id="idCard" required maxLength="10" onChange={e => this.onHandleChange(e, 'idCard', 1)} />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -238,11 +210,8 @@ class RegisterWorker extends React.Component {
               <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState} />
               {retornaMap(this.state)}
               {retornarDireccion(this.state)}
-
               <div className="text-center">
-                <Button className="mt-4" variant="contained" color="primary" onClick={this.onClickNext}>
-                  Siguiente
-                </Button>
+                <ValidationSnackbarsRW state={this.state} onHandleChange={this.setOpen} props={this.props}/>
               </div>
               </Form>
             </CardBody>
