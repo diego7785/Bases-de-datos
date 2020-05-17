@@ -14,7 +14,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Rating from '@material-ui/lab/Rating';
-import { Col, Row } from "reactstrap";
+import { Col, Row, Modal, ModalHeader, ModalFooter } from "reactstrap";
 import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 const ResultCard = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [modalShow, setModalShow] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -91,22 +92,23 @@ const ResultCard = (props) => {
             <Col>
               <Typography>Precio {props.tipoCobro}: ${props.precio}</Typography>
             </Col>
-            
+
           </Row>
           <Row>
             <Col>
               <Typography component="legend">A una distacia de: {props.distancia} km</Typography>
             </Col>
             <Col>
-        <Typography>Estado</Typography>
-            </Col>
-            <Col>
-              <Button variant="contained" color="primary">Pedir Servicio</Button>
+              {props.estado ?
+                <Button variant="contained" color="primary">Pedir Servicio</Button> :
+                <Button variant="contained" color="primary" disabled>Trabajador ocupado </Button>}
+
             </Col>
           </Row>
         </CardContent>
       </Collapse>
     </Card>
+
   );
 }
 
