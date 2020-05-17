@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 
 class Results extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     console.log(props);
   }
@@ -22,26 +22,25 @@ class Results extends React.Component {
     rating: 4,
     type: true,
     price: true,
+
   }
 
-  render(){
-    return(
-      <Container className = "mt--7" fluid>
-      <Row style = {{marginTop: 80}}>
-        <Col>
-          <Row>
-            <ResultCard name="David Lopez"
-              descripcion="Profesor de inglés para todas las edades y niveles. Preparación para el EITLS o el TOEFL, traducción de documentos, clases personalizadas"
-              titulo="Profesor de inglés"
-              rating="4"
-              tipoCobro="por hora"
-              precio="30000"
-              src = "/assets/img/profilePics/DavidLopez.jpg"
-            />
-          </Row>
-        </Col>
+  render() {
+    return (
+
+      <Row>
+        {this.props.results.data.map((user) => {
+          return <li key={user.cedula_trabajador}><ResultCard name={user.trabajador_nombre}
+            descripcion={user.labor_descripcion}
+            titulo={user.labor_nombre}
+            rating="4"
+            tipoCobro={user.realiza_tipo}
+            precio={user.realiza_precio}
+            src={user.trabajador_foto_perfil}
+          /></li>
+        })}
+
       </Row>
-      </Container>
     );
   }
 }
