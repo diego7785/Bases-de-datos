@@ -40,6 +40,9 @@ class Results extends React.Component {
             />
           </Row>
         </Col>
+        <Col xl="4" style = {{marginTop: 30}}>
+          <WorkerRater/>
+        </Col>
       </Row>
       </Container>
     );
