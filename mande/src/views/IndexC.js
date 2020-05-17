@@ -7,6 +7,9 @@ import WorkerRater from "components/RatingSelector/WorkerRate"
 // reactstrap components
 import {
   Col,
+  Row,
+  Container,
+  
 } from "reactstrap";
 
 class IndexC extends React.Component {
@@ -30,31 +33,38 @@ class IndexC extends React.Component {
   };
 
   onHandleChange = (id, e) => {
-    this.setState({[id]: e})
+    this.setState({ [id]: e })
   }
 
-   showResults = () =>{
-     if(this.state.openResults === true){
+  showResults = () => {
+    if (this.state.openResults === true) {
 
-   } else {console.log('nos')}
-   }
+    } else { console.log('nos') }
+  }
 
   render() {
     return (
       <div>
 
-        <Header location={this.props.match.path}/>
-        <SearchBar jobs={this.props.location.state.state.wjobs} results={this.state.results} onHandleChange={this.onHandleChange}/>
-
-          {/*this.showResults*/}
-          {this.state.openResults ? <Results results={this.state.results}/> : <div></div>}
-          <br/>
-            <Col xl="4" style = {{marginTop: 30}}>
-              <WorkerRater/>
+        <Header location={this.props.match.path} />
+        <SearchBar jobs={this.props.location.state.state.wjobs} results={this.state.results} onHandleChange={this.onHandleChange} />
+        <Container className="mt--7" fluid>
+          <Row style={{ marginTop: 80 }}>
+            <Col>
+              <Row>
+                {this.state.openResults ? <Results results={this.state.results} /> : <div></div>}
+              </Row>
             </Col>
-          <br/>
-          <br/>
+            {/*this.showResults*/}
 
+            <br />
+            <Col xl="4" style={{ marginTop: 30 }}>
+              <WorkerRater />
+            </Col>
+            <br />
+            <br />
+          </Row>
+        </Container>
       </div>
 
     );
