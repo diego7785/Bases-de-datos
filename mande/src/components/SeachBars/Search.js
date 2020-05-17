@@ -37,6 +37,7 @@ class SearchBar extends React.Component {
       const res = await axios.get(`http://localhost:5000/SearchWorkers/${workersToSearch}`)
       this.props.onHandleChange('results', res)
       this.props.onHandleChange('openResults', true)
+      console.log(this.props)
     }
 
     openAdvancedSearch = () => {
@@ -83,7 +84,7 @@ class SearchBar extends React.Component {
                                     />
                                 </FormGroup>
                                 {this.state.advancedSearch ?
-                                    <div style={{ marginTop: 15 }}><AdvancedSearchBar /></div> :
+                                    <div style={{ marginTop: 15 }}><AdvancedSearchBar state={this.state} onHandleChange={this.handleChange} idCardU={this.props.idCard}/></div> :
                                     <div style={{ marginTop: 15 }}> </div>}
                             </Form>
                             <div className='text-center'>
