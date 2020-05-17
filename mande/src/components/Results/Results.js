@@ -41,7 +41,7 @@ class Results extends React.Component {
             precio={user.realiza_precio}
             src={user.trabajador_foto_perfil}
             distancia={(user.distancia / 1000).toFixed(2)}
-            estado={false}
+            estado={estado}
           /></li>
         })}
 
