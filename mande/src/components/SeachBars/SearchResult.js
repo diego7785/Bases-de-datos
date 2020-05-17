@@ -19,9 +19,9 @@ import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 1200,
+    maxWidth: 900,
     minWidth: 300,
-    width: 1000,
+    width: 900,
     marginTop: 30,
     marginLeft: 30,
     marginRight: 30,
@@ -57,7 +57,7 @@ const ResultCard = (props) => {
     <Card className={classes.root} >
       <CardHeader
         avatar={
-          <Avatar alt={props.name} src = {props.src}>
+          <Avatar alt={props.name} src={props.src}>
 
           </Avatar>
         }
@@ -70,12 +70,6 @@ const ResultCard = (props) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -96,6 +90,15 @@ const ResultCard = (props) => {
             </Col>
             <Col>
               <Typography>Precio {props.tipoCobro}: ${props.precio}</Typography>
+            </Col>
+            
+          </Row>
+          <Row>
+            <Col>
+              <Typography component="legend">A una distacia de: {props.distancia} km</Typography>
+            </Col>
+            <Col>
+        <Typography>Estado</Typography>
             </Col>
             <Col>
               <Button variant="contained" color="primary">Pedir Servicio</Button>
