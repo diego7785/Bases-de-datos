@@ -22,7 +22,6 @@ class Results extends React.Component {
     rating: 4,
     type: true,
     price: true,
-
   }
 
   render() {
@@ -30,15 +29,19 @@ class Results extends React.Component {
 
       <Row>
         {this.props.results.data.map((user) => {
-          return <li key={user.cedula_trabajador} style = {{listStyle: "none"}}><ResultCard name={user.trabajador_nombre}
+          var estado = false;
+          if (user.trabajador_estado !== 0) 
+            estado = true;
+          
+          return <li key={user.cedula_trabajador} style={{ listStyle: "none" }}><ResultCard name={user.trabajador_nombre}
             descripcion={user.labor_descripcion}
             titulo={user.labor_nombre}
             rating={user.trabajador_calificacion}
             tipoCobro={user.realiza_tipo}
             precio={user.realiza_precio}
             src={user.trabajador_foto_perfil}
-            distancia = {user.distancia}
-            estado = {user.trabajador_estado}
+            distancia={(user.distancia / 1000).toFixed(2)}
+            estado={estado}
           /></li>
         })}
 
