@@ -1,6 +1,7 @@
 import React from "react";
 import Jobs from "components/Jobs/Jobs.js"
 import axios from 'axios'
+import ValidationSnackbarsRW1 from 'components/Snackbars/ValidationSnackbarsRW1';
 
 // reactstrap components
 import {
@@ -22,36 +23,16 @@ class RegisterWorker1 extends React.Component {
     front: true,
     back: true,
     profilepic: true,
+    open:false,
+  }
+
+  setOpen = (id,val)=>
+  {
+    this.setState({[id] : val})
   }
 
   onHandleChange = (id, value) => {
     this.setState({ [id]: value })
-  }
-
-  onHandleNext = () => {
-    this.props.history.push({
-      pathname: "/auth/RegisterWorker2/", state: {
-      idCard: this.props.location.state.idCard,
-       email : this.props.location.state.email,
-       celular : this.props.location.state.celular,
-       profilepic :  this.state.profilepic,
-       front : this.state.front,
-       back :  this.state.back,
-       name : this.props.location.state.name,
-       lastname: this.props.location.state.lastname,
-       completeAddress : this.props.location.state.completeAddress,
-       password : this.props.location.state.password,
-       passwordR : this.props.location.state.passwordR,
-       depto : this.props.location.state.departamento,
-       city : this.props.location.state.municipio,
-       job : this.state.job,
-       description : this.state.description,
-       type : this.state.type,
-       price : this.state.price,
-       latitude : this.props.location.state.latitude,
-       length : this.props.location.state.length,
-      }
-    })
   }
 
   onChangeHandler = (id, event, type) =>{
@@ -142,9 +123,7 @@ onClickHandler = async () => {
             <div style={{ marginTop: 30 }}>
             </div>
             <div className="text-center">
-              <Button className="mt-4" color="primary" type="button" onClick={this.onHandleNext}>
-                Siguiente
-              </Button>
+            <ValidationSnackbarsRW1 state={this.state} onHandleChange={this.setOpen} props={this.props}/>
             </div>
           </CardBody>
         </Card>

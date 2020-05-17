@@ -1,4 +1,11 @@
-var createUser = (req,res,db) => {
+var createUser = (req,res,validationResult,db) => {
+  const errors = validationResult(req);
+  console.log('AHHHHHHHHHHH');
+  console.log(errors);
+  if (!errors.isEmpty()) {
+    console.log({ errors: errors.array() })
+    return res.send(JSON.stringify('Credenciales invalidas'));
+  }
   const idCard=req.params.idCard;
   const phone=req.params.phone;
   const email=req.params.email;
