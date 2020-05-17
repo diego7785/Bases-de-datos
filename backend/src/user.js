@@ -228,13 +228,7 @@ var getJobsWithWorker = (req,res,db) =>{
 
 var getWorkersWithXJob = (req,res,db) => {
   const workersToSearch = req.params.workersToSearch;
-  const userSearch = req.params.idCardU;// = '1987654321';
-  console.log(workersToSearch)
-  console.log(userSearch)
-  db.many(`SELECT * FROM ST_DISTANCESPHERE('01010000204E1200004EB4AB90F22153C0F90FE9B7AF030B40', '01010000204E1200000DC347C4941253C0E6AE25E4835E0C40')`)
-  .then(function (data) {
-    console.log(data)
-  })
+  const userSearch = req.params.idCardU;
   db.many(`SELECT * FROM get_workers_results('${workersToSearch}', '${userSearch}')`)
   .then(function (data) {
 
