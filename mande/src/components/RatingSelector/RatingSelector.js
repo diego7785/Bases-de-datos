@@ -15,6 +15,7 @@ const Rater = (props) => {
         value={props.state.value}
         onChange={(event, newValue) => {
           props.onChange(event.target.value,"value");
+          console.log(props)
         }}
         style = {{marginTop: 15}}
       />

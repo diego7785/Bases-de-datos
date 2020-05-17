@@ -13,8 +13,8 @@ var createUser = (req,res,validationResult,db) => {
   const lastname = req.params.lastname;
   const password=req.params.password;
 
-  db.none(`INSERT INTO Usuario VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
-  [escape(idCard), escape(phone), escape(email), escape(name), escape(lastname), escape(password),
+  db.none(`INSERT INTO Usuario VALUES($1,$2,'${email}','${name}','${lastname}',PGP_SYM_ENCRYPT('${password}', 'AES_KEY'),$3,$4,$5,$6)`,
+  [escape(idCard), escape(phone),
   escape('profilepic-'+idCard), escape('front-'+idCard), escape('back-'+idCard), escape('bill-'+idCard)])
   .then((data) => {
     res.send(JSON.stringify(`Usuario registrado exitosamente`))
@@ -33,8 +33,8 @@ var createDebitCard = (req,res,db)=>{
   const bank=req.params.bank;
   const numberAccount=req.params.numberAccount;
 
-  db.none(`INSERT INTO Tarjeta_debito VALUES($1,$2,$3,$4)`,
-  [escape(cardNumber), escape(phone), escape(bank), escape(numberAccount)])
+  db.none(`INSERT INTO Tarjeta_debito VALUES(PGP_SYM_ENCRYPT($1, 'AES_KEY'),$2,'${bank}',PGP_SYM_ENCRYPT($3, 'AES_KEY'))`,
+  [escape(cardNumber), escape(phone), escape(numberAccount)])
   .then((data) => {
     res.send(JSON.stringify(`Tarjeta debito registrada exitosamente`))
   })
@@ -53,8 +53,8 @@ var createCreditCard = (req,res,db)=>{
   const endDate = req.params.endDate;
   const cvc = req.params.cvc;
 
-  db.none(`INSERT INTO Tarjeta_credito VALUES($1,$2,$3,$4,$5)`,
-  [escape(cardNumber), escape(phone), escape(bank), escape(endDate), escape(cvc)])
+  db.none(`INSERT INTO Tarjeta_credito VALUES(PGP_SYM_ENCRYPT($1, 'AES_KEY'),$2,'${bank}',$3,PGP_SYM_ENCRYPT($4, 'AES_KEY'))`,
+  [escape(cardNumber), escape(phone), escape(endDate), escape(cvc)])
   .then((data) => {
     res.send(JSON.stringify(`Tarjeta credito registrada exitosamente`))
   })
@@ -73,8 +73,8 @@ var createAddress = (req,res,db) => {
   const city=req.params.city;
   const depto=req.params.depto;
 
-  db.none(`INSERT INTO Direccion(celular_usuario,direccion_latitud,direccion_longitud,direccion_domicilio,direccion_ciudad,direccion_departamento) VALUES($1,$2,$3,$4,$5,$6)`,
-  [escape(phone), escape(lat), escape(lng), escape(address), escape(city), escape(depto)])
+  db.none(`INSERT INTO Direccion(celular_usuario,direccion_latitud,direccion_longitud,direccion_domicilio,direccion_ciudad,direccion_departamento) VALUES($1,$2,$3,'${address}','${city}','${depto}')`,
+  [escape(phone), escape(lat), escape(lng)])
   .then((data) => {
     res.send(JSON.stringify(`Direccion registrada exitosamente`))
   })
@@ -211,8 +211,7 @@ var getDebitCardInfo = (req,res,db) => {
 var ChangePassword = (req,res,db)=>{
   const phone = req.params.phone;
   const newPass = req.params.newPass;
-  db.none(`UPDATE Usuario SET usuario_contrasenia = $1 WHERE celular_usuario = $2`,
-  [escape(newPass), escape(phone)])
+  db.none(`UPDATE Usuario SET usuario_contrasenia = '${newPass}' WHERE celular_usuario = '${phone}'`)
   .then((data) => {
     res.send(JSON.stringify(`Contraseña cambiada éxitosamente`))
   })
@@ -234,6 +233,19 @@ var getJobsWithWorker = (req,res,db) =>{
   })
 }
 
+var getWorkersWithXJob = (req,res,db) => {
+  const workersToSearch = req.params.workersToSearch;
+  db.many(`WITH all_realiza_labor AS (SELECT * FROM Realiza NATURAL JOIN Trabajador)
+	SELECT * FROM all_realiza_labor, labor WHERE labor_nombre = '${workersToSearch}' AND Labor.id_labor = all_realiza_labor.id_labor`)
+  .then(function (data) {
+    res.send(JSON.stringify(data))
+  })
+  .catch(function(error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
 module.exports = {
   createUser,
   createDebitCard,
@@ -247,4 +259,5 @@ module.exports = {
   getDebitCardInfo,
   ChangePassword,
   getJobsWithWorker,
+  getWorkersWithXJob,
 }

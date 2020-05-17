@@ -14,7 +14,8 @@ const db = pgp(connectionAdminOptions);
 
 const app = express();
 const port = 5000;
-const { check,validationResult } = require('express-validator'); 
+
+const {check, validationResult} = require('express-validator');
 app.use(cors())
 app.use(express.json());
 
@@ -45,7 +46,7 @@ app.post(`/RegisterWorker1/images`, (req, res) => {
     })
 });
 
-app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) => worker.createWorker(req,res, db))
+app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) => worker.createWorker(req,res, validationResult, db))
 
 app.post(`/RegisterWorker2/:numberAccount/:bank/:type/:idCard/:phone`, (req,res) => worker.createBankAccount(req,res,db))
 
@@ -110,5 +111,7 @@ app.get(`/GetDebitCardInfo/:phone`, (req,res) => user.getDebitCardInfo(req,res,d
 app.post(`/ChangePasswordUser/:phone/:newPass`, (req,res) => user.ChangePassword(req,res,db))
 
 app.get(`/GetJobsWithWorker/:jobs`, (req,res) => user.getJobsWithWorker(req,res,db))
+
+app.get(`/SearchWorkers/:workersToSearch/:idCardU`, (req,res) => user.getWorkersWithXJob(req,res,db))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))

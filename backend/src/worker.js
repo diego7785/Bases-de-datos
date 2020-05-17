@@ -1,4 +1,9 @@
-var createWorker = (req, res, db) => {
+var createWorker = (req, res, validationResult, db) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    console.log({ errors: errors.array() })
+    return res.send(JSON.stringify('Credenciales invalidas'));
+  }
   const idCard = req.params.idCard;
   const phone = req.params.phone;
   const email = req.params.email;
@@ -6,8 +11,8 @@ var createWorker = (req, res, db) => {
   const lastname = req.params.lastname;
   const password = req.params.password;
 
-  db.none(`INSERT INTO Trabajador VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
-  [escape(idCard), escape(phone), escape(email), escape(name), escape(lastname), escape(password),
+  db.none(`INSERT INTO Trabajador VALUES($1,$2,'${email}','${name}','${lastname}',PGP_SYM_ENCRYPT('${password}', 'AES_KEY'),$3,$4,$5)`,
+  [escape(idCard), escape(phone),
   escape('profilepic-'+idCard), escape('front-'+idCard), escape('back-'+idCard)])
   .then((data) => {
     res.send(JSON.stringify(`Trabajador registrado exitosamente`))
@@ -38,8 +43,8 @@ var createBankAccount = (req,res,db)=>{
   const type = req.params.type;
   const idCard = req.params.idCard;
 
-  db.none(`INSERT INTO Cuenta_bancaria VALUES($1,$2,$3,$4)`,
-  [escape(numberAccount), escape(bank), escape(type), escape(idCard)])
+  db.none(`INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT($1, 'AES_KEY'),'${bank}','${type}',$2)`,
+  [escape(numberAccount), escape(idCard)])
   .then((data) => {
     res.send(JSON.stringify(`Cuenta registrada éxitosamente`))
   })
@@ -59,9 +64,8 @@ var createRealiza = (req,res,db)=>{
   const description = req.params.description;
   const status = 1;
 
-  db.none(`INSERT INTO Realiza VALUES($1,$2,$3,$4,$5,$6)`,
-  [escape(idJob), escape(idCard), escape(price),
-    escape(type), escape(description), escape(status)])
+  db.none(`INSERT INTO Realiza VALUES($1,$2,$3,'${type}','${description}',$4)`,
+  [escape(idJob), escape(idCard), escape(price), escape(status)])
   .then((data) => {
     res.send(JSON.stringify(`Labor a realizar registrada éxitosamente`))
   })
@@ -81,9 +85,8 @@ var createAddress = (req,res,db)=>{
   const city = req.params.city;
   const depto = req.params.depto;
 
-  db.none(`INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES($1,$2,$3,$4,$5,$6)`,
-  [escape(idCard), escape(lat), escape(lng),
-    escape(address), escape(city), escape(depto)])
+  db.none(`INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES($1,$2,$3,'${address}','${city}','${depto}')`,
+  [escape(idCard), escape(lat), escape(lng)])
   .then((data) => {
     res.send(JSON.stringify(`Dirección registrada éxitosamente`))
   })
@@ -215,8 +218,8 @@ var ChangePassword = (req,res,db)=>{
   const idCard = req.params.idCard;
   const newPass = req.params.newPass;
 
-  db.none(`UPDATE Trabajador SET trabajador_contrasenia = $1 WHERE cedula_trabajador = $2`,
-  [escape(newPass), escape(idCard)])
+  db.none(`UPDATE Trabajador SET trabajador_contrasenia = PGP_SYM_ENCRYPT('${newPass}', 'AES_KEY') WHERE cedula_trabajador = $1`,
+  [escape(idCard)])
   .then((data) => {
     res.send(JSON.stringify(`Contraseña cambiada éxitosamente`))
   })
