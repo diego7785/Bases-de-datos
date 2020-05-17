@@ -139,6 +139,7 @@ END
 $$ LANGUAGE plpgsql;
 
 -- Funcion para obtener los datos del trabajador que se busca y calcular la distancia
+-- Parametros: Labor a buscar, Celular usuario
 CREATE OR REPLACE FUNCTION get_workers_results (VARCHAR(50), VARCHAR(10)) RETURNS TABLE(cedula_trabajador VARCHAR(10), realiza_precio INT, realiza_tipo VARCHAR(10), labor_descripcion VARCHAR(200),
 																						trabajador_estado BIT, trabajador_nombre VARCHAR(70), trabajador_apellido VARCHAR(70), trabajador_calificacion INT,
 																						direccion_domicilio VARCHAR(70), distancia DOUBLE PRECISION) AS $$
@@ -157,6 +158,35 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+
+-- Funcion para obtener los datos del trabajador que se busca avanzadamente y calcular la distancia
+-- Parametros: Labor a buscar, celular usuario, tipo de cobro, cantidad de estrellas, precio minimo, precio maximo
+CREATE OR REPLACE FUNCTION get_workers_results (VARCHAR(50), VARCHAR(10), VARCHAR(10), INTEGER, INTEGER, INTEGER) RETURNS TABLE(cedula_trabajador VARCHAR(10), realiza_precio INT, realiza_tipo VARCHAR(10), labor_descripcion VARCHAR(200),
+																						trabajador_estado BIT, trabajador_nombre VARCHAR(70), trabajador_apellido VARCHAR(70), trabajador_calificacion INT,
+																						direccion_domicilio VARCHAR(70), distancia DOUBLE PRECISION) AS $$
+DECLARE
+	nombre_labor ALIAS FOR $1;
+	celularU ALIAS FOR $2;
+	tipoC ALIAS FOR $3;
+	cEstrellas ALIAS FOR $4;
+	pMin ALIAS FOR $5;
+	pMax ALIAS FOR $6;
+	idlabor INTEGER := (SELECT id_labor FROM Labor WHERE labor_nombre = nombre_labor);
+	ubicacionU GEOGRAPHY := (SELECT direccion_ubicacion FROM Direccion WHERE celular_usuario=celularU);
+BEGIN
+	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion
+							FROM Trabajador NATURAL JOIN Realiza WHERE id_labor=idlabor), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
+								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
+							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
+							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.direccion_domicilio,
+							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia;
+END;
+$$
+LANGUAGE plpgsql;
+
+--"01010000204E1200004EB4AB90F22153C0F90FE9B7AF030B40"
+-- 1987654321
+-- Profesor de matemáticas
 
 
  --TRIGGERS

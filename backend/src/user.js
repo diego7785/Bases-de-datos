@@ -228,6 +228,7 @@ var getJobsWithWorker = (req,res,db) =>{
 
 var getWorkersWithXJob = (req,res,db) => {
   const workersToSearch = req.params.workersToSearch;
+  const idCardU = req.params.idCardU;
   db.many(`WITH all_realiza_labor AS (SELECT * FROM Realiza)
 	SELECT * FROM all_realiza_labor, labor WHERE labor_nombre = '${workersToSearch}' AND Labor.id_labor = all_realiza_labor.id_labor`)
   .then(function (data) {

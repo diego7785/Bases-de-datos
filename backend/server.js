@@ -103,6 +103,6 @@ app.post(`/ChangePasswordUser/:phone/:newPass`, (req,res) => user.ChangePassword
 
 app.get(`/GetJobsWithWorker/:jobs`, (req,res) => user.getJobsWithWorker(req,res,db))
 
-app.get(`/SearchWorkers/:workersToSearch`, (req,res) => user.getWorkersWithXJob(req,res,db))
+app.get(`/SearchWorkers/:workersToSearch/:idCardU`, (req,res) => user.getWorkersWithXJob(req,res,db))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))
