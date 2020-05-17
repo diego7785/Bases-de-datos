@@ -3,6 +3,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import RangeSlider from './Slider';
 import Rater from '../RatingSelector/RatingSelector'
+import axios from 'axios';
 
 // reactstrap components
 import {
@@ -31,6 +32,16 @@ class AdvancedSearchBar extends React.Component {
   handleChange = (event,id) => {
     this.setState({[id]: event});
     console.log(this.state);
+    console.log(this.props)
+  }
+
+  onHandleAdvanceSearch = async (e) => {
+    const workersToSearch = this.props.state.search;
+    const idCardU = this.props.idCardU;
+    const res = await axios.get(`http://localhost:5000/SearchWorkers/${workersToSearch}/${idCardU}`)
+    console.log(res)
+    this.props.onHandleChange('results', res)
+    this.props.onHandleChange('openResults', true)
   }
 
   render() {
@@ -69,7 +80,7 @@ class AdvancedSearchBar extends React.Component {
                   }}
                 />
               )}
-              onChange={() => { }}
+              onChange={(e) => {this.onHandleAdvanceSearch(e)}}
             />
           </FormGroup>
         </Col>

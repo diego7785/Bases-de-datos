@@ -21,6 +21,7 @@ CREATE TABLE Trabajador(
 	trabajador_nombre VARCHAR(70) NOT NULL,
 	trabajador_apellido VARCHAR(70) NOT NULL,
 	trabajador_contrasenia VARCHAR(255) NOT NULL,
+	trabajador_calificacion INT NOT NULL,
 	trabajador_foto_perfil VARCHAR(25),
 	trabajador_foto_id_frente VARCHAR(25) NOT NULL,
 	trabajador_foto_id_atras VARCHAR(25) NOT NULL,
@@ -110,11 +111,12 @@ CREATE TABLE Tarjeta_debito(
 	 servicio_descripcion VARCHAR(200) NOT NULL,
 	 servicio_fecha DATE NOT NULL,
 	 servicio_hora_inicio TIME NOT NULL,
-	 servicio_hora_fin TIME NOT NULL,
-	 paga_fecha_pago DATE NOT NULL,
-	 paga_valor_pago INT NOT NULL,
-	 numero_tarjeta_debito VARCHAR(255) NOT NULL,
-	 numero_tarjeta_credito VARCHAR(255) NOT NULL,
+	 servicio_hora_fin TIME,
+	 servicio_calificacion INT,
+	 paga_fecha_pago DATE,
+	 paga_valor_pago INT,
+	 numero_tarjeta_debito VARCHAR(255),
+	 numero_tarjeta_credito VARCHAR(255),
 	 CONSTRAINT pk_servicio PRIMARY KEY (id_servicio),
 	 CONSTRAINT fk_trabajador FOREIGN KEY (cedula_trabajador) REFERENCES Trabajador(cedula_trabajador) ON UPDATE CASCADE ON DELETE RESTRICT,
 	 CONSTRAINT fk_usuario FOREIGN KEY (celular_usuario) REFERENCES Usuario(celular_usuario) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -125,8 +127,8 @@ CREATE TABLE Tarjeta_debito(
 
 
 
- --TRIGGERS
 
+-- FUNCTIONS
 -- Funcion para convertir las coordenadas en puntos para usar con postgis
 CREATE FUNCTION add_geopint() RETURNS TRIGGER AS $$
 DECLARE
@@ -136,6 +138,29 @@ BEGIN
 END
 $$ LANGUAGE plpgsql;
 
+-- Funcion para obtener los datos del trabajador que se busca y calcular la distancia
+CREATE OR REPLACE FUNCTION get_workers_results (VARCHAR(50), VARCHAR(10)) RETURNS TABLE(cedula_trabajador VARCHAR(10), realiza_precio INT, realiza_tipo VARCHAR(10), labor_descripcion VARCHAR(200),
+																						trabajador_estado BIT, trabajador_nombre VARCHAR(70), trabajador_apellido VARCHAR(70), trabajador_calificacion INT,
+																						direccion_domicilio VARCHAR(70), distancia DOUBLE PRECISION) AS $$
+DECLARE
+	nombre_labor ALIAS FOR $1;
+	celularU ALIAS FOR $2;
+	idlabor INTEGER := (SELECT id_labor FROM Labor WHERE labor_nombre = nombre_labor);
+	ubicacionU GEOGRAPHY := (SELECT direccion_ubicacion FROM Direccion WHERE celular_usuario=celularU);
+BEGIN
+	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion
+							FROM Trabajador NATURAL JOIN Realiza WHERE id_labor=idlabor), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
+								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
+							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
+							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.direccion_domicilio,
+							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+ --TRIGGERS
+ -- Trigger para convertir las coordenadas en puntos para usar con postgis
 CREATE TRIGGER trigger_add_geopint BEFORE INSERT ON Direccion
 FOR EACH ROW
 EXECUTE PROCEDURE add_geopint();
@@ -149,18 +174,28 @@ INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),
 
 INSERT INTO Usuario VALUES('1234567890', '1987654321', 'admin@admin.com', 'Admin', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 'profilepic-1234567890', 'front-1234567890', 'back-1234567890', 'recibo-1234567890');
 
-INSERT INTO Direccion(celular_usuario, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('0987654321', 3.376804, -76.530432, 'Calle 2c No 92 - 133', 'Cali', 'Valle del Cauca');
+INSERT INTO Direccion(celular_usuario, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('1987654321', 3.376804, -76.530432, 'Calle 2c No 92 - 133', 'Cali', 'Valle del Cauca');
 
 INSERT INTO Tarjeta_debito VALUES (PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'), '0987654321', 'Bancolombia', PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'));
 
-INSERT INTO Trabajador VALUES('1234567890', '1987654321', 'admin@admin.com', 'Admin', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 'profilepic-1234567890', 'front-1234567890', 'back-11234567890');
+INSERT INTO Trabajador VALUES('1234567890', '1987654321', 'admin@admin.com', 'Admin', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 0, 'profilepic-1234567890', 'front-1234567890', 'back-11234567890');
 
 INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'), 'Bancolombia', 'Cuenta de ahorros', '1234567890');
 
 INSERT INTO Realiza VALUES(3, '1234567890', 23000, 'Por hora', 'Quiero ensenar mates', B'1');
 
 INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('1234567890', 3.546146, -76.290326, 'Cra 25 # 54 - 56', 'Palmira', 'Valle del Cauca')
---QUERY PARA SELECCIONAAR DISTANCIAS
+
+INSERT INTO Trabajador VALUES('2234567890', '2987654321', 'admi2n@admin2.com', 'Admin2', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 0, 'profilepic-2234567890', 'front-2234567890', 'back-21234567890');
+
+INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT('2234567890', 'AES_KEY'), 'Bancolombia', 'Cuenta de ahorros', '2234567890');
+
+INSERT INTO Realiza VALUES(3, '2234567890', 25000, 'Por hora', 'Quiero ensenar mates++', B'1');
+
+INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('2234567890', 3.376045, -76.550033, 'Calle 2c # 92 - 133', 'Cali', 'Valle del Cauca');
+
+
+--QUERY PARA SELECCIONAR DISTANCIAS
 
 /*
 SELECT D.cedula_trabajador, ST_Distance(D.direccion_ubicacion, PL.direccion_ubicacion,true) AS distancia
@@ -169,4 +204,6 @@ LATERAL (
     SELECT cedula_trabajador, direccion_ubicacion FROM Direccion WHERE id_direccion = 1
 ) AS PL
 WHERE D.id_direccion = 2;
+
+
 */

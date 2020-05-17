@@ -18,6 +18,7 @@ class IndexC extends React.Component {
       results: true,
       openResults: false,
     };
+    console.log(props)
   }
 
   toggleNavs = (e, index) => {
@@ -44,9 +45,9 @@ class IndexC extends React.Component {
       <div>
 
         <Header location={this.props.match.path}/>
-        <SearchBar jobs={this.props.location.state.state.wjobs} results={this.state.results} onHandleChange={this.onHandleChange}/>
+        <SearchBar jobs={this.props.location.state.state.wjobs} results={this.state.results} onHandleChange={this.onHandleChange}
+          idCard={this.props.location.state.state.userInfo.celular_usuario}/>
 
-          {/*this.showResults*/}
           {this.state.openResults ? <Results results={this.state.results}/> : <div></div>}
           <br/>
             <Col xl="4" style = {{marginTop: 30}}>
