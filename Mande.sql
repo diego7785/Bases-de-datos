@@ -15,6 +15,7 @@ DROP FUNCTION IF EXISTS add_geopint;
 DROP FUNCTION IF EXISTS get_workers_results;
 DROP FUNCTION IF EXISTS get_workers_results_advanced;
 DROP TRIGGER IF EXISTS trigger_add_geopint ON Direccion;
+SET TIME ZONE -5;
 
 CREATE TABLE Trabajador(
 	cedula_trabajador VARCHAR(10) NOT NULL,
@@ -130,7 +131,7 @@ CREATE TABLE Tarjeta_debito(
 
 -- FUNCTIONS
 -- Funcion para convertir las coordenadas en puntos para usar con postgis
-CREATE FUNCTION add_geopint() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION add_geopint() RETURNS TRIGGER AS $$
 DECLARE
 BEGIN
     NEW.direccion_ubicacion := ST_SetSRID(ST_MakePoint(NEW.direccion_longitud,NEW.direccion_latitud),4686);
@@ -176,7 +177,7 @@ DECLARE
 	ubicacionU GEOGRAPHY := (SELECT direccion_ubicacion FROM Direccion WHERE celular_usuario=celularU);
 BEGIN
 	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.id_labor, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion,
-							Trabajador.trabajador_foto_perfil FROM Trabajador NATURAL JOIN Realiza WHERE Realiza.id_labor=idlabor AND Realiza.realiza_tipo=tipoC AND Trabajador.trabajador_calificacion=cEstrellas AND Realiza.realiza_precio BETWEEN pMin AND pMax), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.id_labor Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
+							Trabajador.trabajador_foto_perfil FROM Trabajador NATURAL JOIN Realiza WHERE Realiza.id_labor=idlabor AND Realiza.realiza_tipo=tipoC AND Trabajador.trabajador_calificacion=cEstrellas AND Realiza.realiza_precio BETWEEN pMin AND pMax), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.id_labor, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
 								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Trabajador_realiza.trabajador_foto_perfil, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
 							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
 							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.id_labor, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil, TR_Direccion.direccion_domicilio,
@@ -196,6 +197,16 @@ END
 $$
 LANGUAGE 	plpgsql;
 
+-- Insertar fecha y hora en servicio
+CREATE OR REPLACE FUNCTION set_time_date() RETURNS TRIGGER AS $$
+DECLARE
+BEGIN
+	NEW.servicio_fecha := (SELECT current_date);
+	NEW.servicio_hora_inicio := (SELECT current_time);
+	RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
 --"01010000204E1200004EB4AB90F22153C0F90FE9B7AF030B40"
 -- 1987654321
 -- Profesor de matemáticas
@@ -211,6 +222,10 @@ EXECUTE PROCEDURE add_geopint();
 CREATE TRIGGER trigger_set_worker_busy BEFORE INSERT ON Servicio
 FOR EACH ROW
 EXECUTE PROCEDURE set_worker_busy();
+
+CREATE TRIGGER trigger_set_time_date BEFORE INSERT ON Servicio
+FOR EACH ROW
+EXECUTE PROCEDURE set_time_date();
 
 
 INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),
