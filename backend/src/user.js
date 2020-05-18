@@ -1,6 +1,5 @@
 var createUser = (req,res,validationResult,db) => {
   const errors = validationResult(req);
-  console.log('AHHHHHHHHHHH');
   console.log(errors);
   if (!errors.isEmpty()) {
     console.log({ errors: errors.array() })

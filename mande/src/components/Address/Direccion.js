@@ -64,8 +64,11 @@ export default function Direccion(props) {
 
     return (
       <>
-      <FieldDireccion/>
+
       <FormGroup>
+        <FormControl>
+        <FieldDireccion onHandleChange={props.functionSetState}/>
+        </FormControl>
         <FormControl className={classes.marginN}>
           <div style={{ marginTop: 15 }}>
           <TextField
