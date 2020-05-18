@@ -184,6 +184,17 @@ END;
 $$
 LANGUAGE plpgsql;
 
+-- Funcion para setear trabajador ocupado
+CREATE OR REPLACE FUNCTION set_worker_busy() RETURNS TRIGGER AS $$
+DECLARE
+	idCard VARCHAR(10) := NEW.cedula_trabajador;
+BEGIN
+	UPDATE Realiza SET trabajador_estado = B'0' WHERE cedula_trabajador = idCard;
+	RETURN NEW;
+END
+$$
+LANGUAGE 	plpgsql;
+
 --"01010000204E1200004EB4AB90F22153C0F90FE9B7AF030B40"
 -- 1987654321
 -- Profesor de matemáticas
@@ -194,6 +205,11 @@ LANGUAGE plpgsql;
 CREATE TRIGGER trigger_add_geopint BEFORE INSERT ON Direccion
 FOR EACH ROW
 EXECUTE PROCEDURE add_geopint();
+
+-- trigger para setear el estado del usuario
+CREATE TRIGGER trigger_set_worker_busy BEFORE INSERT ON Servicio
+FOR EACH ROW
+EXECUTE PROCEDURE set_worker_busy();
 
 
 INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),

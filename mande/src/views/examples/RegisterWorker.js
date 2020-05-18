@@ -56,7 +56,6 @@ class RegisterWorker extends React.Component {
     if(trigger === 1){
       this.setState({ [id]: event })
       console.log(this.state)
-
     } else{
       this.setState({ [id]: event.replace(/#/g,' No ') })
       var addressPass = this.state.address;
@@ -72,7 +71,6 @@ class RegisterWorker extends React.Component {
       );
     }
     console.log(this.state)
-
   }
 
 

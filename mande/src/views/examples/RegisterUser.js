@@ -45,20 +45,10 @@ class RegisterUser extends React.Component {
     idCard: true,
     password: true,
     passwordR:true,
-    departamento: true,
-    municipio: true,
-    tipoVia: true,
-    nombreVia: true,
-    viaSec: true,
-    nombreViaSec: true,
-    compViaSec: true,
-    numeroCasa: true,
-    comp: true,
-    barrio: true,
-    via: false,
     latitude: true,
     length: true,
-    completeAddress: true,
+    complemento: true,
+    address: true,
     open: false,
   }
   setOpen = (id,val)=>
@@ -66,56 +56,26 @@ class RegisterUser extends React.Component {
     this.setState({[id] : val})
   }
 
-  changeViaState = () => {
-    this.setState({via: true})
-  }
   //Setea el state, correspondiente al id, trigger sts the variables for the map
   onHandleChange = (event, id, trigger) => {
     if(trigger === 1){
-      this.setState({ [id]: event.target.value })
-    } else {
-    this.setState({ [id]: event.target.value })
-    var departamento = this.state.departamento;
-    var municipio = this.state.municipio;
-    var tipoVia = this.state.tipoVia;
-    var nombreVia = this.state.nombreVia;
-    var nombreViaSec = this.state.nombreViaSec;
-    var compViaSec = this.state.compViaSec;
-    var numeroCasa = this.state.numeroCasa;
-    var comp = this.state.comp;
-    if(tipoVia === true ||  tipoVia === "Select"){
-      tipoVia = "";
+      this.setState({ [id]: event })
+      console.log(this.state)
+    } else{
+      this.setState({ [id]: event.replace(/#/g,' No ') })
+      var addressPass = this.state.address;
+      Geocode.fromAddress(event).then(
+        response => {
+          const { lat, lng } = response.results[0].geometry.location;
+          this.setState({ latitude: lat});
+          this.setState({ length: lng});
+        },
+        error => {
+          console.error(error);
+        }
+      );
     }
-    if(nombreVia === true || nombreVia === "Select"){
-      nombreVia = "";
-    }
-    if(nombreViaSec === true || nombreViaSec === "Select"){
-      nombreViaSec = "";
-    }
-    if(compViaSec === true || compViaSec === "Select"){
-      compViaSec = "-";
-    }
-    if(numeroCasa === true || numeroCasa === "Select"){
-      numeroCasa = "";
-    }
-    if(comp === true ||  comp === "Select"){
-      comp = "";
-    }
-
-    var address = tipoVia +" "+ nombreVia +" No "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp;
-    var toConvert = tipoVia +" "+ nombreVia +" # "+ nombreViaSec +" "+ compViaSec +" "+ numeroCasa +" "+ comp + ", "+municipio+", "+departamento+", Colombia";
-    this.setState({completeAddress: address});
-    Geocode.fromAddress(toConvert).then(
-      response => {
-        const { lat, lng } = response.results[0].geometry.location;
-        this.setState({ latitude: lat});
-        this.setState({ length: lng});
-      },
-      error => {
-        console.error(error);
-      }
-    );
-  }
+    console.log(this.state)
   }
   render() {
     return (

@@ -105,9 +105,14 @@ export default function GoogleMaps(props) {
       value={value}
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
+        if(newValue === null){
+          setValue('Universidad del Valle, Cali, Valle del Cauca, Colombia');
+          props.onHandleChange('Universidad del Valle, Cali, Valle del Cauca, Colombia', 'address', 2)
+        } else{
         setValue(newValue);
         console.log(newValue.description)
         props.onHandleChange(newValue.description, 'address', 2)
+      }
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
