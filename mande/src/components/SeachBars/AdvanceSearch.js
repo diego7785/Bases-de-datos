@@ -23,26 +23,13 @@ class AdvancedSearchBar extends React.Component {
     this.state = {
       activeNav: 1,
       chartExample1Data: "data1",
-      value: true,
-      minValue: true,
-      maxValue: true,
+      value: this.props.value,
+      minValue: this.props.minValue,
+      maxValue: this.props.maxValue,
+      type: this.props.type,
     };
   }
 
-  handleChange = (event,id) => {
-    this.setState({[id]: event});
-    console.log(this.state);
-    console.log(this.props)
-  }
-
-  onHandleAdvanceSearch = async (e) => {
-    const workersToSearch = this.props.state.search;
-    const idCardU = this.props.idCardU;
-    const res = await axios.get(`http://localhost:5000/SearchWorkers/${workersToSearch}/${idCardU}`)
-    console.log(res)
-    this.props.onHandleChange('results', res)
-    this.props.onHandleChange('openResults', true)
-  }
 
   render() {
     return (
@@ -50,11 +37,11 @@ class AdvancedSearchBar extends React.Component {
         <Row>
           <Col xl="5">
             <div>
-              <Rater state = {this.state} onChange = {this.handleChange}/>
+              <Rater state = {this.props.state} onChange = {this.props.onHandleChange}/>
             </div>
           </Col>
           <Col xl="5">
-            <RangeSlider state = {this.state} onChange = {this.handleChange}/>
+            <RangeSlider state = {this.props.state} onChange = {this.props.onHandleChange}/>
           </Col>
         <Col>
           <FormGroup className="mb-0" style={{ marginTop: -20 }}>
@@ -80,7 +67,7 @@ class AdvancedSearchBar extends React.Component {
                   }}
                 />
               )}
-              onChange={(e) => {this.onHandleAdvanceSearch(e)}}
+              onChange={async (e) => {await this.props.onHandleChange('type', e.target.innerText)}}
             />
           </FormGroup>
         </Col>

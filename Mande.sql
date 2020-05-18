@@ -12,6 +12,8 @@ DROP TABLE IF EXISTS Servicio_pago CASCADE;
 CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 DROP FUNCTION IF EXISTS add_geopint;
+DROP FUNCTION IF EXISTS get_workers_results;
+DROP FUNCTION IF EXISTS get_workers_results_advanced;
 DROP TRIGGER IF EXISTS trigger_add_geopint ON Direccion;
 
 CREATE TABLE Trabajador(
@@ -142,19 +144,19 @@ $$ LANGUAGE plpgsql;
 -- Parametros: Labor a buscar, Celular usuario
 CREATE OR REPLACE FUNCTION get_workers_results (VARCHAR(50), VARCHAR(10)) RETURNS TABLE(cedula_trabajador VARCHAR(10), realiza_precio INT, realiza_tipo VARCHAR(10), labor_descripcion VARCHAR(200),
 																						trabajador_estado BIT, trabajador_nombre VARCHAR(70), trabajador_apellido VARCHAR(70), trabajador_calificacion INT,
-																						direccion_domicilio VARCHAR(70), distancia DOUBLE PRECISION) AS $$
+																						trabajador_foto_perfil VARCHAR(25), direccion_domicilio VARCHAR(70), distancia DOUBLE PRECISION) AS $$
 DECLARE
 	nombre_labor ALIAS FOR $1;
 	celularU ALIAS FOR $2;
 	idlabor INTEGER := (SELECT id_labor FROM Labor WHERE labor_nombre = nombre_labor);
 	ubicacionU GEOGRAPHY := (SELECT direccion_ubicacion FROM Direccion WHERE celular_usuario=celularU);
 BEGIN
-	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion
+	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion, Trabajador.trabajador_foto_perfil
 							FROM Trabajador NATURAL JOIN Realiza WHERE id_labor=idlabor), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
-								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
+								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Trabajador_realiza.trabajador_foto_perfil, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
 							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
-							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.direccion_domicilio,
-							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia;
+							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil,
+							TR_Direccion.direccion_domicilio, DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia;
 END;
 $$
 LANGUAGE plpgsql;
@@ -163,7 +165,7 @@ LANGUAGE plpgsql;
 -- Parametros: Labor a buscar, celular usuario, tipo de cobro, cantidad de estrellas, precio minimo, precio maximo
 CREATE OR REPLACE FUNCTION get_workers_results_advanced (VARCHAR(50), VARCHAR(10), VARCHAR(10), INTEGER, INTEGER, INTEGER) RETURNS TABLE(cedula_trabajador VARCHAR(10), realiza_precio INT, realiza_tipo VARCHAR(10), labor_descripcion VARCHAR(200),
 																						trabajador_estado BIT, trabajador_nombre VARCHAR(70), trabajador_apellido VARCHAR(70), trabajador_calificacion INT,
-																						direccion_domicilio VARCHAR(70), distancia DOUBLE PRECISION) AS $$
+																						trabajador_foto_perfil VARCHAR(25), direccion_domicilio VARCHAR(70), distancia DOUBLE PRECISION) AS $$
 DECLARE
 	nombre_labor ALIAS FOR $1;
 	celularU ALIAS FOR $2;
@@ -174,11 +176,11 @@ DECLARE
 	idlabor INTEGER := (SELECT id_labor FROM Labor WHERE labor_nombre = nombre_labor);
 	ubicacionU GEOGRAPHY := (SELECT direccion_ubicacion FROM Direccion WHERE celular_usuario=celularU);
 BEGIN
-	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion
-							FROM Trabajador NATURAL JOIN Realiza WHERE id_labor=idlabor), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
-								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
+	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion,
+							Trabajador.trabajador_foto_perfil FROM Trabajador NATURAL JOIN Realiza WHERE id_labor=idlabor AND Realiza.realiza_tipo=tipoC AND Trabajador.trabajador_calificacion=cEstrellas AND Realiza.realiza_precio BETWEEN pMin AND pMax), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
+								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Trabajador_realiza.trabajador_foto_perfil, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
 							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
-							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.direccion_domicilio,
+							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil, TR_Direccion.direccion_domicilio,
 							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia;
 END;
 $$
@@ -206,7 +208,7 @@ INSERT INTO Usuario VALUES('1234567890', '1987654321', 'admin@admin.com', 'Admin
 
 INSERT INTO Direccion(celular_usuario, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('1987654321', 3.376804, -76.530432, 'Calle 2c No 92 - 133', 'Cali', 'Valle del Cauca');
 
-INSERT INTO Tarjeta_debito VALUES (PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'), '0987654321', 'Bancolombia', PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'));
+INSERT INTO Tarjeta_debito VALUES (PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'), '1987654321', 'Bancolombia', PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'));
 
 INSERT INTO Trabajador VALUES('1234567890', '1987654321', 'admin@admin.com', 'Admin', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 0, 'profilepic-1234567890', 'front-1234567890', 'back-11234567890');
 
@@ -214,7 +216,7 @@ INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'), 'Ba
 
 INSERT INTO Realiza VALUES(3, '1234567890', 23000, 'Por hora', 'Quiero ensenar mates', B'1');
 
-INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('1234567890', 3.546146, -76.290326, 'Cra 25 # 54 - 56', 'Palmira', 'Valle del Cauca')
+INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('1234567890', 3.546146, -76.290326, 'Cra 25 # 54 - 56', 'Palmira', 'Valle del Cauca');
 
 INSERT INTO Trabajador VALUES('2234567890', '2987654321', 'admi2n@admin2.com', 'Admin2', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 0, 'profilepic-2234567890', 'front-2234567890', 'back-21234567890');
 
