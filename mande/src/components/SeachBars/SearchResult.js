@@ -10,12 +10,11 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Rating from '@material-ui/lab/Rating';
-import { Col, Row, Modal, ModalHeader, ModalFooter } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import { Button } from '@material-ui/core';
+import ServiceRequest from './ServiceRequest';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const ResultCard = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-  const [modalShow, setModalShow] = React.useState(false);
+  const [] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -100,7 +99,7 @@ const ResultCard = (props) => {
             </Col>
             <Col>
               {props.estado ?
-                <Button variant="contained" color="primary">Pedir Servicio</Button> :
+                <ServiceRequest/> :
                 <Button variant="contained" color="primary" disabled>Trabajador ocupado </Button>}
 
             </Col>
