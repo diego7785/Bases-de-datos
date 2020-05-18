@@ -22,20 +22,20 @@ function Alert(props) {
 }
 
 export default function SnackbarRUDeb(props) {
-    const finalRegister = async (props) => {
+
+    const finalRegister = async () => {
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
         }
 
         var cont=0;
-        console.log(props.state);
-
-        if (false === validations.isNumber(props.state.cardNumber))
+        console.log(props);
+        if (false === validations.isNumber(props.props.cardNumber))
         {
             verifications[0]=false;
-            cont++;   
+            cont++;
         }
-                
+
         if (cont >0)
         {
             props.onHandleChange('open', true);
@@ -50,13 +50,13 @@ export default function SnackbarRUDeb(props) {
             const name = props.state1.location.state.name;
             const lastname = props.state1.location.state.lastname;
             const password = props.state1.location.state.password;
-        
+
             var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
             console.log(res)
             if(res.statusText === "OK"){
             exito=exito+1;
             }
-        
+
             const cardNumber = props.state.cardNumber;
             const bank = props.state.bank;
             const numberAccount = props.state.numberAccount;
@@ -65,19 +65,19 @@ export default function SnackbarRUDeb(props) {
             if(res.statusText === "OK"){
             exito=exito+1;
             }
-        
+
             const lat = props.state1.location.state.latitude;
             const lng = props.state1.location.state.length;
             const address = props.state1.location.state.completeAddress;
             const city = props.state1.location.state.city;
             const depto = props.state1.location.state.depto;
-        
+
             res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
             console.log(res)
             if(res.statusText === "OK"){
             exito=exito+1;
             }
-        
+
             if(exito === 3){
             alert('Registro exitoso');
             props.state1.history.push({pathname: "/auth/"})

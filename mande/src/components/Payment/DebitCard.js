@@ -59,6 +59,7 @@ const bancos = [{ code: "Banco Agrario de Colombia", label: "Banco Agrario de Co
 
 export default function DebitCard(props) {
   const classes = useStyles();
+  console.log(props);
   return (
     <>
       <FormGroup>
@@ -110,7 +111,7 @@ export default function DebitCard(props) {
       </FormGroup>
 
       <div className="text-center">
-      <ValidationSnackbarsRUDeb  props={props.state}/>
+      <ValidationSnackbarsRUDeb  props={props.state} onHandleChange={props.onHandleChange} state1={props.state1}/>
        {/* <Button className="mt-4" color="primary" type="button" onClick={finalRegister}>
           Finalizar
           </Button>*/}
