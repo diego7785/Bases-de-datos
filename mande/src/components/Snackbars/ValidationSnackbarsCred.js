@@ -8,8 +8,14 @@ const validations = require('../../validations/Verifications.js');
 var messages = ["Debe llenar todos los campos",
                 "Número de tarjeta no puede contener letras, ni símbolos",
                 "Número de tarjeta debe tener 16 dígitos",
-                "Número de cuenta no puede contener letras, ni símbolos",
-                "Número de cuenta debe tener entre 10 y 20 dígitos",
+                "CVC no puede contener letras, ni símbolos",
+                "CVC debe contener 3 o 4 dígitos",
+                "Mes de expiración no puede contener letras, ni símbolos",
+                "Mes de expiración va de 01 a 12",
+                "Año de expiración no puede contener letras, ni símbolos",
+                "Año de expiración no puede contener años pasados",
+                "Cédula no puede contener letras, ni símbolos",
+                "Cédula debe tener entre 8 y 10 dígitos",
             ];
 
 var verifications = new Array(messages.length);
@@ -21,17 +27,16 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function SnackbarRUDeb(props) {
-
+export default function SnackbarRUCred(props) {
     const finalRegister = async () => {
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
         }
-        console.log(props);
-        var cont=0;
-        var emptyFields=true
-        if (validations.emptyField(props.props.cardNumber) || validations.emptyField(props.props.numberAccount)
-           || validations.diferentType(props.props.bank, 'string'))
+        var emptyFields=true;
+        var cont =0;
+        if(validations.diferentType(props.props.bank, 'string') ||validations.emptyField(props.props.cardNumber)
+          || validations.emptyField(props.props.cvc) || validations.emptyField(props.props.month) || validations.emptyField(props.props.year)
+          || validations.emptyField(props.props.idCardCredit))
         {
             verifications[0]=false;
             cont++;
@@ -47,16 +52,50 @@ export default function SnackbarRUDeb(props) {
             verifications[2]=false;
             cont++;
         }
-        if(emptyFields && (false === validations.isNumber(props.props.numberAccount)))
+        if(emptyFields && (false === validations.isNumber(props.props.cvc)))
         {
             verifications[3]=false;
             cont++;
         }
-        if(emptyFields && (props.props.numberAccount.length < 10 || props.props.numberAccount.length > 20 ) )
+        if(emptyFields && (props.props.cvc.length !== 3 && props.props.cvc.length !== 4))
         {
             verifications[4]=false;
             cont++;
         }
+        if(emptyFields && (false === validations.isNumber(props.props.month)))
+        {
+            verifications[5]=false;
+            cont++;
+        }
+        if(emptyFields && (props.props.month !== '01' && props.props.month !== '02' && props.props.month !== '03'
+        && props.props.month !== '04' && props.props.month !== '05' && props.props.month !== '06' && props.props.month !== '07'
+        && props.props.month !== '08' && props.props.month !== '09' && props.props.month !== '10' && props.props.month !== '11' 
+        && props.props.month !== '12'))
+        {
+            verifications[6]=false;
+            cont++;
+        }
+        if(emptyFields && (false === validations.isNumber(props.props.year)))
+        {
+            verifications[7]=false;
+            cont++;
+        }
+        if(emptyFields && (parseInt(props.props.year) < 2020))
+        {
+            verifications[8]=false;
+            cont++;
+        }
+        if(emptyFields && (false === validations.isNumber(props.props.idCardCredit)))
+        {
+            verifications[9]=false;
+            cont++;
+        }
+        if(emptyFields && (props.props.idCardCredit.length < 8 || props.props.idCardCredit.length > 10 ))
+        {
+            verifications[10]=false;
+            cont++;
+        }
+
 
         if (cont >0)
         {
@@ -72,44 +111,47 @@ export default function SnackbarRUDeb(props) {
             const name = props.state1.location.state.name;
             const lastname = props.state1.location.state.lastname;
             const password = props.state1.location.state.password;
-
+          
             var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
             console.log(res)
             if(res.statusText === "OK"){
-            exito=exito+1;
+              exito=exito+1;
             }
-
-            const cardNumber = props.props.cardNumber;
-            const bank = props.props.bank;
-            const numberAccount = props.props.numberAccount;
-            res = await axios.post(`http://localhost:5000/RegisterUser2_2/${cardNumber}/${phone}/${bank}/${numberAccount}`)
+          
+            const endDate = props.props.month+'-'+props.props.year;
+            const cvc = props.props.cvc;
+            const cardNumber=props.props.cardNumber;
+            const bank=props.props.bank;
+            const idCardCredit= props.props.idCardCredit;
+            res = await axios.post(`http://localhost:5000/RegisterCreditCard/${cardNumber}/${phone}/${bank}/${endDate}/${cvc}`)
             console.log(res)
             if(res.statusText === "OK"){
-            exito=exito+1;
+              exito=exito+1;
             }
-
+          
             const lat = props.state1.location.state.latitude;
             const lng = props.state1.location.state.length;
             const address = props.state1.location.state.completeAddress;
             const city = props.state1.location.state.city;
             const depto = props.state1.location.state.depto;
-
+          
             res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
             console.log(res)
             if(res.statusText === "OK"){
-            exito=exito+1;
+              exito=exito+1;
             }
-
+          
             if(exito === 3){
-            alert('Registro exitoso');
-            props.state1.history.push({pathname: "/auth/"})
+              alert('Registro exitoso');
+              props.state1.history.push({pathname: "/auth/"})
             }else{
-            const credit=0;
-            res = await axios.post(`http://localhost:5000/RegisterUser2_5/delete/${phone}/${cardNumber}/${credit}`)
-            alert('No se ha podido realizar el registro, por favor intente de nuevo');
+              const credit=1;
+              res = await axios.post(`http://localhost:5000/RegisterUser2_5/delete/${phone}/${cardNumber}/${credit}`)
+              alert('No se ha podido realizar el registro, por favor intente de nuevo');
             }
         }
     };
+
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
