@@ -30,8 +30,6 @@ class Profile extends React.Component {
     lastname: this.props.location.state.state.userInfo.usuario_apellido,
     email: this.props.location.state.state.userInfo.usuario_email,
     address: this.props.location.state.state.addressInfo.direccion_domicilio,
-    city: this.props.location.state.state.addressInfo.direccion_ciudad,
-    depto: this.props.location.state.state.addressInfo.direccion_departamento,
     path: this.props.match.path,
     typeCard: this.props.location.state.state.type,
     numberCard: this.props.location.state.state.type === 'Credito' ? this.props.location.state.state.paymentMethod.numero_tarjeta_credito : this.props.location.state.state.paymentMethod.numero_tarjeta_debito,
@@ -93,7 +91,7 @@ class Profile extends React.Component {
                     </h3>
                     <div className="h5 font-weight-300">
                       <i className="ni location_pin mr-2" />
-                        {this.state.city.replace(/%20/g,' ') +', '+this.state.depto.replace(/%20/g,' ')+', Colombia'}
+                        {this.state.address.replace(/%20/g,' ') }
                     </div>
                     <hr className="my-4" />
                   </div>
@@ -194,62 +192,6 @@ class Profile extends React.Component {
                               defaultValue={this.state.address.replace(/%20/g,' ')}
                               id="input-address"
                               placeholder="Dirección"
-                              type="text"
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg="4">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-city"
-                            >
-                              Ciudad
-                            </label>
-                            <Input
-                              readOnly={true}
-                              className="form-control-alternative"
-                              defaultValue={this.state.city.replace(/%20/g,' ')}
-                              id="input-city"
-                              placeholder="Ciudad"
-                              type="text"
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="4">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-department"
-                            >
-                              Departamento
-                            </label>
-                            <Input
-                              readOnly={true}
-                              className="form-control-alternative"
-                              defaultValue={this.state.depto.replace(/%20/g,' ')}
-                              id="input-deprtment"
-                              placeholder="Departamento"
-                              type="text"
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="4">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-country"
-                            >
-                              País
-                            </label>
-                            <Input
-                              readOnly={true}
-                              className="form-control-alternative"
-                              defaultValue="Colombia"
-                              id="input-country"
-                              placeholder="País"
                               type="text"
                             />
                           </FormGroup>
