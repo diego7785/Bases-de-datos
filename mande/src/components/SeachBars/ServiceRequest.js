@@ -26,11 +26,11 @@ export default function ServiceRequest(props) {
         Pedir Servicio
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Da una breve descipcion para el trabajador</DialogTitle>
+        <DialogTitle id="form-dialog-title">Da una breve descripción para el trabajador</DialogTitle>
         <DialogContent>
         <TextField
           id="outlined-multiline-static"
-          label="Descripcion de labor"
+          label="Ingresa una breve descripcion del servicio que requieres"
           multiline
           style = {{width: 440}}
           inputProps={{ maxLength: 100}}
@@ -40,10 +40,10 @@ export default function ServiceRequest(props) {
         />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel} color="primary">
+          <Button onClick={handleCancel} color="primary" variant="contained">
             Cancelar
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="primary" variant="contained">
             Confirmar Servicio
           </Button>
         </DialogActions>
