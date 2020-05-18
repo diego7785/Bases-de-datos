@@ -33,7 +33,7 @@ export default function ServiceRequest(props) {
           label="Ingresa una breve descripcion del servicio que requieres"
           multiline
           style = {{width: 440}}
-          inputProps={{ maxLength: 100}}
+          inputProps={{ maxLength: 200}}
           rows="4"
           placeholder="Ingresa una breve descripcion del servicio que requieres"
           variant="outlined"
