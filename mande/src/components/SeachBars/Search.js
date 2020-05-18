@@ -43,10 +43,13 @@ class SearchBar extends React.Component {
         const idCardU = this.props.idCard;
         console.log(this.state);
         const res = await axios.get(`http://localhost:5000/SearchWorkersAdvanced/${workersToSearch}/${idCardU}/${this.state.type}/${this.state.value}/${this.state.minValue}/${this.state.maxValue}`)
-        console.log(res)
+        if(res.data === ""){
+          alert('no hay resultados') //esto hay que validarlo con un snackbar
+        } else{
         console.log('goli')
         await this.props.onHandleChange('results', res)
         await this.props.onHandleChange('openResults', true)
+      }
       } else {
         const workersToSearch = this.state.search;
         const idCard = this.props.idCard;

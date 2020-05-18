@@ -3,7 +3,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputBase from '@material-ui/core/InputBase';
 import TextField from '@material-ui/core/TextField';
-
+import FieldDireccion from 'components/Address/DireccionField.js'
 
 // reactstrap components
 import {
@@ -64,6 +64,7 @@ export default function Direccion(props) {
 
     return (
       <>
+      <FieldDireccion/>
       <FormGroup>
         <FormControl className={classes.marginN}>
           <div style={{ marginTop: 15 }}>
