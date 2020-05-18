@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Direccion from "components/Address/Direccion.js"
 import TextField from '@material-ui/core/TextField';
 import Geocode from "react-geocode";
-import Map from 'components/Maps/map.js'; 
+import Map from 'components/Maps/map.js';
 import ValidationSnackbarsRW from 'components/Snackbars/ValidationSnackbarsRW';
 
 // reactstrap components
@@ -21,13 +21,6 @@ import {
   NavLink
 } from "reactstrap";
 
-var retornarDireccion = (state) => {
-  if (state.completeAddress === true) {
-    return (<TextField id="address" disabled="true" label="Continúe escribiendo la dirección" style={{ width: 500 }} />);
-  } else {
-    return (<TextField id="address" disabled="true" label={state.completeAddress} style={{ width: 500 }} />)
-  }
-}
 
 var retornaMap = (state) => {
   if (state.barrio === true) {
@@ -48,21 +41,9 @@ class RegisterWorker extends React.Component {
     idCard: true,
     password: true,
     passwordR: true,
-    complemento: true,
-    departamento: true,
-    municipio: true,
-    tipoVia: true,
-    nombreVia: true,
-    viaSec: true,
-    nombreViaSec: true,
-    compViaSec: true,
-    numeroCasa: true,
-    comp: true,
-    barrio: true,
-    via: false,
     latitude: true,
     length: true,
-    completeAddress: true,
+    address: true,
     open: false,
   }
 
@@ -72,59 +53,28 @@ class RegisterWorker extends React.Component {
   }
   //Setea el state, correspondiente al id, trigger sets the variables for the map
   onHandleChange = (event, id, trigger) => {
-    if (trigger === 1) {
-      this.setState({ [id]: event.target.value })
-    } else {
-      this.setState({ [id]: event.target.value })
-      var complemento = this.state.complemento;
-      var departamento = this.state.departamento;
-      var municipio = this.state.municipio;
-      var tipoVia = this.state.tipoVia;
-      var nombreVia = this.state.nombreVia;
-      var nombreViaSec = this.state.nombreViaSec;
-      var compViaSec = this.state.compViaSec;
-      var numeroCasa = this.state.numeroCasa;
-      var comp = this.state.comp;
+    if(trigger === 1){
+      this.setState({ [id]: event })
+      console.log(this.state)
 
-      if (tipoVia === true || tipoVia === "Select") {
-        tipoVia = "";
-      }
-      if (nombreVia === true || nombreVia === "Select") {
-        nombreVia = "";
-      }
-      if (nombreViaSec === true || nombreViaSec === "Select") {
-        nombreViaSec = "";
-      }
-      if (compViaSec === true || compViaSec === "Select") {
-        compViaSec = "-";
-      }
-      if (numeroCasa === true || numeroCasa === "Select") {
-        numeroCasa = "";
-      }
-      if (comp === true || comp === "Select") {
-        comp = "";
-      }
+    } else{
+      this.setState({ [id]: event.replace(/#/g,' No ') })
+      var addressPass = this.state.address;
+      Geocode.fromAddress(event).then(
+        response => {
+          const { lat, lng } = response.results[0].geometry.location;
+          this.setState({ latitude: lat});
+          this.setState({ length: lng});
+        },
+        error => {
+          console.error(error);
+        }
+      );
+    }
+    console.log(this.state)
 
-    var address = tipoVia + " " + nombreVia + " No " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp;
-    var addressPass = tipoVia + " " + nombreVia + " # " + nombreViaSec + " " + compViaSec + " " + numeroCasa + " " + comp + ", "+municipio+", "+departamento+", Colombia"
-    this.setState({completeAddress: address});
-    //console.log(addressPass)
-    Geocode.fromAddress(addressPass).then(
-      response => {
-        const { lat, lng } = response.results[0].geometry.location;
-        this.setState({ latitude: lat});
-        this.setState({ length: lng});
-      },
-      error => {
-        console.error(error);
-      }
-    );
-  }
   }
 
-  changeViaState = () => {
-    this.setState({ via: true })
-  }
 
   render() {
     return (
@@ -143,7 +93,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-tablet-button" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Celular" type="text" id="celular" required maxLength="10" onChange={e => this.onHandleChange(e, 'celular', 1)} />
+                  <Input placeholder="Celular" type="text" id="celular" required maxLength="10" onChange={e => this.onHandleChange(e.target.value, 'celular', 1)} />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -153,7 +103,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Nombre" type="text" id="name" onChange={e => this.onHandleChange(e, 'name', 1)} />
+                  <Input placeholder="Nombre" type="text" id="name" onChange={e => this.onHandleChange(e.target.value, 'name', 1)} />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -163,7 +113,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Apellido" type="text" id="lastname" onChange={e => this.onHandleChange(e, 'lastname', 1)} />
+                  <Input placeholder="Apellido" type="text" id="lastname" onChange={e => this.onHandleChange(e.target.value, 'lastname', 1)} />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -173,7 +123,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-email-83" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Correo" type="email" autoComplete="new-email" id="email" onChange={e => this.onHandleChange(e, 'email', 1)} />
+                  <Input placeholder="Correo" type="email" autoComplete="new-email" id="email" onChange={e => this.onHandleChange(e.target.value, 'email', 1)} />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -183,7 +133,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-key-25" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Cedula" type="text" id="idCard" required maxLength="10" onChange={e => this.onHandleChange(e, 'idCard', 1)} />
+                  <Input placeholder="Cedula" type="text" id="idCard" required maxLength="10" onChange={e => this.onHandleChange(e.target.value, 'idCard', 1)} />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -193,7 +143,7 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-lock-circle-open" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e, 'password', 1)} />
+                  <Input placeholder="Contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e.target.value, 'password', 1)} />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -203,13 +153,12 @@ class RegisterWorker extends React.Component {
                       <i className="ni ni-lock-circle-open" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e, 'passwordR', 1)} />
+                  <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" id="password" onChange={e => this.onHandleChange(e.target.value, 'passwordR', 1)} />
                 </InputGroup>
               </FormGroup>
 
-              <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState} />
+              <Direccion state={this.state} functionSetState={this.onHandleChange} />
               {retornaMap(this.state)}
-              {retornarDireccion(this.state)}
               <div className="text-center">
                 <ValidationSnackbarsRW state={this.state} onHandleChange={this.setOpen} props={this.props}/>
               </div>
