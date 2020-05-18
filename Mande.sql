@@ -78,8 +78,6 @@ CREATE TABLE Trabajador(
 	 direccion_latitud DECIMAL(7,5) NOT NULL,
  	 direccion_longitud DECIMAL(7,5) NOT NULL,
 	 direccion_domicilio VARCHAR(70) NOT NULL,
-	 direccion_ciudad VARCHAR(40) NOT NULL,
-	 direccion_departamento VARCHAR(40) NOT NULL,
 	 direccion_ubicacion GEOGRAPHY(POINT,4686),
 	 CONSTRAINT pk_direccion PRIMARY KEY (id_direccion),
 	 CONSTRAINT fk_trabajador FOREIGN KEY (cedula_trabajador) REFERENCES Trabajador(cedula_trabajador) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -206,7 +204,7 @@ INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),
 
 INSERT INTO Usuario VALUES('1234567890', '1987654321', 'admin@admin.com', 'Admin', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 'profilepic-1234567890', 'front-1234567890', 'back-1234567890', 'recibo-1234567890');
 
-INSERT INTO Direccion(celular_usuario, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('1987654321', 3.376804, -76.530432, 'Calle 2c No 92 - 133', 'Cali', 'Valle del Cauca');
+INSERT INTO Direccion(celular_usuario, direccion_latitud, direccion_longitud, direccion_domicilio) VALUES('1987654321', 3.376804, -76.530432, 'Calle 2c No 92 - 133, Cali, Valle del Cauca, Colombia');
 
 INSERT INTO Tarjeta_debito VALUES (PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'), '1987654321', 'Bancolombia', PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'));
 
@@ -216,7 +214,7 @@ INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT('1234567890', 'AES_KEY'), 'Ba
 
 INSERT INTO Realiza VALUES(3, '1234567890', 23000, 'Por hora', 'Quiero ensenar mates', B'1');
 
-INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('1234567890', 3.546146, -76.290326, 'Cra 25 # 54 - 56', 'Palmira', 'Valle del Cauca');
+INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio) VALUES('1234567890', 3.546146, -76.290326, 'Cra 25 # 54 - 56, Palmira, Valle del Cauca, Colombia');
 
 INSERT INTO Trabajador VALUES('2234567890', '2987654321', 'admi2n@admin2.com', 'Admin2', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 0, 'profilepic-2234567890', 'front-2234567890', 'back-21234567890');
 
@@ -224,7 +222,7 @@ INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT('2234567890', 'AES_KEY'), 'Ba
 
 INSERT INTO Realiza VALUES(3, '2234567890', 25000, 'Por hora', 'Quiero ensenar mates++', B'1');
 
-INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES('2234567890', 3.376045, -76.550033, 'Calle 2c # 92 - 133', 'Cali', 'Valle del Cauca');
+INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio) VALUES('2234567890', 3.376045, -76.550033, 'Calle 2c # 92 - 133, Cali, Valle del Cauca, Colombia');
 
 
 --QUERY PARA SELECCIONAR DISTANCIAS
