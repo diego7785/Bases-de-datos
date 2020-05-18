@@ -12,9 +12,13 @@ const medioPago = [{ code: "Tarjeta débito", label: "Tarjeta débito" },
 { code: "Tarjeta de crédito", label: "Tarjeta de crédito" },]
 
 class Pay extends React.Component {
-
+  constructor(props){
+    super(props)
+    console.log(props)
+  }
   selectPayment = (e) => {
     this.props.onHandleChange('type', e.target.innerText);
+    this.props.onHandleChange('open', false);
   }
 
   selectDebit = (event, id) => {
@@ -68,7 +72,7 @@ class Pay extends React.Component {
             {(() => {
               switch (this.props.state.type) {
                 case "Tarjeta débito":
-                  return <DebitCard state={this.props.state} state1={this.props.state1} functionSetState={this.selectDebit} />;
+                  return <DebitCard state={this.props.state} state1={this.props.state1} functionSetState={this.selectDebit} onHandleChange={this.props.onHandleChange} />;
                 case "Tarjeta de crédito":
                   return <CreditCard state={this.props.state} state1={this.props.state1} functionSetStateI={this.selectCredit} />;
                 default:

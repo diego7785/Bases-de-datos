@@ -19,6 +19,7 @@ class RegisterUser2 extends React.Component {
     month: true,
     year: true,
     idCardCredit: true,
+    open: false,
   }
 
   onHandleChange = (id, event) => {

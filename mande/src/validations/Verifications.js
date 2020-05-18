@@ -34,9 +34,34 @@ var validSizeMay = (value,num) =>
 
 }
 
+var emptyField = value =>
+{
+    if (value.length === 0 || value ===true)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+var diferentType = (value,vari) =>
+{
+    if (typeof(value) !== vari)
+    {
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 module.exports ={
     isNumber,
     validSizeEq,
     onlyLetters,
-    validSizeMay
+    validSizeMay,
+    emptyField,
+    diferentType
 }

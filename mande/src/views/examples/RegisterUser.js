@@ -3,6 +3,7 @@ import Direccion from "components/Address/Direccion.js"
 import Geocode from "react-geocode";
 import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
 import TextField from '@material-ui/core/TextField';
+import ValidationSnackbarsRU from 'components/Snackbars/ValidationSnackbarsRU';
 
 // reactstrap components
 import {
@@ -58,7 +59,13 @@ class RegisterUser extends React.Component {
     latitude: true,
     length: true,
     completeAddress: true,
+    open: false,
   }
+  setOpen = (id,val)=>
+  {
+    this.setState({[id] : val})
+  }
+
   changeViaState = () => {
     this.setState({via: true})
   }
@@ -109,38 +116,6 @@ class RegisterUser extends React.Component {
       }
     );
   }
-  }
-  onClickNext = (e) => {
-    e.preventDefault();
-    if(this.state.passwordR !== this.state.password){
-      alert('Las contraseñas no coinciden');
-    } else{
-    this.props.history.push({
-      pathname: "/auth/RegisterUser1/", state: {
-        celular: this.state.celular,
-        name: this.state.name,
-        lastname: this.state.lastname,
-        email: this.state.email,
-        idCard: this.state.idCard,
-        password: this.state.password,
-        passwordR: this.state.passwordR,
-        departamento: this.state.departamento,
-        municipio: this.state.municipio,
-        tipoVia: this.state.tipoVia,
-        nombreVia: this.state.nombreVia,
-        viaSec: this.state.viaSec,
-        nombreViaSec: this.state.nombreViaSec,
-        compViaSec: this.state.compViaSec,
-        numeroCasa: this.state.numeroCasa,
-        comp: this.state.comp,
-        barrio: this.state.barrio,
-        latitude: this.state.latitude,
-        length: this.state.length,
-        completeAddress: this.state.completeAddress,
-      }
-    })
-  }
-
   }
   render() {
     return (
@@ -228,9 +203,7 @@ class RegisterUser extends React.Component {
                   {retornaMap(this.state)}
                   {retornarDireccion(this.state)}
                 <div className="text-center">
-                  <Button className="mt-4" color="primary" type="button" onClick={this.onClickNext}>
-                    Siguiente
-                  </Button>
+                  <ValidationSnackbarsRU state={this.state} onHandleChange={this.setOpen} props={this.props}/>
                 </div>
               </Form>
             </CardBody>
