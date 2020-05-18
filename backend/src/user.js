@@ -249,6 +249,27 @@ var getWorkersWithXJob = (req,res,db) => {
   })
 }
 
+var getWorkersWithXJobAdvanced = (req,res,db) => {
+  const workersToSearch = req.params.workersToSearch;
+  const userSearch = req.params.idCardU;
+  const type = req.params.type;
+  const stars = req.params.stars;
+  const min = req.params.min;
+  const max = req.params.max;
+  console.log(min)
+  console.log(stars);
+  db.many(`SELECT * FROM get_workers_results_advanced('${workersToSearch}', '${userSearch}', '${type}', ${stars}, ${min}, ${max})`)
+  .then(function (data) {
+    console.log(JSON.stringify(data));
+    console.log(data)
+    res.send(JSON.stringify(data))
+  })
+  .catch(function(error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
 module.exports = {
   createUser,
   createDebitCard,
@@ -263,4 +284,5 @@ module.exports = {
   ChangePassword,
   getJobsWithWorker,
   getWorkersWithXJob,
+  getWorkersWithXJobAdvanced,
 }

@@ -58,7 +58,7 @@ const ResultCard = (props) => {
     <Card className={classes.root} >
       <CardHeader
         avatar={
-          <Avatar alt={props.name} src={props.src}>
+          <Avatar alt={props.name} src={require("assets/img/userImages/worker/"+props.src+".png")}>
 
           </Avatar>
         }

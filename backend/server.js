@@ -80,7 +80,7 @@ app.post(`/RegisterUser1/images`, (req, res) => {
     })
 });
 
-app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`, 
+app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`,
 [
   check('idCard')
          .isNumeric().isLength({min:10, max:10}),
@@ -113,5 +113,7 @@ app.post(`/ChangePasswordUser/:phone/:newPass`, (req,res) => user.ChangePassword
 app.get(`/GetJobsWithWorker/:jobs`, (req,res) => user.getJobsWithWorker(req,res,db))
 
 app.get(`/SearchWorkers/:workersToSearch/:idCardU`, (req,res) => user.getWorkersWithXJob(req,res,db))
+
+app.get(`/SearchWorkersAdvanced/:workersToSearch/:idCardU/:type/:stars/:min/:max`, (req,res) => user.getWorkersWithXJobAdvanced(req,res,db))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))

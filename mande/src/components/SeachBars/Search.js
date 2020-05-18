@@ -30,19 +30,37 @@ class SearchBar extends React.Component {
         advancedSearch: false,
         search: '',
         jobs: this.props.jobs,
+        value: 0,
+        minValue: 10000,
+        maxValue: 100000,
+        type: true,
     };
 
     onHandleSearch = async () => {
-      const workersToSearch = this.state.search;
-      const idCard = this.props.idCard;
-      const res = await axios.get(`http://localhost:5000/SearchWorkers/${workersToSearch}/${idCard}`)
-      this.props.onHandleChange('results', res)
-      this.props.onHandleChange('openResults', true)
-      console.log(this.props)
+      if(this.state.advancedSearch){
+        console.log(this.props)
+        const workersToSearch = this.state.search;
+        const idCardU = this.props.idCard;
+        console.log(this.state);
+        const res = await axios.get(`http://localhost:5000/SearchWorkersAdvanced/${workersToSearch}/${idCardU}/${this.state.type}/${this.state.value}/${this.state.minValue}/${this.state.maxValue}`)
+        console.log(res)
+        console.log('goli')
+        await this.props.onHandleChange('results', res)
+        await this.props.onHandleChange('openResults', true)
+      } else {
+        const workersToSearch = this.state.search;
+        const idCard = this.props.idCard;
+        console.log('oli')
+        const res = await axios.get(`http://localhost:5000/SearchWorkers/${workersToSearch}/${idCard}`)
+        this.props.onHandleChange('results', res)
+        this.props.onHandleChange('openResults', true)
+        console.log(this.props)
+      }
     }
 
     openAdvancedSearch = () => {
         this.setState({ advancedSearch: !this.state.advancedSearch });
+        this.props.onHandleChange('openResults', false);
     }
 
     handleChange = (id, e) => {
