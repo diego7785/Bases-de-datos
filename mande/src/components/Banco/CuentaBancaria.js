@@ -82,10 +82,6 @@ const classes = useStyles();
           {...params}
           label="Escoja un Banco"
           variant="outlined"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
-          }}
         />
     )}
     onChange={e =>  props.functionSetState(e, 'bancoCuenta')  }

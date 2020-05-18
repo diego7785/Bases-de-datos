@@ -15,6 +15,7 @@ class Pay extends React.Component {
 
   selectPayment = (e) => {
     this.props.onHandleChange('type', e.target.innerText);
+    this.props.onHandleChange('open', false);
   }
 
   selectDebit = (event, id) => {

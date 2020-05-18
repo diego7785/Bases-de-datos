@@ -93,10 +93,6 @@ export default function Jobs(props) {
               {...params}
               label="Escoja una labor"
               variant="outlined"
-              inputProps={{
-                ...params.inputProps,
-                autoComplete: 'new-password', // disable autocomplete and autofill
-              }}
               />
           )}
         onChange={e => props.onHandleChange('job',parseInt(e.target.dataset.optionIndex)+1)}
@@ -139,10 +135,6 @@ export default function Jobs(props) {
               {...params}
               label="Tipo cobro"
               variant="outlined"
-              inputProps={{
-                ...params.inputProps,
-                autoComplete: 'new-password', // disable autocomplete and autofill
-              }}
             />
         )}
         onChange={e => props.onHandleChange('type', e.target.innerText)}

@@ -49,36 +49,6 @@ class RegisterWorker1 extends React.Component {
    }
 }
 
-
-onClickHandler = async () => {
-    var cont = 0;
-    var data = new FormData()
-    data.append('file', this.state.front)
-    var res = await axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=front&user=worker", data, {})
-    if(res.statusText === "OK"){
-          cont=1;
-    }
-
-    data = new FormData()
-    data.append('file', this.state.back)
-    res = await axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=back&user=worker", data, {})
-    if(res.statusText === "OK"){
-          cont++;
-
-    }
-    data = new FormData()
-    data.append('file', this.state.profilepic)
-    res = await axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+this.props.location.state.idCard+"&type=profilepic&user=worker", data, {})
-    if(res.statusText === "OK"){
-        cont++;
-        if(cont === 3){
-          alert('Imágenes cargadas con éxito');
-        } else{
-          alert('Fallo al cargar una de las imágenes');
-        }
-      }
-}
-
   render(){
     return(
       <>
@@ -117,9 +87,6 @@ onClickHandler = async () => {
               <input type="file" name="file" accept=".png, .jpg, .jpeg" onChange={e => this.onChangeHandler('profilepic',e,3)}/>
             </FormGroup>
             </Form>
-            <Button color="primary" style={{width: 400, marginTop: 10}} onClick={this.onClickHandler}>
-              Cargar
-            </Button>
             <div style={{ marginTop: 30 }}>
             </div>
             <div className="text-center">

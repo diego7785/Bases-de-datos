@@ -1,6 +1,7 @@
 import React from 'react';
 import CuentaBancaria from 'components/Banco/CuentaBancaria';
 import axios from 'axios'
+import ValidationSnackbarsRW2 from 'components/Snackbars/ValidationSnackbarsRW2';
 
 import {
   Card,
@@ -15,13 +16,21 @@ import {
 class RegisterWorker2 extends React.Component{
 
 state={
-  bancoCuenta:'',
-  tipoCuenta:'',
-  numeroCuenta:'',
+  bancoCuenta:true,
+  tipoCuenta:true,
+  numeroCuenta:true,
+  open: false,
 }
+setOpen = (id,val)=>
+{
+  this.setState({[id] : val})
+}
+onHandleChange = (id, value) => {
+  this.setState({ [id]: value })
+}
+
 constructor(props){
   super(props)
-  console.log(props)
 }
 
 selectCuenta = (event, id) => {
@@ -31,68 +40,6 @@ selectCuenta = (event, id) => {
   else {
     this.setState({ [id]: event.target.innerText })
   }
-  console.log(this.state)
-}
-
-FinalRegister = async () => {
-  var exito = 0;
-  const idCard = this.props.location.state.idCard;
-  const phone = this.props.location.state.celular;
-  const email = this.props.location.state.email;
-  const name = this.props.location.state.name;
-  const lastname = this.props.location.state.lastname;
-  const password = this.props.location.state.password;
-
-  var res = await axios.post(`http://localhost:5000/RegisterWorker2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
-  console.log(res);
-  if(res.statusText === "OK"){
-    exito=exito+1;
-  }
-
-  const numberAccount = this.state.numeroCuenta;
-  const bank = this.state.bancoCuenta;
-  const type = this.state.tipoCuenta;
-
-  res = await axios.post(`http://localhost:5000/RegisterWorker2/${numberAccount}/${bank}/${type}/${idCard}/${phone}`)
-  console.log(res);
-  if(res.statusText === "OK"){
-    exito=exito+1;
-  }
-
-  const lat = this.props.location.state.latitude;
-  const lng = this.props.location.state.length;
-  const address = this.props.location.state.completeAddress;
-  const city = this.props.location.state.city;
-  const depto = this.props.location.state.depto;
-
-  res = await axios.post(`http://localhost:5000/RegisterWorker2_2/${idCard}/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
-  console.log(res);
-  if(res.statusText === "OK"){
-    exito=exito+1;
-  }
-
-  const idJob = this.props.location.state.job;
-  const price = this.props.location.state.price;
-  const description = this.props.location.state.description;
-  const typePay = this.props.location.state.type;
-  const status = true;
-
-  res = await axios.post(`http://localhost:5000/RegisterWorker2_1/${idJob}/${idCard}/${phone}/${price}/${typePay}/${description}/${status}`)
-  console.log(res);
-  if(res.statusText === "OK"){
-    exito=exito+1;
-  }
-
-  if(exito === 4){
-    alert('Registro exitoso');
-    this.props.history.push({pathname: "/auth/"})
-  }else{
-    res = await axios.post(`http://localhost:5000/RegisterWorker2_3/delete/${idCard}`)
-
-    alert('No se ha podido realizar el registro, por favor intente de nuevo');
-
-  }
-
 }
 
 render(){
@@ -122,9 +69,7 @@ render(){
         </FormGroup>
         </Form>
         <div className="text-center">
-          <Button className="mt-4" color="primary" type="button" onClick={this.FinalRegister}>
-            Finalizar
-          </Button>
+        <ValidationSnackbarsRW2 state={this.state} onHandleChange={this.setOpen} props={this.props}/>
         </div>
       </CardBody>
     </Card>
