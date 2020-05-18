@@ -74,7 +74,7 @@ class Pay extends React.Component {
                 case "Tarjeta débito":
                   return <DebitCard state={this.props.state} state1={this.props.state1} functionSetState={this.selectDebit} onHandleChange={this.props.onHandleChange} />;
                 case "Tarjeta de crédito":
-                  return <CreditCard state={this.props.state} state1={this.props.state1} functionSetStateI={this.selectCredit} />;
+                  return <CreditCard state={this.props.state} state1={this.props.state1} functionSetStateI={this.selectCredit} onHandleChange={this.props.onHandleChange} />;
                 default:
                   return null;
               }

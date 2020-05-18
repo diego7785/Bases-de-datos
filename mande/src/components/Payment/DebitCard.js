@@ -112,9 +112,6 @@ export default function DebitCard(props) {
 
       <div className="text-center">
       <ValidationSnackbarsRUDeb  props={props.state} onHandleChange={props.onHandleChange} state1={props.state1}/>
-       {/* <Button className="mt-4" color="primary" type="button" onClick={finalRegister}>
-          Finalizar
-          </Button>*/}
       </div>
     </>
   );
