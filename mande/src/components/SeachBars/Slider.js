@@ -37,7 +37,7 @@ function valuetext(value) {
 
  const RangeSlider = (props) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState([1000, 100000]);
+  const [value, setValue] = React.useState([1000, 120000]);
 
   const handleChange = async (event, newValue) => {
     setValue(newValue);
@@ -52,13 +52,13 @@ function valuetext(value) {
         Rango de precio:
       </Typography>
       <Slider
-        min={props.state.minValue}
-        max={props.state.maxValue}
+        min = {1000}
+        max={120000}
         value={value}
-        ValueLabelComponent={ValueLabelComponent}
+        //ValueLabelComponent={ValueLabelComponent}
         onChange={handleChange}
         valueLabelDisplay="on"
-        aria-labelledby="discrete-slider-always"
+        aria-labelledby="range-slide"
         getAriaValueText={valuetext}
         style = {{marginTop: 9}}
 

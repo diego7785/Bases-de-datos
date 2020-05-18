@@ -13,8 +13,8 @@ const Rater = (props) => {
       <Rating
         name="simple-controlled"
         value={props.state.value}
-        onChange={async (event, newValue) => {
-          await props.onChange(event.target.value,"value");
+        onChange={async (event) => {
+          await props.onChange("value",event.target.value);
           console.log(props)
         }}
         style = {{marginTop: 15}}
