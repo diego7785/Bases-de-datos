@@ -54,7 +54,7 @@ class IndexC extends React.Component {
           <Row style={{ marginTop: 80 }}>
             <Col>
               <Row>
-                {this.state.openResults ? <Results results={this.state.results} /> : <div></div>}
+                {this.state.openResults ? <Results results={this.state.results} idCard={this.props.location.state.state.userInfo.celular_usuario} /> : <div></div>}
               </Row>
             </Col>
             {/*this.showResults*/}

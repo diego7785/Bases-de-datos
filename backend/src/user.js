@@ -269,6 +269,22 @@ var getWorkersWithXJobAdvanced = (req,res,db) => {
   })
 }
 
+var serviceRequest = (req,res,db) => {
+  const idWorker = req.params.idWorker;
+  const phoneUser = req.params.phoneUser;
+  const idLabor = req.params.idLabor;
+  const desc = req.params.desc;
+  db.none(`INSERT INTO Servicio (celular_usuario, cedula_trabajador, labor_id, servicio_descripcion) VALUES ('${phoneUser}','${idWorker}',${idLabor}, '${desc}')`)
+  .then((data) => {
+    res.send(JSON.stringify(`El servicio fue exitosamente solicitado`))
+  })
+  .catch((error) => {
+    console.log(req.params)
+    console.log(`Error`, error)
+    res.send(error.detail)
+  })
+}
+
 module.exports = {
   createUser,
   createDebitCard,
@@ -284,4 +300,5 @@ module.exports = {
   getJobsWithWorker,
   getWorkersWithXJob,
   getWorkersWithXJobAdvanced,
+  serviceRequest,
 }

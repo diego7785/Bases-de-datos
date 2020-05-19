@@ -99,7 +99,7 @@ const ResultCard = (props) => {
             </Col>
             <Col>
               {props.estado ?
-                <ServiceRequest/> :
+                <ServiceRequest id = {props.id} phoneUser = {props.phoneUser} idLabor = {props.idLabor} desc = {props.desc} handleChange = {props.handleChange}/> :
                 <Button variant="contained" color="primary" disabled>Trabajador ocupado </Button>}
 
             </Col>
