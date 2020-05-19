@@ -6,11 +6,28 @@ import { Container } from "reactstrap";
 import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footers/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
+import axios from 'axios';
 
 import routes from "routes.js";
 
 
 class Worker extends React.Component {
+  constructor (props){
+    super(props)
+    console.log(props);
+  }
+  state = {
+    idCard: this.props.location.state.idCard,
+    workerInfo: this.props.location.state.state.workerInfo,
+    addressInfo: this.props.location.state.state.addressInfo,
+    realizaInfo: this.props.location.state.state.realizaInfo,
+    accountInfo: this.props.location.state.state.accountInfo,
+    busyInfo: this.props.location.state.state.busyInfo,
+  }
+
+  onHandleChange = (id, val) => {
+    this.setState({[id]: val})
+  }
 
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
@@ -65,7 +82,7 @@ class Worker extends React.Component {
           />
           <Switch>
             {this.getRoutes(routes,this.props)}
-            <Redirect from="*" to={{ pathname: "/worker/index", state: {path: 'worker', state: this.props.location.state}}}/>
+            <Redirect from="*" to={{ pathname: "/worker/index", state: {path: 'worker', state: this.state}, onHandleChange:{change: this.onHandleChange}}}/>
           </Switch>
           <Container fluid>
 

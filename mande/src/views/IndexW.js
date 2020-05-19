@@ -8,6 +8,7 @@ import { Bar } from "react-chartjs-2";
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import axios from 'axios';
 // reactstrap components
 import {
   Button,
@@ -35,15 +36,26 @@ import Header from "components/Headers/Header.js";
 class IndexW extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      activeNav: 1,
-      chartExample1Data: "data1"
-    };
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
     }
+    console.log(props)
   }
 
+  state = {
+    activeNav: 1,
+    chartExample1Data: "data1",
+    busy: this.props.location.state.state.busyInfo === undefined ? false : true,
+    celularCliente: this.props.location.state.state.busyInfo === undefined ? true : this.props.location.state.state.busyInfo.celularu,
+    distancia: this.props.location.state.state.busyInfo === undefined ? true : this.props.location.state.state.busyInfo.distancia,
+    direccion: this.props.location.state.state.busyInfo === undefined ? true : this.props.location.state.state.busyInfo.domicilio,
+    idServicio: this.props.location.state.state.busyInfo === undefined ? true : this.props.location.state.state.busyInfo.idservicio,
+    laborNombre: this.props.location.state.state.busyInfo === undefined ? true :this.props.location.state.state.busyInfo.labornombre,
+    descripcion: this.props.location.state.state.busyInfo === undefined ? true :this.props.location.state.state.busyInfo.serviciodescripcion,
+    fechaInicio: this.props.location.state.state.busyInfo === undefined ? true :this.props.location.state.state.busyInfo.serviciofecha,
+    horaInicio: this.props.location.state.state.busyInfo === undefined ? true :this.props.location.state.state.busyInfo.serviciohorainicio,
+
+  }
   toggleNavs = (e, index) => {
     e.preventDefault();
     this.setState({
@@ -53,6 +65,74 @@ class IndexW extends React.Component {
     });
   };
 
+  endJob =  async (e) => {
+    e.preventDefault()
+    console.log(this.state);
+    const idServicio = this.state.idServicio;
+    const res = await axios.post(`http://localhost:5000/FinalizarLabor/${idServicio}`);
+    this.setState({busy: undefined})
+    this.props.location.onHandleChange.change('busyInfo',undefined);
+    alert('Labor terminada, por favor vuelva a iniciar sesion');
+    this.props.history.push({
+      pathname: "/auth",
+    })
+  }
+
+ laborActiva = () =>{
+   if(this.state.busy){
+   return(
+     <>
+     <Table className="align-items-center table-flush" responsive>
+       <thead className="thead-light">
+         <tr>
+           <th scope="col">Informacion</th>
+           <th scope="col">Nombre labor</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr>
+           <th scope="row">
+             Telefono solicitante: {this.state.celularCliente}
+             <br/>
+             Direccion:
+             <br/>
+            {this.state.direccion}
+            <br/>
+            Distancia: { (this.state.distancia/10000).toFixed(2) + 'Km'}
+            <br/>
+            Descripcion:
+            <br/>
+            {this.state.descripcion}
+            <br/>
+            Fecha de solicitud: {(this.state.fechaInicio).substring(0,10)}
+            <br/>
+            Hora solicitud: {(this.state.horaInicio).substring(0,8) + ' UTC-5'}
+           </th>
+           <td>{this.state.laborNombre}</td>
+         </tr>
+       </tbody>
+     </Table>
+     <Button className="my-4" color="primary" type="button" onClick={e => this.endJob(e, this.state)}>
+       Terminar
+     </Button>
+     </>
+   );
+ } else {
+   return(<Table className="align-items-center table-flush" responsive>
+     <thead className="thead-light">
+       <tr>
+       </tr>
+     </thead>
+     <tbody>
+       <tr>
+         <th scope="row">
+           No hay labores solicitadas
+         </th>
+       </tr>
+     </tbody>
+   </Table>);
+ }
+}
 
   render() {
     return (
@@ -84,7 +164,7 @@ class IndexW extends React.Component {
                 </CardBody>
               </Card>
               <Row>
-                <Col xl="7" style={{marginTop: 20, marginBottom: 20}}>
+                <Col xl="15" style={{marginTop: 20, marginBottom: 20}}>
                   <Card className="shadow">
                     <CardHeader className="border-0">
                       <Row className="align-items-center">
@@ -93,24 +173,8 @@ class IndexW extends React.Component {
                         </div>
                       </Row>
                     </CardHeader>
-                    <Table className="align-items-center table-flush" responsive>
-                      <thead className="thead-light">
-                        <tr>
-                          <th scope="col">Icono</th>
-                          <th scope="col">Nombre labor</th>
-                          <th scope="col">Terminar labor</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">Icono profeso</th>
-                          <td>Profesor matemáticas</td>
-                          <td>
-                            <Button color="primary">Terminar</Button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </Table>
+                    {this.laborActiva(this.state)}
+
                   </Card>
                 </Col>
               </Row>
@@ -160,36 +224,6 @@ class IndexW extends React.Component {
                           <Box component="fieldset" mb={3} borderColor="transparent">
                             <Typography component="legend">Calificación</Typography>
                             <Rating name="read-only" value={3.5} precision={0.1} readOnly/>
-                          </Box>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Cerrajero</th>
-                        <td>2</td>
-                        <td>
-                          <Box component="fieldset" mb={3} borderColor="transparent">
-                            <Typography component="legend">Calificación</Typography>
-                            <Rating name="read-only" value={2} precision={0.1} readOnly/>
-                          </Box>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Condoricosas</th>
-                        <td>1,7</td>
-                        <td>
-                          <Box component="fieldset" mb={3} borderColor="transparent">
-                            <Typography component="legend">Calificación</Typography>
-                            <Rating name="read-only" value={1.7} precision={0.1} readOnly/>
-                          </Box>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Kokoriko</th>
-                        <td>1,7</td>
-                        <td>
-                          <Box component="fieldset" mb={3} borderColor="transparent">
-                            <Typography component="legend">Calificación</Typography>
-                            <Rating name="read-only" value={1.7} precision={0.1} readOnly/>
                           </Box>
                         </td>
                       </tr>

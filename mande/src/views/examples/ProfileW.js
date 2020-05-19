@@ -230,7 +230,7 @@ class Profile extends React.Component {
                           </FormGroup>
                         </Col>
                       </Row>
-                  
+
                     </div>
                     <hr className="my-4" />
                     {/*Payment Info*/}

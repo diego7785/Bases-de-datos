@@ -23,10 +23,19 @@ class LoginAsWorker extends React.Component {
   state = {
     idCard: true,
     pass: true,
+    workerInfo: true,
+    addressInfo: true,
+    realizaInfo: true,
+    accountInfo: true,
+    busyInfo: true,
   }
 
   onHandleChange = (id, event) =>{
     this.setState({ [id]: event.target.value})
+  }
+
+  changeLoginInfo = (id, val) => {
+    this.setState({[id] : val})
   }
 
   onHandleNext = async (e) =>{
@@ -37,22 +46,21 @@ class LoginAsWorker extends React.Component {
     const res = await axios.get(`http://localhost:5000/LoginAsWorker/${idCard}/${pass}/`);
     if(res.data){
       const res1 = await axios.get(`http://localhost:5000/GetWorkerInfo/${idCard}/`);
-      const workerInfo = res1.data[0];
+      await this.changeLoginInfo('workerInfo', res1.data[0]);
       const res2 = await axios.get(`http://localhost:5000/GetAddressInfo/${idCard}/`);
-      const addressInfo = res2.data[0];
+      await this.changeLoginInfo('addressInfo', res2.data[0]);
       const res3 = await axios.get(`http://localhost:5000/GetRealizaInfo/${idCard}/`);
-      const realizaInfo = res3.data;
+      await this.changeLoginInfo('realizaInfo', res3.data);
       const res4 = await axios.get(`http://localhost:5000/GetAccountInfo/${idCard}/`)
-      const accountInfo = res4.data[0];
+      await this.changeLoginInfo('accountInfo', res4.data[0]);
+      const res5 =  await axios.get(`http://localhost:5000/GetBusyInfo/${idCard}/`);
+      await this.changeLoginInfo('busyInfo', res5.data[0]);
 
       this.props.history.push({
         pathname: "/worker/", state: {
         idCard: this.state.idCard,
-        workerInfo : workerInfo,
-        addressInfo : addressInfo,
-        realizaInfo : realizaInfo,
-        accountInfo : accountInfo,
-        }
+        state: this.state,
+      }
       })
     } else {
       alert('Credenciales incorrectas');

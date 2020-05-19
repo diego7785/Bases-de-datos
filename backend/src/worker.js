@@ -164,6 +164,18 @@ var login = (req,res,db) =>{
   })
 }
 
+var GetBusyInfo =  (req,res,db) =>{
+  const idCard = req.params.idCard;
+  db.many(`SELECT * FROM get_busy_information('${idCard}')`)
+  .then(function (data) {
+    res.send(JSON.stringify(data));
+  })
+  .catch(function (error) {
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
 var GetWorkerInfo = (req,res,db) => {
   const idCard = req.params.idCard;
   db.many(`SELECT cedula_trabajador, celular_trabajador, trabajador_email, trabajador_nombre, trabajador_apellido,
@@ -230,6 +242,18 @@ var ChangePassword = (req,res,db)=>{
   })
 }
 
+var FinalizarLabor = (req,res,db) => {
+  const idServicio = req.params.idServicio;
+  console.log(idServicio);
+  db.none(`SELECT * FROM finalizar_labor(${idServicio})`)
+  .then((data) => {
+    res.send(data);
+  })
+  .catch((error) => {
+    res.send(error);
+  })
+}
+
 module.exports = {
   createWorker,
   getPreDefinedJobs,
@@ -243,4 +267,6 @@ module.exports = {
   GetAddressInfo,
   GetAccountInfo,
   ChangePassword,
+  GetBusyInfo,
+  FinalizarLabor
 }

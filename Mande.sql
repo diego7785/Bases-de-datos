@@ -14,7 +14,13 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 DROP FUNCTION IF EXISTS add_geopint;
 DROP FUNCTION IF EXISTS get_workers_results;
 DROP FUNCTION IF EXISTS get_workers_results_advanced;
+DROP FUNCTION IF EXISTS set_worker_busy;
+DROP FUNCTION IF EXISTS set_time_date;
+DROP FUNCTION IF EXISTS get_busy_information;
+DROP FUNCTION IF EXISTS finalizar_labor;
 DROP TRIGGER IF EXISTS trigger_add_geopint ON Direccion;
+DROP TRIGGER IF EXISTS trigger_set_worker_busy ON Servicio;
+DROP TRIGGER IF EXISTS trigger_set_time_date ON Servicio;
 SET TIME ZONE -5;
 
 CREATE TABLE Trabajador(
@@ -197,19 +203,59 @@ END
 $$
 LANGUAGE 	plpgsql;
 
--- Insertar fecha y hora en servicio
+
+-- Funcion para Insertar fecha, hora y setear la calificacion inicial en servicio
 CREATE OR REPLACE FUNCTION set_time_date() RETURNS TRIGGER AS $$
 DECLARE
 BEGIN
+	SET TIME ZONE -5;
 	NEW.servicio_fecha := (SELECT current_date);
 	NEW.servicio_hora_inicio := (SELECT current_time);
+	NEW.servicio_calificacion := 0;
 	RETURN NEW;
 END
 $$ LANGUAGE plpgsql;
 
---"01010000204E1200004EB4AB90F22153C0F90FE9B7AF030B40"
--- 1987654321
--- Profesor de matemáticas
+
+-- Funcion para notificar que ha sido seleccionado para una labor
+-- Parametros: Cedula del trabajador  (Si no esta ocupado retorna la tabla vacia)
+DROP FUNCTION get_busy_information(VARCHAR(10));
+CREATE OR REPLACE FUNCTION get_busy_information(VARCHAR(10)) RETURNS TABLE(idservicio INTEGER, celularU VARCHAR(10), laborid INTEGER, serviciodescripcion VARCHAR(200),
+																			serviciofecha DATE, serviciohorainicio TIME, labornombre VARCHAR(70), distancia DOUBLE PRECISION, domicilio VARCHAR(70)) AS $$
+DECLARE
+	idCard ALIAS FOR $1;
+	status INTEGER := CAST((SELECT trabajador_estado FROM Realiza WHERE cedula_trabajador = idCard) AS INTEGER);
+	ubiT GEOGRAPHY = (SELECT direccion_ubicacion FROM Direccion WHERE cedula_trabajador = idCard);
+BEGIN
+	IF(status = 0)
+	THEN
+		RETURN QUERY WITH info_servicio AS (SELECT id_servicio, celular_usuario, labor_id, servicio_descripcion, servicio_fecha, servicio_hora_inicio
+							FROM Servicio WHERE servicio_hora_fin IS NULL AND cedula_trabajador = idCard),
+							servicio_labor AS (SELECT id_servicio, celular_usuario, labor_id, servicio_descripcion, servicio_fecha, servicio_hora_inicio,
+							labor_nombre FROM info_servicio INNER JOIN Labor ON labor_id = id_labor),
+							servicio_direccion AS (SELECT id_servicio, servicio_labor.celular_usuario, labor_id, servicio_descripcion, servicio_fecha, servicio_hora_inicio,
+							labor_nombre, direccion_ubicacion, direccion_domicilio FROM Direccion INNER JOIN servicio_labor ON Direccion.celular_usuario = servicio_labor.celular_usuario),
+							distance AS (SELECT celular_usuario, ST_Distance(direccion_ubicacion, ubiT) AS dist FROM servicio_direccion)
+							SELECT id_servicio, servicio_direccion.celular_usuario, labor_id, servicio_descripcion, servicio_fecha, servicio_hora_inicio,
+							labor_nombre, dist, direccion_domicilio FROM servicio_direccion NATURAL JOIN distance;
+	END IF;
+END
+$$ LANGUAGE plpgsql;
+
+
+-- Funcion para finalizar la labor
+-- Parametros: id del servicio
+CREATE OR REPLACE FUNCTION finalizar_labor(INTEGER) RETURNS TEXT AS $$
+DECLARE
+	idServicio ALIAS FOR $1;
+	cedulaT VARCHAR(10) := (SELECT cedula_trabajador FROM Servicio WHERE id_servicio = idServicio);
+BEGIN
+	SET TIME ZONE -5;
+	UPDATE Servicio SET servicio_hora_fin = (SELECT current_time) WHERE id_servicio = idServicio;
+	UPDATE Realiza SET trabajador_estado = B'1' WHERE cedula_trabajador = cedulaT;
+	RETURN 'OK';
+END
+$$ LANGUAGE plpgsql;
 
 
  --TRIGGERS

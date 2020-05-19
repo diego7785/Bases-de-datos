@@ -27,7 +27,7 @@ function isWorker(state){
         <DropdownItem >
           <i className="ni ni-bell-55"></i>
           {/*EL ESTADO DEBE CAMBIAR SEGUN SERVICIO*/}
-          <span>Has sido escodigo par alguna labor</span>
+          <span>Ocupado</span>
           </DropdownItem>
         )
     }
@@ -35,6 +35,9 @@ function isWorker(state){
     }
   }
 
+function cosa(){
+  alert('holi')
+}
 function getNotification(state){
   //Se adquiere algo desde la base de datos para verificar si se ha solicitado un servicio para este trabajador y se retorna un numero
   if(state.path === "/worker"){
@@ -60,7 +63,7 @@ function getNotification(state){
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
               <DropdownItem className="noti-title" header tag="div">
-                <h6 className="text-overflow m-0">Has sido escogido para blaaaa</h6>
+                <h6 className="text-overflow m-0">Has sido escogido para {state.job}</h6>
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -100,13 +103,18 @@ function getNotification(state){
 
 }
 class NavbarC extends React.Component {
-
+  constructor(props){
+    super(props)
+    console.log(props)
+  }
   state={
     notification: true,
     idCard: this.props.location.state.idCard,
-    name: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_nombre : this.props.location.state.userInfo.usuario_nombre,
-    lastname: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_apellido : this.props.location.state.userInfo.usuario_apellido,
-    status: this.props.match.path === '/worker' ? this.props.location.state.realizaInfo.trabajador_estado : 1,
+    name: this.props.match.path === '/worker' ? this.props.location.state.state.workerInfo.trabajador_nombre : this.props.location.state.userInfo.usuario_nombre,
+    lastname: this.props.match.path === '/worker' ? this.props.location.state.state.workerInfo.trabajador_apellido : this.props.location.state.userInfo.usuario_apellido,
+    status: this.props.match.path === '/worker' ? this.props.location.state.state.realizaInfo[0].trabajador_estado : 1,
+    busyInfo: this.props.match.path === '/worker' ? this.props.busy === undefined  ? false : true : true,
+    job: this.props.match.path === '/worker' ? this.props.location.state.state.busyInfo === undefined  ? true : this.props.location.state.state.busyInfo.labornombre : true,
     path: this.props.match.path,
   }
 
@@ -116,12 +124,6 @@ class NavbarC extends React.Component {
         <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
           <Container fluid>
                 {getNotification(this.state)}
-            <Link
-              className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-              to = {this.props.match.path + "/index"}
-            >
-              INICIO
-            </Link>
             <Nav className="align-items-center d-none d-md-flex" navbar>
               <UncontrolledDropdown nav>
                 <DropdownToggle className="pr-0" nav>
