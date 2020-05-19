@@ -20,26 +20,28 @@ import UserHeader from "components/Headers/UserHeader.js";
 
 class Profile extends React.Component {
 
+  constructor(props){
+    super(props)
+    console.log("profileC",props)
+  }
+
   state = {
     actualPass: true,
     newPass: true,
     newConfirmPass: true,
-    phone: this.props.location.state.state.idCard,
-    phonee: this.props.location.state.state.userInfo.celular_usuario,
-    name: this.props.location.state.state.userInfo.usuario_nombre,
-    lastname: this.props.location.state.state.userInfo.usuario_apellido,
-    email: this.props.location.state.state.userInfo.usuario_email,
-    address: this.props.location.state.state.addressInfo.direccion_domicilio,
+    phone: this.props.location.state.idCard,
+    phonee: this.props.location.state.userInfo.celular_usuario,
+    name: this.props.location.state.userInfo.usuario_nombre,
+    lastname: this.props.location.state.userInfo.usuario_apellido,
+    email: this.props.location.state.userInfo.usuario_email,
+    address: this.props.location.state.addressInfo.direccion_domicilio,
     path: this.props.match.path,
-    typeCard: this.props.location.state.state.type,
-    numberCard: this.props.location.state.state.type === 'Credito' ? this.props.location.state.state.paymentMethod.numero_tarjeta_credito : this.props.location.state.state.paymentMethod.numero_tarjeta_debito,
-    bank: this.props.location.state.state.type === 'Credito' ? this.props.location.state.state.paymentMethod.tarjeta_credito_banco : this.props.location.state.state.paymentMethod.tarjeta_debito_banco,
+    typeCard: this.props.location.state.type,
+    numberCard: this.props.location.state.type === 'Credito' ? this.props.location.state.paymentMethod.numero_tarjeta_credito : this.props.location.state.paymentMethod.numero_tarjeta_debito,
+    bank: this.props.location.state.type === 'Credito' ? this.props.location.state.paymentMethod.tarjeta_credito_banco : this.props.location.state.paymentMethod.tarjeta_debito_banco,
   }
 
-  constructor(props){
-    super(props)
-    console.log(props)
-  }
+  
 
   changeState = (id, event) => {
     this.setState({ [id]: event })

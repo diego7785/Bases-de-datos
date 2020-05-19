@@ -70,7 +70,7 @@ class Sidebar extends React.Component {
 
   constructor(props){
     super(props)
-    console.log(props);
+    console.log("sidebar",props);
   }
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {

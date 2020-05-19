@@ -35,15 +35,15 @@ class LoginAsUser extends React.Component {
     const pass = this.state.pass;
 
     const res = await axios.get(`http://localhost:5000/LoginAsUser/${phone}/${pass}/`)
-    if(res.data[0]){
+    if(res.data){
       const res1 = await axios.get(`http://localhost:5000/GetUserInfo/${phone}/`)
-      const userInfo = res1.data
+      const userInfo = res1.data[0]
       const res2 = await axios.get(`http://localhost:5000/GetUserAddressInfo/${phone}/`)
-      const addressInfo = res2.data
+      const addressInfo = res2.data[0]
       const res3 = await axios.get(`http://localhost:5000/GetCreditCardInfo/${phone}/`)
-      const creditCardInfo = res3.data
+      const creditCardInfo = res3.data[0]
       const res4 = await axios.get(`http://localhost:5000/GetDebitCardInfo/${phone}/`)
-      const debitCardInfo = res4.data
+      const debitCardInfo = res4.data[0]
       const res5 = await axios.get(`http://localhost:5000/GetJobsWithWorker/${'jobs'}`)
       var dutiesWithWorker=[];
       for(var i=0; i<res5.data.length; i++){
@@ -66,7 +66,7 @@ class LoginAsUser extends React.Component {
 
       this.props.history.push({
         pathname: "/client/", state: {
-        idCard: res.data[1],
+        idCard: this.state.phone,
         userInfo: userInfo,
         addressInfo: addressInfo,
         paymentMethod: paymentMethod,

@@ -9,10 +9,11 @@ import {
   Col,
   Row,
   Container,
-  
+
 } from "reactstrap";
 
 class IndexC extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +21,9 @@ class IndexC extends React.Component {
       chartExample1Data: "data1",
       results: true,
       openResults: false,
+      idCard: this.props.location.state.idCard
     };
+    console.log("pare menor")
     console.log(props)
   }
 
@@ -48,13 +51,13 @@ class IndexC extends React.Component {
       <div>
 
         <Header location={this.props.match.path} />
-        <SearchBar jobs={this.props.location.state.state.wjobs} results={this.state.results} onHandleChange={this.onHandleChange} 
-        idCard={this.props.location.state.state.userInfo.celular_usuario}/>
+        <SearchBar jobs={this.props.location.state.wjobs} results={this.state.results} onHandleChange={this.onHandleChange}
+          idCard={this.state.idCard} />
         <Container className="mt--7" fluid>
           <Row style={{ marginTop: 80 }}>
             <Col>
               <Row>
-                {this.state.openResults ? <Results results={this.state.results} idCard={this.props.location.state.state.userInfo.celular_usuario} /> : <div></div>}
+                {this.state.openResults ? <Results results={this.state.results} idCard={this.props.location.state.userInfo.celular_usuario} /> : <div></div>}
               </Row>
             </Col>
             {/*this.showResults*/}
@@ -73,4 +76,5 @@ class IndexC extends React.Component {
   }
 }
 
-export default IndexC;
+
+export default (IndexC);

@@ -36,6 +36,8 @@ class SearchBar extends React.Component {
         type: true,
     };
 
+    
+
     onHandleSearch = async () => {
       if(this.state.advancedSearch){
         console.log(this.props)
