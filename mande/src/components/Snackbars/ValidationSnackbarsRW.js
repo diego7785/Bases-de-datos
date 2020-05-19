@@ -13,20 +13,21 @@ var messages = ["Celular debe ser un número",
     "Cédula debe contener de 8 a 10 dígitos",
     "La contraseña debe tener 5 o más carácteres",
     "Las contraseñas deben coincidir",
-    "Debe llenar todos los campos requeridos"
+    "Debe llenar todos los campos requeridos",
+    "Ya existe un trabajador registrado con esa cédula",
+    "Ya existe un trabajador registrado con ese email"
 ];
 
 var verifications = new Array(messages.length);
 for (var i = 0; i < verifications.length; i++) {
     verifications[i] = true;
 }
-
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 export default function SnackbarRW(props) {
-    const handleClick = () => {
+    const handleClick = async() => {
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
         }
@@ -81,31 +82,50 @@ export default function SnackbarRW(props) {
         if (((false === (validations.validSizeMay(props.state.password,5))) || false === (validations.validSizeMay(props.state.passwordR,5)))&& emptyFields){
             verifications[6] = false;
             cont++;
-        }
-        
+        }        
         if (cont >0)
         {
             props.onHandleChange('open', true);
         }
-
-
         else {
-            props.props.history.push({
-                pathname: "/auth/RegisterWorker1/", state: {
-                    name: props.state.name,
-                    lastname: props.state.lastname,
-                    celular: props.state.celular,
-                    email: props.state.email,
-                    idCard: props.state.idCard,
-                    password: props.state.password,
-                    passwordR: props.state.passwordR,
-                    complemento: props.state.complemento,
-                    completeAddress: props.state.completeAddress,
-                    latitude: props.state.latitude,
-                    length: props.state.length,
-                    tjobs: jobs,
-                }
-            })
+            const validateId = await axios.get(`http://localhost:5000/validateWorkerExistence/${props.state.idCard}/`)
+            const validateEmail = await axios.get(`http://localhost:5000/validateEmailExistence/${props.state.email}/`)
+            var conta = 0;
+            if(validateId.data[0].validateidworker)
+            {
+                console.log(validateId);
+                verifications[9] = false;
+                conta++;
+            }
+            if(validateEmail.data[0].validateemailworker)
+            {
+                console.log(validateEmail);
+                verifications[10] = false;
+                conta++;
+            }
+            if(conta > 0)
+            {
+                props.onHandleChange('open', true);
+            }
+            else
+            {
+                props.props.history.push({
+                    pathname: "/auth/RegisterWorker1/", state: {
+                        name: props.state.name,
+                        lastname: props.state.lastname,
+                        celular: props.state.celular,
+                        email: props.state.email,
+                        idCard: props.state.idCard,
+                        password: props.state.password,
+                        passwordR: props.state.passwordR,
+                        complemento: props.state.complemento,
+                        address: props.state.address,
+                        latitude: props.state.latitude,
+                        length: props.state.length,
+                        tjobs: jobs,
+                    }
+                })
+            }
         }
     };
 

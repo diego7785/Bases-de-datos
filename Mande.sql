@@ -85,6 +85,7 @@ CREATE TABLE Trabajador(
 	 direccion_latitud DECIMAL(7,5) NOT NULL,
  	 direccion_longitud DECIMAL(7,5) NOT NULL,
 	 direccion_domicilio VARCHAR(70) NOT NULL,
+	 direccion_complemento VARCHAR(100),
 	 direccion_ubicacion GEOGRAPHY(POINT,4686),
 	 CONSTRAINT pk_direccion PRIMARY KEY (id_direccion),
 	 CONSTRAINT fk_trabajador FOREIGN KEY (cedula_trabajador) REFERENCES Trabajador(cedula_trabajador) ON UPDATE CASCADE ON DELETE RESTRICT,
@@ -215,8 +216,7 @@ BEGIN
 	RETURN NEW;
 END
 $$ LANGUAGE plpgsql;
-
-
+                                                                     
 -- Funcion para notificar que ha sido seleccionado para una labor
 -- Parametros: Cedula del trabajador  (Si no esta ocupado retorna la tabla vacia)
 DROP FUNCTION get_busy_information(VARCHAR(10));
@@ -256,6 +256,88 @@ BEGIN
 	RETURN 'OK';
 END
 $$ LANGUAGE plpgsql;
+=======
+--validaciones worker
+CREATE OR REPLACE FUNCTION validateIdWorker(VARCHAR(10)) RETURNS boolean AS $$ 
+DECLARE
+IdCard ALIAS FOR $1;
+BEGIN 
+IF NOT EXISTS (SELECT cedula_trabajador FROM trabajador WHERE cedula_trabajador = IdCard)
+THEN RETURN FALSE;
+END IF;
+RETURN TRUE;
+END $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION validateEmailWorker(VARCHAR(50)) RETURNS boolean AS $$ 
+DECLARE
+email ALIAS FOR $1;
+BEGIN 
+IF NOT EXISTS (SELECT trabajador_email FROM trabajador WHERE trabajador_email = email)
+THEN RETURN FALSE;
+END IF;
+RETURN TRUE;
+END $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION validateAccountWorker(VARCHAR(255)) RETURNS boolean AS $$ 
+DECLARE
+account ALIAS FOR $1;
+BEGIN 
+IF NOT EXISTS (SELECT numero_cuenta_bancaria FROM cuenta_bancaria WHERE PGP_SYM_DECRYPT(numero_cuenta_bancaria::bytea, 'AES_KEY') = account)
+THEN RETURN FALSE;
+END IF;
+RETURN TRUE;
+END $$ LANGUAGE PLPGSQL;
+
+--usuario validaciones
+CREATE OR REPLACE FUNCTION validateIdUser(VARCHAR(10)) RETURNS boolean AS $$ 
+DECLARE
+IdCard ALIAS FOR $1;
+BEGIN 
+IF NOT EXISTS (SELECT cedula_usuario FROM usuario WHERE cedula_usuario = IdCard)
+THEN RETURN FALSE;
+END IF;
+RETURN TRUE;
+END $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION validateEmailUser(VARCHAR(50)) RETURNS boolean AS $$ 
+DECLARE
+email ALIAS FOR $1;
+BEGIN 
+IF NOT EXISTS (SELECT usuario_email FROM usuario WHERE usuario_email = email)
+THEN RETURN FALSE;
+END IF;
+RETURN TRUE;
+END $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION validatePhoneUser(VARCHAR(10)) RETURNS boolean AS $$ 
+DECLARE
+phone ALIAS FOR $1;
+BEGIN 
+IF NOT EXISTS (SELECT celular_usuario FROM usuario WHERE celular_usuario = phone)
+THEN RETURN FALSE;
+END IF;
+RETURN TRUE;
+END $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION validateCreditCardUser(VARCHAR(255)) RETURNS boolean AS $$ 
+DECLARE
+cardNumber ALIAS FOR $1;
+BEGIN 
+IF NOT EXISTS (SELECT numero_tarjeta_credito FROM tarjeta_credito WHERE PGP_SYM_DECRYPT(numero_tarjeta_credito::bytea, 'AES_KEY') = cardNumber)
+THEN RETURN FALSE;
+END IF;
+RETURN TRUE;
+END $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION validateDebitCardUser(VARCHAR(255)) RETURNS boolean AS $$ 
+DECLARE
+cardNumber ALIAS FOR $1;
+BEGIN 
+IF NOT EXISTS (SELECT numero_tarjeta_debito FROM tarjeta_debito WHERE PGP_SYM_DECRYPT(numero_tarjeta_debito::bytea, 'AES_KEY') = cardNumber)
+THEN RETURN FALSE;
+END IF;
+RETURN TRUE;
+END $$ LANGUAGE PLPGSQL;
 
 
  --TRIGGERS

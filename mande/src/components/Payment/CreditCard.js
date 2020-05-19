@@ -125,7 +125,7 @@ const classes = useStyles();
         placeholder="Mes de expiración             //" id="mesVencimientoCredito" required maxLength="2" onChange={e => props.functionSetStateI(e, 'month')}/>
         <Input type="text" className= "a-exp"
         pattern="\d*" x-autocompletetype="a-exp"
-        placeholder="    Año de expiración"  id= "anioVencimientoCredito" required maxLength="4" onChange={e => props.functionSetStateI(e, 'year')}/>
+        placeholder="    Año de expiración"  id= "anioVencimientoCredito" required maxLength="2" onChange={e => props.functionSetStateI(e, 'year')}/>
       </InputGroup>
     </FormGroup>
     <FormGroup>

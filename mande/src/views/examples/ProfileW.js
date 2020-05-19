@@ -24,6 +24,15 @@ import UserHeader from "components/Headers/UserHeader.js";
 
 class Profile extends React.Component {
 
+  constructor(props) {
+    super(props);
+    console.log(props)
+    console.log(this.state)
+    for (var i = 0; i < this.props.location.state.realizaInfo.length; i++) {
+      this.setState({ labores: this.props.location.state.realizaInfo[i].labor_nombre })
+    }
+  }
+
   state = {
     actualPass: true,
     newPass: true,
@@ -32,41 +41,34 @@ class Profile extends React.Component {
     description: true,
     type: true, //type of payment
     price: true,
-    idCard: this.props.location.state.state.workerInfo.cedula_trabajador,
-    name: this.props.location.state.state.workerInfo.trabajador_nombre,
-    lastname: this.props.location.state.state.workerInfo.trabajador_apellido,
-    email: this.props.location.state.state.workerInfo.trabajador_email,
-    address: this.props.location.state.state.addressInfo.direccion_domicilio,
-    bank: this.props.location.state.state.accountInfo.cuenta_bancaria_banco,
-    typeBank: this.props.location.state.state.accountInfo.cuenta_bancaria_tipo,
-    numberAccount: this.props.location.state.state.accountInfo.numero_cuenta_bancaria,
-    phone: this.props.location.state.state.workerInfo.celular_trabajador,
+    idCard: this.props.location.state.workerInfo.cedula_trabajador,
+    name: this.props.location.state.workerInfo.trabajador_nombre,
+    lastname: this.props.location.state.workerInfo.trabajador_apellido,
+    email: this.props.location.state.workerInfo.trabajador_email,
+    address: this.props.location.state.addressInfo.direccion_domicilio,
+    bank: this.props.location.state.accountInfo.cuenta_bancaria_banco,
+    typeBank: this.props.location.state.accountInfo.cuenta_bancaria_tipo,
+    numberAccount: this.props.location.state.accountInfo.numero_cuenta_bancaria,
+    phone: this.props.location.state.workerInfo.celular_trabajador,
     path: this.props.match.path,
   }
 
-  constructor(props){
-    super(props);
-    console.log(props)
-    console.log(this.state)
-    for(var i = 0; i < this.props.location.state.state.realizaInfo.length; i++){
-    this.setState({labores: this.props.location.state.state.realizaInfo[i].labor_nombre})
-  }
-  }
+  
 
   changeState = (id, event) => {
     this.setState({ [id]: event })
   }
 
   log = () => {
-    for(var i = 0; i < this.props.location.state.state.realizaInfo.length; i++){
-    console.log( this.props.location.state.state.realizaInfo[i].labor_nombre)
-  }
+    for (var i = 0; i < this.props.location.state.realizaInfo.length; i++) {
+      console.log(this.props.location.state.realizaInfo[i].labor_nombre)
+    }
   }
 
   render() {
     return (
       <>
-        <UserHeader state={this.props.location.state.state} path={this.props.location.pathname}/>
+        <UserHeader state={this.props} path={this.props.location.pathname} />
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
@@ -79,7 +81,7 @@ class Profile extends React.Component {
                         <img
                           alt="..."
                           className="rounded-circle"
-                          src={require("assets/img/userImages"+this.state.path.substring(0,7)+"/profilepic-"+this.state.idCard+".png")}
+                          src={require("assets/img/userImages" + this.state.path.substring(0, 7) + "/profilepic-" + this.state.idCard + ".png")}
                         />
                       </a>
                     </div>
@@ -109,7 +111,7 @@ class Profile extends React.Component {
                     </h3>
                     <div className="h5 font-weight-300">
                       <i className="ni location_pin mr-2" />
-                        {this.state.address.replace(/%20/g,' ')}
+                      {this.state.address.replace(/%20/g, ' ')}
                     </div>
                     <div className="h5 mt-4">
                       <i className="ni business_briefcase-24 mr-2" />
@@ -118,13 +120,13 @@ class Profile extends React.Component {
                     <div>
                       <i className="ni education_hat mr-2" />
                       {
-                        this.props.location.state.state.realizaInfo.map((item) => {
-                          return(<div className='text-center'>{item.labor_nombre}<br/></div> );
+                        this.props.location.state.realizaInfo.map((item) => {
+                          return (<div className='text-center'>{item.labor_nombre}<br /></div>);
                         })
-                    }
+                      }
                     </div>
                     <div>
-                      <NewJob onHandleChange={this.changeState} state={this.state}/>
+                      <NewJob onHandleChange={this.changeState} state={this.state} />
                     </div>
                     <hr className="my-4" />
                   </div>
@@ -195,7 +197,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue={this.state.name + ' '+this.state.lastname}
+                              defaultValue={this.state.name + ' ' + this.state.lastname}
                               id="input-first-name"
                               placeholder="First name"
                               type="text"
@@ -222,7 +224,7 @@ class Profile extends React.Component {
                             <Input
                               readOnly={true}
                               className="form-control-alternative"
-                              defaultValue={this.state.address.replace(/%20/g,' ')}
+                              defaultValue={this.state.address.replace(/%20/g, ' ')}
                               id="input-address"
                               placeholder="Dirección"
                               type="text"
@@ -235,64 +237,64 @@ class Profile extends React.Component {
                     <hr className="my-4" />
                     {/*Payment Info*/}
                     <h6 className="heading-small text-muted mb-4">Información de cuenta</h6>
-                      <div className="pl-lg-4">
-                        <Row>
-                          <Col lg="4">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="input-address"
-                              >
-                                Numero de cuenta
+                    <div className="pl-lg-4">
+                      <Row>
+                        <Col lg="4">
+                          <FormGroup>
+                            <label
+                              className="form-control-label"
+                              htmlFor="input-address"
+                            >
+                              Numero de cuenta
                               </label>
-                              <Input
-                                readOnly={true}
-                                className="form-control-alternative"
-                                defaultValue={this.state.numberAccount}
-                                id="input-address"
-                                placeholder="Dirección"
-                                type="text"
-                              />
-                            </FormGroup>
-                          </Col>
-                          <Col lg="4">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="input-address"
-                              >
-                                Tipo de cuenta
+                            <Input
+                              readOnly={true}
+                              className="form-control-alternative"
+                              defaultValue={this.state.numberAccount}
+                              id="input-address"
+                              placeholder="Dirección"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col lg="4">
+                          <FormGroup>
+                            <label
+                              className="form-control-label"
+                              htmlFor="input-address"
+                            >
+                              Tipo de cuenta
                               </label>
-                              <Input
-                                readOnly={true}
-                                className="form-control-alternative"
-                                defaultValue={this.state.typeBank.replace(/%20/g,' ')}
-                                id="input-address"
-                                placeholder="Dirección"
-                                type="text"
-                              />
-                            </FormGroup>
-                          </Col>
-                          <Col lg="4">
-                            <FormGroup>
-                              <label
-                                className="form-control-label"
-                                htmlFor="input-address"
-                              >
-                                Banco
+                            <Input
+                              readOnly={true}
+                              className="form-control-alternative"
+                              defaultValue={this.state.typeBank.replace(/%20/g, ' ')}
+                              id="input-address"
+                              placeholder="Dirección"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col lg="4">
+                          <FormGroup>
+                            <label
+                              className="form-control-label"
+                              htmlFor="input-address"
+                            >
+                              Banco
                               </label>
-                              <Input
-                                readOnly={true}
-                                className="form-control-alternative"
-                                defaultValue={this.state.bank.replace(/%20/g,' ')}
-                                id="input-address"
-                                placeholder="Dirección"
-                                type="text"
-                              />
-                            </FormGroup>
-                          </Col>
-                        </Row>
-                      </div>
+                            <Input
+                              readOnly={true}
+                              className="form-control-alternative"
+                              defaultValue={this.state.bank.replace(/%20/g, ' ')}
+                              id="input-address"
+                              placeholder="Dirección"
+                              type="text"
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </div>
 
                     <hr className="my-4" />
                     {/* Description */}
@@ -300,10 +302,10 @@ class Profile extends React.Component {
 
                     <Box component="fieldset" mb={3} borderColor="transparent">
                       <Typography component="legend">Calificación promedio</Typography>
-                      <Rating name="read-only" value={4.4} precision={0.1} readOnly/>
+                      <Rating name="read-only" value={4.4} precision={0.1} readOnly />
                     </Box>
 
-                  <ChangePassword changePass={this.changeState} state={this.state}/>
+                    <ChangePassword changePass={this.changeState} state={this.state} />
 
                   </Form>
                 </CardBody>

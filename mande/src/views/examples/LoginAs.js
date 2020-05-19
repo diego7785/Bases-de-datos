@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 // reactstrap components
 import {
@@ -12,6 +13,13 @@ import {
 } from "reactstrap";
 
 class LoginAs extends React.Component {
+
+  constructor(props){
+    super(props)
+    Cookies.remove("Client")
+    Cookies.remove("Worker")
+  }
+
   render() {
     return (
       <>

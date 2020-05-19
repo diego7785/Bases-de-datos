@@ -5,14 +5,15 @@ import {Container, Row, Col } from "reactstrap";
 
 class UserHeader extends React.Component {
 
-  state = {
-    name: this.props.path === '/worker/user-profile' ? this.props.state.workerInfo.trabajador_nombre : this.props.state.location.state.state.userInfo.usuario_nombre,
-  }
-
   constructor(props){
     super(props)
     console.log(props)
   }
+  
+  state = {
+    name: this.props.path === '/worker/user-profile' ? this.props.state.location.state.workerInfo.trabajador_nombre : this.props.state.location.state.userInfo.usuario_nombre,
+  }
+
   render() {
     return (
       <>

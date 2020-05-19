@@ -1,3 +1,24 @@
+var validateId = (req,res,db) =>{
+  const idCard = req.params.idCard;
+  db.many(`SELECT * FROM validateIdWorker('${idCard}')`)
+  .then((data) => {res.send(data)})
+  .catch ((error) => {res.send(error)})
+}
+
+var validateEmail = (req,res,db) =>{
+  const email = req.params.email;
+  db.many(`SELECT * FROM validateEmailWorker('${email}')`)
+  .then((data) => {res.send(data)})
+  .catch ((error) => {res.send(error)})
+}
+
+var validateAccount = (req,res,db) =>{
+  const account = req.params.account;
+  db.many(`SELECT * FROM validateAccountWorker('${account}')`)
+  .then((data) => {res.send(data)})
+  .catch ((error) => {res.send(error)})
+}
+
 var createWorker = (req, res, validationResult, db) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -11,7 +32,7 @@ var createWorker = (req, res, validationResult, db) => {
   const lastname = req.params.lastname;
   const password = req.params.password;
 
-  db.none(`INSERT INTO Trabajador VALUES($1,$2,'${email}','${name}','${lastname}',PGP_SYM_ENCRYPT('${password}', 'AES_KEY'),$3,$4,$5)`,
+  db.none(`INSERT INTO Trabajador VALUES($1,$2,'${email}','${name}','${lastname}',PGP_SYM_ENCRYPT('${password}', 'AES_KEY'),0,$3,$4,$5)`,
   [escape(idCard), escape(phone),
   escape('profilepic-'+idCard), escape('front-'+idCard), escape('back-'+idCard)])
   .then((data) => {
@@ -82,10 +103,9 @@ var createAddress = (req,res,db)=>{
   const lat = req.params.lat;
   const lng = req.params.lng;
   const address = req.params.address;
-  const city = req.params.city;
-  const depto = req.params.depto;
+  const complemento = req.params.complemento;
 
-  db.none(`INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_ciudad, direccion_departamento) VALUES($1,$2,$3,'${address}','${city}','${depto}')`,
+  db.none(`INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio, direccion_complemento) VALUES($1,$2,$3,'${address}','${complemento}')`,
   [escape(idCard), escape(lat), escape(lng)])
   .then((data) => {
     res.send(JSON.stringify(`Dirección registrada éxitosamente`))
@@ -160,7 +180,7 @@ var login = (req,res,db) =>{
   })
   .catch(function (error) {
     console.log(`ERROR:`, error)
-    res.send(JSON.stringify(error.detail))
+    res.send(false)
   })
 }
 
@@ -268,5 +288,8 @@ module.exports = {
   GetAccountInfo,
   ChangePassword,
   GetBusyInfo,
-  FinalizarLabor
+  FinalizarLabor,
+  validateId,
+  validateEmail,
+  validateAccount,
 }

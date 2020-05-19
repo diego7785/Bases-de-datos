@@ -7,7 +7,7 @@ import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footers/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import axios from 'axios';
-
+import Cookies from "js-cookie"
 import routes from "routes.js";
 
 
@@ -27,6 +27,20 @@ class Worker extends React.Component {
 
   onHandleChange = (id, val) => {
     this.setState({[id]: val})
+  }
+
+  constructor(props) {
+    super(props);
+    if(Cookies.get("Worker")){
+      const cookie = Cookies.getJSON("Worker")
+      this.state.tutu = cookie;
+    }else{
+      Cookies.set("Worker",props);
+    }
+  }
+
+  state = {
+    tutu: this.props,
   }
 
   componentDidUpdate(e) {
@@ -52,7 +66,7 @@ class Worker extends React.Component {
   getBrandText = path => {
     for (let i = 0; i < routes.length; i++) {
       if (
-        this.props.location.pathname.indexOf(
+        this.state.tutu.location.pathname.indexOf(
           routes[i].layout + routes[i].path
         ) !== -1
       ) {
@@ -67,7 +81,7 @@ class Worker extends React.Component {
     return (
       <>
         <Sidebar
-          {...this.props}
+          {...this.state.tutu}
           routes={routes}
           logo={{
             innerLink: "/worker/index",
@@ -77,8 +91,8 @@ class Worker extends React.Component {
         />
         <div className="main-content" ref="mainContent">
           <Navbar
-            {...this.props}
-            brandText={this.getBrandText(this.props.location.pathname)}
+            {...this.state.tutu}
+            brandText={this.getBrandText(this.state.tutu.location.pathname)}
           />
           <Switch>
             {this.getRoutes(routes,this.props)}

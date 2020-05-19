@@ -7,7 +7,8 @@ const validations = require('../../validations/Verifications.js');
 
 var messages = ["Debe llenar todos los campos",
                 "Su número de cuenta no debe contener letras, ni símbolos",
-                "Su número de cuenta debe contener entre 10 y 20 dígitos"
+                "Su número de cuenta debe contener entre 10 y 20 dígitos",
+                "Ya existe un trabajador registrado con ese número de cuenta"
 ];
 
 var verifications = new Array(messages.length);
@@ -54,61 +55,69 @@ export default function SnackbarRWII(props) {
 
         else
         {
-            var exito = 0;
-            const idCard = props.props.location.state.idCard;
-            const phone = props.props.location.state.celular;
-            const email = props.props.location.state.email;
-            const name = props.props.location.state.name;
-            const lastname = props.props.location.state.lastname;
-            const password = props.props.location.state.password;
-        
-            var res = await axios.post(`http://localhost:5000/RegisterWorker2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
-            console.log(res);
-            if(res.statusText === "OK"){
-            exito=exito+1;
+            const validateAccount = await axios.get(`http://localhost:5000/validateAccountExistence/${props.state.numeroCuenta}/`)
+            if(validateAccount.data[0].validateaccountworker)
+            {
+                verifications[3]=false;
+                props.onHandleChange('open', true);
             }
-        
-            const numberAccount = props.state.numeroCuenta;
-            const bank = props.state.bancoCuenta;
-            const type = props.state.tipoCuenta;
-        
-            res = await axios.post(`http://localhost:5000/RegisterWorker2/${numberAccount}/${bank}/${type}/${idCard}/${phone}`)
-            console.log(res);
-            if(res.statusText === "OK"){
-            exito=exito+1;
-            }
-        
-            const lat = props.props.location.state.latitude;
-            const lng = props.props.location.state.length;
-            const address = props.props.location.state.completeAddress;
-            const city = props.props.location.state.city;
-            const depto = props.props.location.state.depto;
-        
-            res = await axios.post(`http://localhost:5000/RegisterWorker2_2/${idCard}/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
-            console.log(res);
-            if(res.statusText === "OK"){
-            exito=exito+1;
-            }
-        
-            const idJob = props.props.location.state.job;
-            const price = props.props.location.state.price;
-            const description = props.props.location.state.description;
-            const typePay = props.props.location.state.type;
-            const status = true;
-        
-            res = await axios.post(`http://localhost:5000/RegisterWorker2_1/${idJob}/${idCard}/${phone}/${price}/${typePay}/${description}/${status}`)
-            console.log(res);
-            if(res.statusText === "OK"){
-            exito=exito+1;
-            }
-        
-            if(exito === 4){
-            alert('Registro exitoso');
-            props.props.history.push({pathname: "/auth/"})
-            }else{
-            res = await axios.post(`http://localhost:5000/RegisterWorker2_3/delete/${idCard}`)
-        
-            alert('No se ha podido realizar el registro, por favor intente de nuevo');        
+            else
+            {
+                var exito = 0;
+                const idCard = props.props.location.state.idCard;
+                const phone = props.props.location.state.celular;
+                const email = props.props.location.state.email;
+                const name = props.props.location.state.name;
+                const lastname = props.props.location.state.lastname;
+                const password = props.props.location.state.password;
+            
+                var res = await axios.post(`http://localhost:5000/RegisterWorker2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
+                console.log(res);
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
+            
+                const numberAccount = props.state.numeroCuenta;
+                const bank = props.state.bancoCuenta;
+                const type = props.state.tipoCuenta;
+            
+                res = await axios.post(`http://localhost:5000/RegisterWorker2/${numberAccount}/${bank}/${type}/${idCard}/${phone}`)
+                console.log(res);
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
+            
+                const lat = props.props.location.state.latitude;
+                const lng = props.props.location.state.length;
+                const address = props.props.location.state.address;
+                const complemento = props.props.location.state.complemento;
+            
+                res = await axios.post(`http://localhost:5000/RegisterWorker2_2/${idCard}/${phone}/${lat}/${lng}/${address}/${complemento}`)
+                console.log(res);
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
+            
+                const idJob = props.props.location.state.job;
+                const price = props.props.location.state.price;
+                const description = props.props.location.state.description;
+                const typePay = props.props.location.state.type;
+                const status = true;
+            
+                res = await axios.post(`http://localhost:5000/RegisterWorker2_1/${idJob}/${idCard}/${phone}/${price}/${typePay}/${description}/${status}`)
+                console.log(res);
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
+            
+                if(exito === 4){
+                alert('Registro exitoso');
+                props.props.history.push({pathname: "/auth/"})
+                }else{
+                res = await axios.post(`http://localhost:5000/RegisterWorker2_3/delete/${idCard}`)
+            
+                alert('No se ha podido realizar el registro, por favor intente de nuevo');        
+                }
             }
         }
     }

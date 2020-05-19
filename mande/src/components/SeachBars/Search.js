@@ -26,6 +26,12 @@ const style = {
 
 class SearchBar extends React.Component {
 
+
+    constructor(props){
+        super(props)
+        console.log("ayuda jehova", props)
+    }
+
     state = {
         advancedSearch: false,
         search: '',
@@ -35,6 +41,8 @@ class SearchBar extends React.Component {
         maxValue: 100000,
         type: true,
     };
+
+    
 
     onHandleSearch = async () => {
       if(this.state.advancedSearch){

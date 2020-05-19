@@ -33,21 +33,16 @@ export default function SnackbarRWI(props) {
             cont++;    
             emptyFields=false;
         }
-
         if(props.state.description.length>1 && props.state.description.length <10 && emptyFields)
         {
             verifications[1] = false;
             cont++; 
         }
-
-
         if(validations.diferentType(props.state.front,'object') || validations.diferentType(props.state.back,'object') || validations.diferentType(props.state.profilepic,'object'))
         {
             verifications[2] = false;
             cont++; 
-        }
-
-            
+        }  
         if (cont >0)
         {
                 props.onHandleChange('open', true);
@@ -59,26 +54,25 @@ export default function SnackbarRWI(props) {
         var data = new FormData()
         data.append('file', props.state.front)
         var res = await axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+props.props.location.state.idCard+"&type=front&user=worker", data, {})
-        if(res.statusText === "OK"){
+        if(res.status === 200){
             conta=1;
-            console.log(res.headers);
-            console.log(res.config);
         }
 
         data = new FormData()
         data.append('file', props.state.back)
         res = await axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+props.props.location.state.idCard+"&type=back&user=worker", data, {})
-        if(res.statusText === "OK"){
+        if(res.status === 200){
             conta++;
 
         }
         data = new FormData()
         data.append('file', props.state.profilepic)
         res = await axios.post("http://localhost:5000/RegisterWorker1/images?idCard="+props.props.location.state.idCard+"&type=profilepic&user=worker", data, {})
-        if(res.statusText === "OK"){
+        if(res.status === 200){
             conta++;
-            if(conta === 3){
-            alert('Imágenes cargadas con éxito');
+        }
+        if(conta === 3){
+            alert('Imágenes cargadas correctamente');
             props.props.history.push({
                 pathname: "/auth/RegisterWorker2/", state: {
                   idCard: props.props.location.state.idCard,
@@ -89,9 +83,9 @@ export default function SnackbarRWI(props) {
                   back :  props.state.back,
                   name : props.props.location.state.name,
                   lastname: props.props.location.state.lastname,
-                  completeAddress : props.props.location.state.completeAddress,
+                  address : props.props.location.state.address,
+                  complemento : props.props.location.state.complemento,
                   password : props.props.location.state.password,
-                  passwordR : props.props.location.state.passwordR,
                   job : props.state.job,
                   description : props.state.description,
                   type : props.state.type,
@@ -100,11 +94,11 @@ export default function SnackbarRWI(props) {
                   length : props.props.location.state.length,
                 }
               })
-            } else{
-            alert('Fallo al cargar una de las imágenes');
+            } 
+            else{
+            alert('Fallo ocurrido al cargar las imágenes');
             }
         }
-    }
     };
 
       const handleClose = (event, reason) => {

@@ -44,6 +44,7 @@ class RegisterWorker extends React.Component {
     latitude: true,
     length: true,
     address: true,
+    complemento: true,
     open: false,
   }
 

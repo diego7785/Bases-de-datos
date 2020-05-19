@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import Cookies from "js-cookie";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 
@@ -70,7 +71,7 @@ class Sidebar extends React.Component {
 
   constructor(props){
     super(props)
-    console.log(props);
+    console.log("sidebar",props);
   }
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
@@ -84,6 +85,7 @@ class Sidebar extends React.Component {
   };
   // closes the collapse
   closeCollapse = () => {
+    Cookies.remove("Client");
     this.setState({
       collapseOpen: false
     });

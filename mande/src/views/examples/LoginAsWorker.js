@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import ValidationSnackbarsLW from 'components/Snackbars/ValidationSnackbarsLW';
 
 // reactstrap components
 import {
@@ -23,11 +23,18 @@ class LoginAsWorker extends React.Component {
   state = {
     idCard: true,
     pass: true,
+
     workerInfo: true,
     addressInfo: true,
     realizaInfo: true,
     accountInfo: true,
     busyInfo: true,
+    open: false,
+  }
+
+  setOpen = (id,val)=>
+  {
+    this.setState({[id] : val})
   }
 
   onHandleChange = (id, event) =>{
@@ -101,9 +108,7 @@ class LoginAsWorker extends React.Component {
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button" onClick={e => this.onHandleNext(e)}>
-                    Sign in
-                  </Button>
+                  <ValidationSnackbarsLW state={this.state} onHandleChange={this.setOpen} props={this.props}/>  
                 </div>
               </Form>
             </CardBody>
@@ -129,7 +134,6 @@ class LoginAsWorker extends React.Component {
                 <div className="text-light">
                   <small>Crear cuenta</small>
                 </div>
-
               </NavLink>
             </Col>
           </Row>

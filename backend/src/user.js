@@ -1,3 +1,40 @@
+var validateId = (req,res,db) =>{
+  const idCard = req.params.idCard;
+  db.many(`SELECT * FROM validateIdUser('${idCard}')`)
+  .then((data) => {res.send(data)})
+  .catch ((error) => {res.send(error)})
+}
+
+var validateEmail = (req,res,db) =>{
+  const email = req.params.email;
+  db.many(`SELECT * FROM validateEmailUser('${email}')`)
+  .then((data) => {res.send(data)})
+  .catch ((error) => {res.send(error)})
+}
+
+var validatePhone = (req,res,db) =>{
+  const phone = req.params.phone;
+  db.many(`SELECT * FROM validatePhoneUser('${phone}')`)
+  .then((data) => {res.send(data)})
+  .catch ((error) => {res.send(error)})
+}
+
+var validateDebitCard = (req,res,db) =>{
+  const numberD = req.params.cardNumber;
+  db.many(`SELECT * FROM validateDebitCardUser('${numberD}')`)
+  .then((data) => {res.send(data)})
+  .catch ((error) => {res.send(error)})
+}
+
+var validateCreditCard = (req,res,db) =>{
+  const numberC = req.params.cardNumber;
+  console.log(numberC);
+  db.many(`SELECT * FROM validateCreditCardUser('${numberC}')`)
+  .then((data) => {res.send(data)})
+  .catch ((error) => {res.send(error)})
+}
+
+
 var createUser = (req,res,validationResult,db) => {
   const errors = validationResult(req);
   console.log(errors);
@@ -52,8 +89,7 @@ var createCreditCard = (req,res,db)=>{
   const endDate = req.params.endDate;
   const cvc = req.params.cvc;
 
-  db.none(`INSERT INTO Tarjeta_credito VALUES(PGP_SYM_ENCRYPT($1, 'AES_KEY'),$2,'${bank}',$3,PGP_SYM_ENCRYPT($4, 'AES_KEY'))`,
-  [escape(cardNumber), escape(phone), escape(endDate), escape(cvc)])
+  db.none(`INSERT INTO Tarjeta_credito VALUES(PGP_SYM_ENCRYPT('${cardNumber}','AES_KEY'),'${phone}','${bank}','${endDate}',PGP_SYM_ENCRYPT('${cvc}', 'AES_KEY'))`)
   .then((data) => {
     res.send(JSON.stringify(`Tarjeta credito registrada exitosamente`))
   })
@@ -139,7 +175,7 @@ var deleteAll = (req,res,db) => {
 var login = (req,res,db) =>{
   const phone = req.params.phone;
   const pass = req.params.pass;
-  db.many(`SELECT celular_usuario, PGP_SYM_DECRYPT(usuario_contrasenia::bytea, 'AES_KEY') AS usuario_contrasenia, cedula_usuario FROM Usuario WHERE celular_usuario=$1`,[escape(phone)])
+  db.many(`SELECT celular_usuario, PGP_SYM_DECRYPT(usuario_contrasenia::bytea, 'AES_KEY') AS usuario_contrasenia, cedula_usuario FROM Usuario WHERE celular_usuario='${phone}'`)
   .then(function (data) {
     const phoneDB = data[0].celular_usuario;
     const passDB =data[0].usuario_contrasenia;
@@ -151,7 +187,7 @@ var login = (req,res,db) =>{
   })
   .catch(function (error) {
     console.log(`ERROR:`, error)
-    res.send(JSON.stringify(error.detail))
+    res.send([false, null])
   })
 }
 
@@ -301,4 +337,10 @@ module.exports = {
   getWorkersWithXJob,
   getWorkersWithXJobAdvanced,
   serviceRequest,
+  validateId,
+  validateEmail,
+  validatePhone,
+  validateCreditCard,
+  validateDebitCard, 
+
 }
