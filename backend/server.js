@@ -48,11 +48,17 @@ app.post(`/RegisterWorker1/images`, (req, res) => {
 
 app.post(`/RegisterWorker2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) => worker.createWorker(req,res, validationResult, db))
 
+app.get(`/validateWorkerExistence/:idCard`, (req, res) => worker.validateId(req, res, db))
+
+app.get(`/validateEmailExistence/:email`, (req, res) => worker.validateEmail(req, res, db))
+
+app.get(`/validateAccountExistence/:account`, (req, res) => worker.validateAccount(req, res, db))
+
 app.post(`/RegisterWorker2/:numberAccount/:bank/:type/:idCard/:phone`, (req,res) => worker.createBankAccount(req,res,db))
 
 app.post(`/RegisterWorker2_1/:idJob/:idCard/:phone/:price/:typePay/:description/:status`, (req,res) => worker.createRealiza(req,res,db))
 
-app.post(`/RegisterWorker2_2/:idCard/:phone/:lat/:lng/:address/:city/:depto`, (req,res) => worker.createAddress(req,res,db))
+app.post(`/RegisterWorker2_2/:idCard/:phone/:lat/:lng/:address/:complemento`, (req,res) => worker.createAddress(req,res,db))
 
 app.post(`/RegisterWorker2_3/delete/:idCard`, (req, res) => worker.deleteAll(req,res,db))
 
@@ -92,6 +98,17 @@ app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`,
 
 app.post(`/RegisterUser2_2/:cardNumber/:phone/:bank/:numberAccount`, (req,res) => user.createDebitCard(req,res,db))
 
+app.get(`/validateIdUserExistence/:idCard`, (req, res) => user.validateId(req, res, db))
+
+app.get(`/validateEmailUserExistence/:email`, (req, res) => user.validateEmail(req, res, db))
+
+app.get(`/validatePhoneUserExistence/:phone`, (req, res) => user.validatePhone(req, res, db))
+
+app.get(`/validateDebitCardExistence/:cardNumber`, (req, res) => user.validateDebitCard(req, res, db))
+
+app.get(`/validateCreditCardExistence/:cardNumber`, (req, res) => user.validateCreditCard(req, res, db))
+
+//
 app.post(`/RegisterUser2_3/:phone/:lat/:lng/:address/:city/:depto`, (req,res)=> user.createAddress(req,res,db))
 
 app.post(`/RegisterCreditCard/:cardNumber/:phone/:bank/:endDate/:cvc` , (req,res) => user.createCreditCard(req,res,db))

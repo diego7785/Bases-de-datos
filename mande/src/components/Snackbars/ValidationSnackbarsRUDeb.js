@@ -10,6 +10,7 @@ var messages = ["Debe llenar todos los campos",
                 "Número de tarjeta debe tener 16 dígitos",
                 "Número de cuenta no puede contener letras, ni símbolos",
                 "Número de cuenta debe tener entre 10 y 20 dígitos",
+                "Otro usuario tiene registrado esa tarjeta de débito"
             ];
 
 var verifications = new Array(messages.length);
@@ -21,9 +22,10 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function SnackbarRUDeb(props) {
-
-    const finalRegister = async () => {
+export default function SnackbarRUDeb(props) 
+{
+    const finalRegister = async () => 
+    {
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
         }
@@ -65,57 +67,68 @@ export default function SnackbarRUDeb(props) {
 
         else
         {
-            var exito = 0;
-            const idCard = props.state1.location.state.idCard;
-            const phone = props.state1.location.state.celular;
-            const email = props.state1.location.state.email;
-            const name = props.state1.location.state.name;
-            const lastname = props.state1.location.state.lastname;
-            const password = props.state1.location.state.password;
-
-            var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
-            console.log(res)
-            if(res.statusText === "OK"){
-            exito=exito+1;
+            const validateCard = await axios.get(`http://localhost:5000/validateDebitCardExistence/${props.props.cardNumber}/`)
+            console.log(validateCard);
+            if(validateCard.data[0].validatedebitcarduser)
+            {
+                verifications[5]=false;
+                props.onHandleChange('open', true);
             }
+            else
+            {
+                var exito = 0;
+                const idCard = props.state1.location.state.idCard;
+                const phone = props.state1.location.state.celular;
+                const email = props.state1.location.state.email;
+                const name = props.state1.location.state.name;
+                const lastname = props.state1.location.state.lastname;
+                const password = props.state1.location.state.password;
 
-            const cardNumber = props.props.cardNumber;
-            const bank = props.props.bank;
-            const numberAccount = props.props.numberAccount;
-            res = await axios.post(`http://localhost:5000/RegisterUser2_2/${cardNumber}/${phone}/${bank}/${numberAccount}`)
-            console.log(res)
-            if(res.statusText === "OK"){
-            exito=exito+1;
-            }
+                var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
+                console.log(res)
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
 
-            const lat = props.state1.location.state.latitude;
-            const lng = props.state1.location.state.length;
-            const address = props.state1.location.state.completeAddress;
-            const city = props.state1.location.state.city;
-            const depto = props.state1.location.state.depto;
+                const cardNumber = props.props.cardNumber;
+                const bank = props.props.bank;
+                const numberAccount = props.props.numberAccount;
+                res = await axios.post(`http://localhost:5000/RegisterUser2_2/${cardNumber}/${phone}/${bank}/${numberAccount}`)
+                console.log(res)
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
 
-            res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
-            console.log(res)
-            if(res.statusText === "OK"){
-            exito=exito+1;
-            }
+                const lat = props.state1.location.state.latitude;
+                const lng = props.state1.location.state.length;
+                const address = props.state1.location.state.completeAddress;
+                const city = props.state1.location.state.city;
+                const depto = props.state1.location.state.depto;
 
-            if(exito === 3){
-            alert('Registro exitoso');
-            props.state1.history.push({pathname: "/auth/"})
-            }else{
-            const credit=0;
-            res = await axios.post(`http://localhost:5000/RegisterUser2_5/delete/${phone}/${cardNumber}/${credit}`)
-            alert('No se ha podido realizar el registro, por favor intente de nuevo');
+                res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
+                console.log(res)
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
+
+                if(exito === 3){
+                alert('Registro exitoso');
+                props.state1.history.push({pathname: "/auth/"})
+                }else{
+                const credit=0;
+                res = await axios.post(`http://localhost:5000/RegisterUser2_5/delete/${phone}/${cardNumber}/${credit}`)
+                alert('No se ha podido realizar el registro, por favor intente de nuevo');
+                }
             }
         }
-    };
+    }
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         props.onHandleChange('open', false)
     };
+
 
     return (
         <>
@@ -138,3 +151,4 @@ export default function SnackbarRUDeb(props) {
         </>
     );
 }
+

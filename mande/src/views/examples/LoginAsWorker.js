@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import ValidationSnackbarsLW from 'components/Snackbars/ValidationSnackbarsLW';
 
 // reactstrap components
 import {
@@ -23,44 +23,17 @@ class LoginAsWorker extends React.Component {
   state = {
     idCard: true,
     pass: true,
+    open: false,
+  }
+
+  setOpen = (id,val)=>
+  {
+    this.setState({[id] : val})
   }
 
   onHandleChange = (id, event) =>{
     this.setState({ [id]: event.target.value})
   }
-
-  onHandleNext = async (e) =>{
-    e.preventDefault();
-    const idCard = parseInt(this.state.idCard);
-    const pass = this.state.pass;
-
-    const res = await axios.get(`http://localhost:5000/LoginAsWorker/${idCard}/${pass}/`);
-    if(res.data){
-      const res1 = await axios.get(`http://localhost:5000/GetWorkerInfo/${idCard}/`);
-      const workerInfo = res1.data[0];
-      const res2 = await axios.get(`http://localhost:5000/GetAddressInfo/${idCard}/`);
-      const addressInfo = res2.data[0];
-      const res3 = await axios.get(`http://localhost:5000/GetRealizaInfo/${idCard}/`);
-      const realizaInfo = res3.data;
-      const res4 = await axios.get(`http://localhost:5000/GetAccountInfo/${idCard}/`)
-      const accountInfo = res4.data[0];
-
-      this.props.history.push({
-        pathname: "/worker/", state: {
-        idCard: this.state.idCard,
-        workerInfo : workerInfo,
-        addressInfo : addressInfo,
-        realizaInfo : realizaInfo,
-        accountInfo : accountInfo,
-        }
-      })
-    } else {
-      alert('Credenciales incorrectas');
-    }
-
-
-
-}
 
   render() {
     return (
@@ -93,9 +66,7 @@ class LoginAsWorker extends React.Component {
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button" onClick={e => this.onHandleNext(e)}>
-                    Sign in
-                  </Button>
+                  <ValidationSnackbarsLW state={this.state} onHandleChange={this.setOpen} props={this.props}/>  
                 </div>
               </Form>
             </CardBody>
@@ -121,7 +92,6 @@ class LoginAsWorker extends React.Component {
                 <div className="text-light">
                   <small>Crear cuenta</small>
                 </div>
-
               </NavLink>
             </Col>
           </Row>

@@ -80,7 +80,7 @@ export default function Direccion(props) {
           rows="4"
           placeholder="Ejemplo: Torre 2 Apto 405, al lado de la farmacia"
           variant="outlined"
-          onChange={e => props.functionSetState(e, 'complemento',1)}
+          onChange={e => props.functionSetState(e.target.value, 'complemento',1)}
         />
         </div>
         </FormControl>
