@@ -21,7 +21,8 @@ class IndexC extends React.Component {
       chartExample1Data: "data1",
       results: true,
       openResults: false,
-      idCard: this.props.location.state.idCard
+      idCard: this.props.location.state.idCard,
+      jobs: this.props.location.state.wjobs
     };
     console.log("pare menor")
     console.log(props)
@@ -51,13 +52,13 @@ class IndexC extends React.Component {
       <div>
 
         <Header location={this.props.match.path} />
-        <SearchBar jobs={this.props.location.state.wjobs} results={this.state.results} onHandleChange={this.onHandleChange}
+        <SearchBar jobs={this.state.jobs} results={this.state.results} onHandleChange={this.onHandleChange}
           idCard={this.state.idCard} />
         <Container className="mt--7" fluid>
           <Row style={{ marginTop: 80 }}>
             <Col>
               <Row>
-                {this.state.openResults ? <Results results={this.state.results} idCard={this.props.location.state.userInfo.celular_usuario} /> : <div></div>}
+                {this.state.openResults ? <Results results={this.state.results} idCard={this.state.idCard} /> : <div></div>}
               </Row>
             </Col>
             {/*this.showResults*/}

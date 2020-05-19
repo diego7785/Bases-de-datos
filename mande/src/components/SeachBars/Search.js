@@ -26,6 +26,12 @@ const style = {
 
 class SearchBar extends React.Component {
 
+
+    constructor(props){
+        super(props)
+        console.log("ayuda jehova", props)
+    }
+
     state = {
         advancedSearch: false,
         search: '',

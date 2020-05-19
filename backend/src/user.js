@@ -336,13 +336,11 @@ module.exports = {
   getJobsWithWorker,
   getWorkersWithXJob,
   getWorkersWithXJobAdvanced,
-<<<<<<< HEAD
   serviceRequest,
-=======
   validateId,
   validateEmail,
   validatePhone,
   validateCreditCard,
   validateDebitCard, 
->>>>>>> a5441201a7d16f6e6cbd6f5872fb94877ef55a98
+
 }
