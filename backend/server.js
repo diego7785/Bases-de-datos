@@ -133,4 +133,6 @@ app.get(`/SearchWorkers/:workersToSearch/:idCardU`, (req,res) => user.getWorkers
 
 app.get(`/SearchWorkersAdvanced/:workersToSearch/:idCardU/:type/:stars/:min/:max`, (req,res) => user.getWorkersWithXJobAdvanced(req,res,db))
 
+app.post(`/serviceRequest/:idWorker/:phoneUser/:idLabor/:desc`, (req, res) => user.serviceRequest(req,res,db))
+
 app.listen(port, () => console.log(`API listening on port ${port}!`))

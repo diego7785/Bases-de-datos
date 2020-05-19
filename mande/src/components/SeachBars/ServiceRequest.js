@@ -5,6 +5,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
+
 
 export default function ServiceRequest(props) {
   const [open, setOpen] = React.useState(false);
@@ -18,6 +20,13 @@ export default function ServiceRequest(props) {
   };
 
   const handleClose = async () => {
+    const idWorker = props.id;
+    const phoneUser = props.phoneUser;
+    const idLab = props.idLabor;
+    const desc = props.desc;
+    
+    const res = await axios.post(`http://localhost:5000/serviceRequest/${idWorker}/${phoneUser}/${idLab}/${desc}`);
+    setOpen(false);
     };
 
   return (
@@ -37,6 +46,7 @@ export default function ServiceRequest(props) {
           rows="4"
           placeholder="Ingresa una breve descripcion del servicio que requieres"
           variant="outlined"
+          onChange = {(e) => props.handleChange(e)}
         />
         </DialogContent>
         <DialogActions>

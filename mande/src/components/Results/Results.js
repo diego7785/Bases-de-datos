@@ -1,6 +1,5 @@
 import React from 'react';
 import ResultCard from "components/SeachBars/SearchResult.js";
-import WorkerRater from "components/RatingSelector/WorkerRate"
 
 // reactstrap components
 import {
@@ -16,13 +15,12 @@ class Results extends React.Component {
   }
 
   state = {
-    name: true,
-    description: true,
-    title: true,
-    rating: 4,
-    type: true,
-    price: true,
+    desc: false,
   }
+
+  handleChange = (e) => {
+    this.setState({desc: e.target.value})
+  } 
 
   render() {
     return (
@@ -42,6 +40,11 @@ class Results extends React.Component {
             src={user.trabajador_foto_perfil}
             distancia={(user.distancia / 1000).toFixed(2)}
             estado={estado}
+            id={user.cedula_trabajador}
+            phoneUser={this.props.idCard}
+            idLabor = {user.id_labor}
+            desc = {this.state.desc}
+            handleChange = {this.handleChange}
           /></li>
         })}
 

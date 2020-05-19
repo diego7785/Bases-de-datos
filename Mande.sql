@@ -15,6 +15,7 @@ DROP FUNCTION IF EXISTS add_geopint;
 DROP FUNCTION IF EXISTS get_workers_results;
 DROP FUNCTION IF EXISTS get_workers_results_advanced;
 DROP TRIGGER IF EXISTS trigger_add_geopint ON Direccion;
+SET TIME ZONE -5;
 
 CREATE TABLE Trabajador(
 	cedula_trabajador VARCHAR(10) NOT NULL,
@@ -131,7 +132,7 @@ CREATE TABLE Tarjeta_debito(
 
 -- FUNCTIONS
 -- Funcion para convertir las coordenadas en puntos para usar con postgis
-CREATE FUNCTION add_geopint() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION add_geopint() RETURNS TRIGGER AS $$
 DECLARE
 BEGIN
     NEW.direccion_ubicacion := ST_SetSRID(ST_MakePoint(NEW.direccion_longitud,NEW.direccion_latitud),4686);
@@ -141,28 +142,29 @@ $$ LANGUAGE plpgsql;
 
 -- Funcion para obtener los datos del trabajador que se busca y calcular la distancia
 -- Parametros: Labor a buscar, Celular usuario
-CREATE OR REPLACE FUNCTION get_workers_results (VARCHAR(50), VARCHAR(10)) RETURNS TABLE(cedula_trabajador VARCHAR(10), realiza_precio INT, realiza_tipo VARCHAR(10), labor_descripcion VARCHAR(200),
+CREATE OR REPLACE FUNCTION get_workers_results (VARCHAR(50), VARCHAR(10)) RETURNS TABLE(cedula_trabajador VARCHAR(10), id_labor INT, realiza_precio INT, realiza_tipo VARCHAR(10), labor_descripcion VARCHAR(200),
 																						trabajador_estado BIT, trabajador_nombre VARCHAR(70), trabajador_apellido VARCHAR(70), trabajador_calificacion INT,
 																						trabajador_foto_perfil VARCHAR(25), direccion_domicilio VARCHAR(70), distancia DOUBLE PRECISION) AS $$
 DECLARE
 	nombre_labor ALIAS FOR $1;
 	celularU ALIAS FOR $2;
-	idlabor INTEGER := (SELECT id_labor FROM Labor WHERE labor_nombre = nombre_labor);
+	idlabor INTEGER := (SELECT Labor.id_labor FROM Labor WHERE labor_nombre = nombre_labor);
 	ubicacionU GEOGRAPHY := (SELECT direccion_ubicacion FROM Direccion WHERE celular_usuario=celularU);
 BEGIN
-	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion, Trabajador.trabajador_foto_perfil
-							FROM Trabajador NATURAL JOIN Realiza WHERE id_labor=idlabor), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
+	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.id_labor, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion, Trabajador.trabajador_foto_perfil
+							FROM Trabajador NATURAL JOIN Realiza WHERE Realiza.id_labor=idlabor), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.id_labor, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
 								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Trabajador_realiza.trabajador_foto_perfil, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
 							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
-							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil,
-							TR_Direccion.direccion_domicilio, DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia;
+							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.id_labor, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil,
+							TR_Direccion.direccion_domicilio, DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY TR_Direccion.trabajador_calificacion, DistanciaUT, TR_Direccion.realiza_precio;
 END;
 $$
 LANGUAGE plpgsql;
+select * from get_workers_results('Profesor de matemáticas', '1987654321');
 
 -- Funcion para obtener los datos del trabajador que se busca avanzadamente y calcular la distancia
 -- Parametros: Labor a buscar, celular usuario, tipo de cobro, cantidad de estrellas, precio minimo, precio maximo
-CREATE OR REPLACE FUNCTION get_workers_results_advanced (VARCHAR(50), VARCHAR(10), VARCHAR(10), INTEGER, INTEGER, INTEGER) RETURNS TABLE(cedula_trabajador VARCHAR(10), realiza_precio INT, realiza_tipo VARCHAR(10), labor_descripcion VARCHAR(200),
+CREATE OR REPLACE FUNCTION get_workers_results_advanced (VARCHAR(50), VARCHAR(10), VARCHAR(10), INTEGER, INTEGER, INTEGER) RETURNS TABLE(cedula_trabajador VARCHAR(10), id_labor INT, realiza_precio INT, realiza_tipo VARCHAR(10), labor_descripcion VARCHAR(200),
 																						trabajador_estado BIT, trabajador_nombre VARCHAR(70), trabajador_apellido VARCHAR(70), trabajador_calificacion INT,
 																						trabajador_foto_perfil VARCHAR(25), direccion_domicilio VARCHAR(70), distancia DOUBLE PRECISION) AS $$
 DECLARE
@@ -172,19 +174,39 @@ DECLARE
 	cEstrellas ALIAS FOR $4;
 	pMin ALIAS FOR $5;
 	pMax ALIAS FOR $6;
-	idlabor INTEGER := (SELECT id_labor FROM Labor WHERE labor_nombre = nombre_labor);
+	idlabor INTEGER := (SELECT Labor.id_labor FROM Labor WHERE labor_nombre = nombre_labor);
 	ubicacionU GEOGRAPHY := (SELECT direccion_ubicacion FROM Direccion WHERE celular_usuario=celularU);
 BEGIN
-	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion,
-							Trabajador.trabajador_foto_perfil FROM Trabajador NATURAL JOIN Realiza WHERE id_labor=idlabor AND Realiza.realiza_tipo=tipoC AND Trabajador.trabajador_calificacion=cEstrellas AND Realiza.realiza_precio BETWEEN pMin AND pMax), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
+	RETURN QUERY WITH Trabajador_realiza AS (SELECT Trabajador.cedula_trabajador, Realiza.id_labor, Realiza.realiza_precio, Realiza.realiza_tipo, Realiza.labor_descripcion, Realiza.trabajador_estado, Trabajador.trabajador_nombre, Trabajador.trabajador_apellido, Trabajador.trabajador_calificacion,
+							Trabajador.trabajador_foto_perfil FROM Trabajador NATURAL JOIN Realiza WHERE Realiza.id_labor=idlabor AND Realiza.realiza_tipo=tipoC AND Trabajador.trabajador_calificacion=cEstrellas AND Realiza.realiza_precio BETWEEN pMin AND pMax), TR_Direccion AS (SELECT Trabajador_realiza.cedula_trabajador, Trabajador_realiza.id_labor, Trabajador_realiza.realiza_precio, Trabajador_realiza.realiza_tipo, Trabajador_realiza.labor_descripcion, Trabajador_realiza.trabajador_estado,
 								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Trabajador_realiza.trabajador_foto_perfil, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
 							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
-							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil, TR_Direccion.direccion_domicilio,
-							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia;
+							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.id_labor, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil, TR_Direccion.direccion_domicilio,
+							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY TR_Direccion.trabajador_calificacion, DistanciaUT, TR_Direccion.realiza_precio;
 END;
 $$
 LANGUAGE plpgsql;
 
+-- Funcion para setear trabajador ocupado
+CREATE OR REPLACE FUNCTION set_worker_busy() RETURNS TRIGGER AS $$
+DECLARE
+	idCard VARCHAR(10) := NEW.cedula_trabajador;
+BEGIN
+	UPDATE Realiza SET trabajador_estado = B'0' WHERE cedula_trabajador = idCard;
+	RETURN NEW;
+END
+$$
+LANGUAGE 	plpgsql;
+
+-- Insertar fecha y hora en servicio
+CREATE OR REPLACE FUNCTION set_time_date() RETURNS TRIGGER AS $$
+DECLARE
+BEGIN
+	NEW.servicio_fecha := (SELECT current_date);
+	NEW.servicio_hora_inicio := (SELECT current_time);
+	RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
 
 --validaciones worker
 CREATE OR REPLACE FUNCTION validateIdWorker(VARCHAR(10)) RETURNS boolean AS $$ 
@@ -280,6 +302,15 @@ END $$ LANGUAGE PLPGSQL;
 CREATE TRIGGER trigger_add_geopint BEFORE INSERT ON Direccion
 FOR EACH ROW
 EXECUTE PROCEDURE add_geopint();
+
+-- trigger para setear el estado del usuario
+CREATE TRIGGER trigger_set_worker_busy BEFORE INSERT ON Servicio
+FOR EACH ROW
+EXECUTE PROCEDURE set_worker_busy();
+
+CREATE TRIGGER trigger_set_time_date BEFORE INSERT ON Servicio
+FOR EACH ROW
+EXECUTE PROCEDURE set_time_date();
 
 
 INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),

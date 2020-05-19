@@ -6,10 +6,24 @@ import { Container } from "reactstrap";
 import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footers/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-
 import routes from "routes.js";
-
+import Cookies from "js-cookie";
 class Client extends React.Component {
+
+  constructor(props) {
+    super(props);
+    if (Cookies.get("Client")) {
+      const cookie = Cookies.getJSON("Client")
+      this.state.tutu = cookie;
+    } else {
+      Cookies.set("Client", props);
+    }
+  }
+
+  state = {
+    tutu: this.props,
+  }
+
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -33,7 +47,7 @@ class Client extends React.Component {
   getBrandText = path => {
     for (let i = 0; i < routes.length; i++) {
       if (
-        this.props.location.pathname.indexOf(
+        this.state.tutu.location.pathname.indexOf(
           routes[i].layout + routes[i].path
         ) !== -1
       ) {
@@ -46,7 +60,7 @@ class Client extends React.Component {
     return (
       <>
         <Sidebar
-          {...this.props}
+          {...this.state.tutu}
           routes={routes}
           logo={{
             innerLink: "/client/index",
@@ -56,12 +70,12 @@ class Client extends React.Component {
         />
         <div className="main-content" ref="mainContent">
           <Navbar
-            {...this.props}
-            brandText={this.getBrandText(this.props.location.pathname)}
+            {...this.state.tutu}
+            brandText={this.getBrandText(this.state.tutu.location.pathname)}
           />
           <Switch>
-            {this.getRoutes(routes)}
-            <Redirect from="*" to={{ pathname: "/client/index", state: {path: 'client',  state: this.props.location.state}}} />
+            {this.getRoutes(routes,this.state.tutu)}
+            <Redirect from="*" to={{ pathname: "/client/index", state: { path: 'client', state: this.state.tutu.location.state}}} />
           </Switch>
           <Container fluid>
             <Footer />

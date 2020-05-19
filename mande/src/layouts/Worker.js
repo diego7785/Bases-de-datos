@@ -6,11 +6,25 @@ import { Container } from "reactstrap";
 import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footers/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-
+import Cookies from "js-cookie"
 import routes from "routes.js";
 
 
 class Worker extends React.Component {
+
+  constructor(props) {
+    super(props);
+    if(Cookies.get("Worker")){
+      const cookie = Cookies.getJSON("Worker")
+      this.state.tutu = cookie;
+    }else{
+      Cookies.set("Worker",props);
+    }
+  }
+
+  state = {
+    tutu: this.props,
+  }
 
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
@@ -35,7 +49,7 @@ class Worker extends React.Component {
   getBrandText = path => {
     for (let i = 0; i < routes.length; i++) {
       if (
-        this.props.location.pathname.indexOf(
+        this.state.tutu.location.pathname.indexOf(
           routes[i].layout + routes[i].path
         ) !== -1
       ) {
@@ -50,7 +64,7 @@ class Worker extends React.Component {
     return (
       <>
         <Sidebar
-          {...this.props}
+          {...this.state.tutu}
           routes={routes}
           logo={{
             innerLink: "/worker/index",
@@ -60,12 +74,12 @@ class Worker extends React.Component {
         />
         <div className="main-content" ref="mainContent">
           <Navbar
-            {...this.props}
-            brandText={this.getBrandText(this.props.location.pathname)}
+            {...this.state.tutu}
+            brandText={this.getBrandText(this.state.tutu.location.pathname)}
           />
           <Switch>
-            {this.getRoutes(routes,this.props)}
-            <Redirect from="*" to={{ pathname: "/worker/index", state: {path: 'worker', state: this.props.location.state}}}/>
+            {this.getRoutes(routes,this.state.tutu)}
+            <Redirect from="*" to={{ pathname: "/worker/index", state: {path: 'worker', state: this.state.tutu.location.state}}}/>
           </Switch>
           <Container fluid>
 

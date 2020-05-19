@@ -42,6 +42,8 @@ class IndexW extends React.Component {
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
     }
+    console.log("meda?")
+    console.log(props)
   }
 
   toggleNavs = (e, index) => {
