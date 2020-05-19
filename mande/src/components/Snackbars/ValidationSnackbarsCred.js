@@ -16,6 +16,7 @@ var messages = ["Debe llenar todos los campos",
                 "Año de expiración no puede contener años pasados",
                 "Cédula no puede contener letras, ni símbolos",
                 "Cédula debe tener entre 8 y 10 dígitos",
+                "Otro usuario tiene registrado esa tarjeta de crédito"
             ];
 
 var verifications = new Array(messages.length);
@@ -27,8 +28,10 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function SnackbarRUCred(props) {
-    const finalRegister = async () => {
+export default function SnackbarRUCred(props) 
+{
+    const finalRegister = async () => 
+    {
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
         }
@@ -80,7 +83,7 @@ export default function SnackbarRUCred(props) {
             verifications[7]=false;
             cont++;
         }
-        if(emptyFields && (parseInt(props.props.year) < 2020))
+        if(emptyFields && (parseInt(props.props.year) < 20))
         {
             verifications[8]=false;
             cont++;
@@ -95,8 +98,6 @@ export default function SnackbarRUCred(props) {
             verifications[10]=false;
             cont++;
         }
-
-
         if (cont >0)
         {
             props.onHandleChange('open', true);
@@ -104,50 +105,60 @@ export default function SnackbarRUCred(props) {
 
         else
         {
-            var exito = 0;
-            const idCard = props.state1.location.state.idCard;
-            const phone = props.state1.location.state.celular;
-            const email = props.state1.location.state.email;
-            const name = props.state1.location.state.name;
-            const lastname = props.state1.location.state.lastname;
-            const password = props.state1.location.state.password;
-          
-            var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
-            console.log(res)
-            if(res.statusText === "OK"){
-              exito=exito+1;
+            console.log(props.props.cardNumber);
+            const validateCard = await axios.get(`http://localhost:5000/validateCreditCardExistence/${props.props.cardNumber}/`)
+            if(validateCard.data[0].validatecreditcarduser)
+            {
+                verifications[11]=false;
+                props.onHandleChange('open', true);
             }
-          
-            const endDate = props.props.month+'-'+props.props.year;
-            const cvc = props.props.cvc;
-            const cardNumber=props.props.cardNumber;
-            const bank=props.props.bank;
-            const idCardCredit= props.props.idCardCredit;
-            res = await axios.post(`http://localhost:5000/RegisterCreditCard/${cardNumber}/${phone}/${bank}/${endDate}/${cvc}`)
-            console.log(res)
-            if(res.statusText === "OK"){
-              exito=exito+1;
-            }
-          
-            const lat = props.state1.location.state.latitude;
-            const lng = props.state1.location.state.length;
-            const address = props.state1.location.state.completeAddress;
-            const city = props.state1.location.state.city;
-            const depto = props.state1.location.state.depto;
-          
-            res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
-            console.log(res)
-            if(res.statusText === "OK"){
-              exito=exito+1;
-            }
-          
-            if(exito === 3){
-              alert('Registro exitoso');
-              props.state1.history.push({pathname: "/auth/"})
-            }else{
-              const credit=1;
-              res = await axios.post(`http://localhost:5000/RegisterUser2_5/delete/${phone}/${cardNumber}/${credit}`)
-              alert('No se ha podido realizar el registro, por favor intente de nuevo');
+            else
+            {
+                var exito = 0;
+                const idCard = props.state1.location.state.idCard;
+                const phone = props.state1.location.state.celular;
+                const email = props.state1.location.state.email;
+                const name = props.state1.location.state.name;
+                const lastname = props.state1.location.state.lastname;
+                const password = props.state1.location.state.password;
+            
+                var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
+                console.log(res)
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
+            
+                const endDate = props.props.month+'-'+props.props.year;
+                const cvc = props.props.cvc;
+                const cardNumber=props.props.cardNumber;
+                const bank=props.props.bank;
+                const idCardCredit= props.props.idCardCredit;
+                res = await axios.post(`http://localhost:5000/RegisterCreditCard/${cardNumber}/${phone}/${bank}/${endDate}/${cvc}`)
+                console.log(res)
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
+            
+                const lat = props.state1.location.state.latitude;
+                const lng = props.state1.location.state.length;
+                const address = props.state1.location.state.completeAddress;
+                const city = props.state1.location.state.city;
+                const depto = props.state1.location.state.depto;
+            
+                res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
+                console.log(res)
+                if(res.statusText === "OK"){
+                exito=exito+1;
+                }
+            
+                if(exito === 3){
+                alert('Registro exitoso');
+                props.state1.history.push({pathname: "/auth/"})
+                }else{
+                const credit=1;
+                res = await axios.post(`http://localhost:5000/RegisterUser2_5/delete/${phone}/${cardNumber}/${credit}`)
+                alert('No se ha podido realizar el registro, por favor intente de nuevo');
+                }
             }
         }
     };

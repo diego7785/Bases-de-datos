@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
 const validations = require('../../validations/Verifications.js');
 
 var messages = ["Celular debe ser un número",
@@ -12,7 +13,10 @@ var messages = ["Celular debe ser un número",
     "Cédula debe contener de 8 a 10 dígitos",
     "La contraseña debe tener 5 o más carácteres",
     "Las contraseñas deben coincidir",
-    "Debe llenar todos los campos requeridos"
+    "Debe llenar todos los campos requeridos",
+    "Ya existe un usuario registrado con esa celular",
+    "Ya existe un usuario registrado con esa cédula",
+    "Ya existe un usuario registrado con ese email"
 ];
 
 var verifications = new Array(messages.length);
@@ -25,7 +29,7 @@ function Alert(props) {
 }
 
 export default function SnackbarRU(props) {
-    const onClickNext = () => {
+    const onClickNext = async() => {
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
         }
@@ -82,21 +86,51 @@ export default function SnackbarRU(props) {
 
         else
         {
-            props.props.history.push({
-                pathname: "/auth/RegisterUser1/", state: {
-                    celular: props.state.celular,
-                    name: props.state.name,
-                    lastname: props.state.lastname,
-                    email: props.state.email,
-                    idCard: props.state.idCard,
-                    password: props.state.password,
-                    passwordR: props.state.passwordR,
-                    complemento: props.state.complemento,
-                    latitude: props.state.latitude,
-                    length: props.state.length,
-                    completeAddress: props.state.completeAddress,
-                }   
-            })
+            const validateIdU = await axios.get(`http://localhost:5000/validateIdUserExistence/${props.state.idCard}/`)
+            const validatePhoneU = await axios.get(`http://localhost:5000/validatePhoneUserExistence/${props.state.celular}/`)
+            const validateEmailU = await axios.get(`http://localhost:5000/validateEmailUserExistence/${props.state.email}/`)
+            var conta = 0;
+
+            console.log(validatePhoneU);
+            console.log(validateIdU);
+            console.log(validateEmailU);
+            if(validatePhoneU.data[0].validatephoneuser)
+            {
+                verifications[9] = false;
+                conta++;
+            }
+            if(validateIdU.data[0].validateiduser)
+            {
+                verifications[10] = false;
+                conta++;
+            }
+            if(validateEmailU.data[0].validateemailuser)
+            {
+                verifications[11] = false;
+                conta++;
+            }
+            if(conta > 0)
+            {
+                props.onHandleChange('open', true);
+            }
+            else
+            {
+                props.props.history.push({
+                    pathname: "/auth/RegisterUser1/", state: {
+                        celular: props.state.celular,
+                        name: props.state.name,
+                        lastname: props.state.lastname,
+                        email: props.state.email,
+                        idCard: props.state.idCard,
+                        password: props.state.password,
+                        passwordR: props.state.passwordR,
+                        complemento: props.state.complemento,
+                        latitude: props.state.latitude,
+                        length: props.state.length,
+                        completeAddress: props.state.completeAddress,
+                    }   
+                })
+            }
         }
     };
 

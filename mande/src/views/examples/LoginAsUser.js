@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom'
-import axios from 'axios';
+import ValidationSnackbarsLU from 'components/Snackbars/ValidationSnackbarsLU';
 
 // reactstrap components
 import {
@@ -23,62 +23,17 @@ class LoginAsUser extends React.Component {
   state = {
     phone: true,
     pass: true,
+    open: false,
+  }
+
+  setOpen = (id,val)=>
+  {
+    this.setState({[id] : val})
   }
 
   onHandleChange = (id, event) =>{
     this.setState({ [id]: event.target.value})
   }
-
-  onHandleNext = async (e) =>{
-    e.preventDefault()
-    const phone = parseInt(this.state.phone);
-    const pass = this.state.pass;
-
-    const res = await axios.get(`http://localhost:5000/LoginAsUser/${phone}/${pass}/`)
-    if(res.data[0]){
-      const res1 = await axios.get(`http://localhost:5000/GetUserInfo/${phone}/`)
-      const userInfo = res1.data
-      const res2 = await axios.get(`http://localhost:5000/GetUserAddressInfo/${phone}/`)
-      const addressInfo = res2.data
-      const res3 = await axios.get(`http://localhost:5000/GetCreditCardInfo/${phone}/`)
-      const creditCardInfo = res3.data
-      const res4 = await axios.get(`http://localhost:5000/GetDebitCardInfo/${phone}/`)
-      const debitCardInfo = res4.data
-      const res5 = await axios.get(`http://localhost:5000/GetJobsWithWorker/${'jobs'}`)
-      var dutiesWithWorker=[];
-      for(var i=0; i<res5.data.length; i++){
-        dutiesWithWorker.push({code: res5.data[i].labor_nombre, label: res5.data[i].labor_nombre});
-      }
-
-      var paymentMethod;
-      var type;
-      console.log(userInfo)
-      console.log(addressInfo)
-      if(debitCardInfo === "" ){
-        paymentMethod=creditCardInfo;
-        type='Credito'
-      } else{
-        paymentMethod=debitCardInfo;
-        type='Debito'
-      }
-      console.log(paymentMethod)
-
-
-      this.props.history.push({
-        pathname: "/client/", state: {
-        idCard: res.data[1],
-        userInfo: userInfo,
-        addressInfo: addressInfo,
-        paymentMethod: paymentMethod,
-        type: type,
-        wjobs: dutiesWithWorker,
-        }
-      })
-    } else {
-      alert('Credenciales incorrectas');
-    }
-
-}
 
   render() {
     return (
@@ -111,9 +66,7 @@ class LoginAsUser extends React.Component {
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button" onClick={e => this.onHandleNext(e)}>
-                    Ingresar
-                  </Button>
+                  <ValidationSnackbarsLU state={this.state} onHandleChange={this.setOpen} props={this.props}/>
                 </div>
               </Form>
             </CardBody>
@@ -139,7 +92,6 @@ class LoginAsUser extends React.Component {
                 <div className="text-light">
                   <small>Crear cuenta</small>
                 </div>
-
               </NavLink>
             </Col>
           </Row>
