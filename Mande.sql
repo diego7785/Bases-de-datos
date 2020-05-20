@@ -555,11 +555,23 @@ FOR EACH ROW
 EXECUTE PROCEDURE set_time_date();
 
 
+
+-- INDICES
+
+CREATE INDEX indiceDireccion ON Direccion USING HASH (id_direccion);
+
+CREATE INDEX indiceServicio ON Servicio USING HASH(id_servicio);
+
+
+
+-- Labores predeterminadas
 INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),
 																			('Paseador de perros'),
 																			('Profesor de matemáticas'),
 																			('Plomero'),
 																			('Electricista');
+
+-- Inserts predeterminados
 
 INSERT INTO Usuario VALUES('1234567890', '1987654321', 'admin@admin.com', 'Admin', 'Mande', PGP_SYM_ENCRYPT('mande123', 'AES_KEY'), 'profilepic-1234567890', 'front-1234567890', 'back-1234567890', 'recibo-1234567890');
 
