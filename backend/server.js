@@ -72,7 +72,7 @@ app.get(`/GetRealizaInfo/:idCard`, (req,res) => worker.GetRealizaInfo(req,res,db
 
 app.get(`/GetAccountInfo/:idCard`, (req,res) => worker.GetAccountInfo(req,res,db))
 
-app.post(`/ChangePasswordWorker/:idCard/:newPass`, (req,res) => worker.ChangePassword(req,res,db))
+app.post(`/ChangePasswordWorker/:idCard/:newPass/:actualPass`, (req,res) => worker.ChangePassword(req,res,db))
 
 app.post(`/RecoverAccountWorker/:email/:pass`, (req,res) => worker.recover_account(req,res,db))
 
@@ -126,7 +126,7 @@ app.get(`/GetCreditCardInfo/:phone`, (req,res) => user.getCreditCardInfo(req,res
 
 app.get(`/GetDebitCardInfo/:phone`, (req,res) => user.getDebitCardInfo(req,res,db))
 
-app.post(`/ChangePasswordUser/:phone/:newPass`, (req,res) => user.ChangePassword(req,res,db))
+app.post(`/ChangePasswordUser/:phone/:newPass/:actualPass`, (req,res) => user.ChangePassword(req,res,db))
 
 app.get(`/GetJobsWithWorker/:jobs`, (req,res) => user.getJobsWithWorker(req,res,db))
 
