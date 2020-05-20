@@ -3,9 +3,7 @@ import ResultCard from "components/SeachBars/SearchResult.js";
 
 // reactstrap components
 import {
-  Container,
   Row,
-  Col,
 } from "reactstrap";
 
 class Results extends React.Component {
