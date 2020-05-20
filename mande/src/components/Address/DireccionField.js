@@ -37,13 +37,13 @@ export default function GoogleMaps(props) {
   const loaded = React.useRef(false);
 
   if (typeof window !== 'undefined' && !loaded.current) {
-    if (!document.querySelector('#google-maps')) {
+   /* if (!document.querySelector('#google-maps')) {
       loadScript(
         'https://maps.googleapis.com/maps/api/js?key=AIzaSyA3QdJU4tDb58Vvx46uIDEsJR-vcW8tF0w&libraries=places',
         document.querySelector('head'),
         'google-maps',
       );
-    }
+    }*/
 
     loaded.current = true;
   }
