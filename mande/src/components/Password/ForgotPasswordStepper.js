@@ -1,11 +1,13 @@
 import React from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
 
 import {
   Card,
@@ -18,6 +20,7 @@ import {
   InputGroupText,
   Input
 } from 'reactstrap';
+const validations = require('../../validations/Verifications.js');
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +37,44 @@ const useStyles = makeStyles((theme) => ({
 
 function getSteps() {
   return ['Ingresa tu correo', 'Ingresa el código enviado a tu correo', 'Ingresa tu nueva contraseña'];
+}
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+function setButton (stepIndex, listen, listenI, listenII)
+{
+    if (stepIndex ===0)
+    {
+      return (
+        <>
+           <Button variant="contained" color="primary" onClick={listen}>
+             Siguiente
+          </Button>
+        </>
+      )
+    }
+    else if(stepIndex ===1)
+    {
+      return (
+        <>
+           <Button variant="contained" color="primary" onClick={listenI}>
+             Siguiente
+          </Button>
+        </>
+      )
+    }
+    else if(stepIndex ===2)
+    {
+      return (
+        <>
+           <Button variant="contained" color="primary" onClick={listenII}>
+             Cambiar contraseña
+          </Button>
+        </>
+      )
+    }
 }
 
 function getStepContent(stepIndex, props) {
@@ -54,7 +95,7 @@ function getStepContent(stepIndex, props) {
       </Form>
       </>
     );
-  } else if(stepIndex === 1){
+  } else if(stepIndex === 1 ){
       return(
         <>
         <Form role="form">
@@ -103,6 +144,21 @@ function getStepContent(stepIndex, props) {
     }
   }
 
+var messages = ["Debe llenar el campo con el email",
+                "Email no relacionado con ningún usuario o trabajador",
+                "Debe colocar el código enviado a su correo",
+                "Código de verificación incorrecto",
+                "Debe llenar los campos requeridos",
+                "Las contraseñas deben coincidir",
+                "La contraseña debe tener 5 o más carácteres"
+];
+
+var validatedStep =[false,false,false];
+
+var verifications = new Array(messages.length);
+for (var i = 0; i < verifications.length; i++) {
+  verifications[i] = true;
+}
 
 export default function ForgotPasswordStepper(props) {
   const classes = useStyles();
@@ -110,16 +166,186 @@ export default function ForgotPasswordStepper(props) {
 
   const steps = getSteps();
 
-  const handleNext = () => {
-    if(activeStep === 0){
-      console.log('estoy enviando el código al correo');
-    } else if(activeStep === 1){
-      console.log('estoy verificando que el código sea correcto');
-    } else {
-      console.log('estoy cambiando la contraseña');
-    }
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const handleNext = async() => 
+  {
+      for (var i = 0; i < verifications.length; i++) 
+      {
+        verifications[i] = true;
+      }
+      validatedStep =[false,false,false];
+      var cont = 0;
+      var emptyFields=true;
+
+      if (validations.emptyField(props.state.correo))
+      {
+        verifications[0]=false;
+        cont++;
+        emptyFields = false;
+      }
+      if(emptyFields)
+      {
+        const validateEmailW = await axios.get(`http://localhost:5000/validateEmailExistence/${props.state.correo}/`)
+        const validateEmailU = await axios.get(`http://localhost:5000/validateEmailUserExistence/${props.state.correo}/`)
+        if(emptyFields && (validateEmailW.data[0].validateemailworker === false) && (validateEmailU.data[0].validateemailuser ===false))
+        {
+            verifications[1] = false;
+            cont++;
+        }
+        if(validateEmailW.data[0].validateemailworker || validateEmailU.data[0].validateemailuser)
+        {
+          validatedStep[1] =true;  
+          if(validateEmailW.data[0].validateemailworker)
+          {
+            var resi = await axios.post(`http://localhost:5000/SendMailWorker/${props.state.correo}/`)  
+            console.log(resi);
+            props.onHandleChange('worker', true);
+          }
+          if(validateEmailU.data[0].validateemailuser)
+          {
+            var resi = await axios.post(`http://localhost:5000/SendMailUser/${props.state.correo}/`)  
+            console.log(resi);
+            props.onHandleChange('user', true);
+          }
+        }
+      }
+
+      if (cont >0)
+      {
+          props.onHandleChange('open', true);
+      }
+
+      setActiveStep((prevActiveStep) => 
+      { if(validatedStep[1]){
+        return prevActiveStep+1;
+      }
+      if(validatedStep[2]){
+        return prevActiveStep+1;
+      }
+      return prevActiveStep;
+      });
   };
+
+  const handleNextI = async() => 
+  {
+      for (var i = 0; i < verifications.length; i++) 
+      {
+        verifications[i] = true;
+      }
+      validatedStep =[false,false,false];
+      var cont = 0;
+      var emptyFields=true;
+      if (validations.emptyField(props.state.codigo))
+      {
+        verifications[2]=false;
+        cont++;
+        emptyFields = false;
+      }
+
+      if(emptyFields && props.state.codigo !== '1234')
+      {
+        verifications[3]=false;
+        cont++;
+      }
+
+      if(emptyFields && props.state.codigo === '1234')
+      {
+        validatedStep[2] =true;
+      }
+
+      if (cont >0)
+      {
+          props.onHandleChange('open', true);
+      }
+
+      setActiveStep((prevActiveStep) => 
+      { if(validatedStep[1]){
+        return prevActiveStep+1;
+      }
+      if(validatedStep[2]){
+        return prevActiveStep+1;
+      }
+      return prevActiveStep;
+      });
+  };
+
+  const handleNextII = async() => 
+  {
+      for (var i = 0; i < verifications.length; i++) 
+      {
+        verifications[i] = true;
+      }
+      validatedStep =[false,false,false];
+      var cont = 0;
+      var emptyFields=true;
+      var sig=true;
+      if (validations.emptyField(props.state.nuevaContrasenia) || validations.emptyField(props.state.nuevaConfirmacionContrasenia))
+      {
+        verifications[4]=false;
+        cont++;
+        emptyFields = false;
+        sig=false;
+      }
+      if(emptyFields && props.state.nuevaContrasenia !== props.state.nuevaConfirmacionContrasenia)
+      {
+        verifications[5]=false;
+        cont++;
+        sig=false;
+      }
+      if(emptyFields && (( false === validations.validSizeMay(props.state.nuevaContrasenia,5)) || (false === validations.validSizeMay(props.state.nuevaConfirmacionContrasenia,5))))
+      {
+        verifications[6]=false;
+        cont++;
+        sig=false
+      }
+      if (cont >0)
+      {
+          props.onHandleChange('open', true);
+      }
+      if(sig)
+      {
+        if(props.state.worker)
+        {
+          var res = await axios.post(`http://localhost:5000/RecoverAccountWorker/${props.state.correo}/${props.state.nuevaContrasenia}`)           
+          if(res.status === 200)
+          {
+            alert("Contraseña actualizada");
+          }
+          else
+          {
+            alert("Fallo al actualizar la contraseña");
+          }
+        }
+        if(props.state.user)
+        {
+          var resI = await axios.post(`http://localhost:5000/RecoverAccountUser/${props.state.correo}/${props.state.nuevaContrasenia}`)
+          if(resI.status === 200)
+          {
+            alert("Contraseña actualizada");
+          }
+          else
+          {
+            alert("Fallo al actualizar la contraseña");
+          }
+        }        
+      }
+
+      setActiveStep((prevActiveStep) => 
+      { if(validatedStep[1]){
+        return prevActiveStep+1;
+      }
+      if(validatedStep[2]){
+        return prevActiveStep+1;
+      }
+      return prevActiveStep;
+      });
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+    props.onHandleChange('open', false)
+    };
 
   return (
     <>
@@ -138,15 +364,24 @@ export default function ForgotPasswordStepper(props) {
               {activeStep === steps.length ? (
                 <div>
                   <Typography className={classes.instructions}>Contraseña actualizada</Typography>
-                  <Button href="/auth/loginas/">Finalizar</Button>
+                  <Button href="/auth/loginas/" variant="contained" color="primary">Finalizar</Button>
                 </div>
               ) : (
                 <div>
                   <Typography className={classes.instructions}>{getStepContent(activeStep, props)}</Typography>
                   <div>
-                    <Button variant="contained" color="primary" onClick={handleNext}>
-                      {activeStep === steps.length - 1 ? 'Confirmar' : 'Siguiente'}
-                    </Button>
+                  {setButton (activeStep,handleNext,handleNextI,handleNextII)}
+                    <Snackbar open={props.state.open} autoHideDuration={9000} onClose={handleClose}>
+                      <Alert onClose={handleClose} severity="error">
+                    {verifications.map((value, index) => {
+                        if (verifications[index] === false) {
+                            return <li style={{ listStyleType: 'none', textAlign: "left" }} key={index}> {messages[index]}</li>
+                        }
+                        return <></>;
+                    }
+                    )}
+                      </Alert>
+                  </Snackbar>
                   </div>
                 </div>
               )}

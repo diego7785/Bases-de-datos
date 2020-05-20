@@ -74,6 +74,10 @@ app.get(`/GetAccountInfo/:idCard`, (req,res) => worker.GetAccountInfo(req,res,db
 
 app.post(`/ChangePasswordWorker/:idCard/:newPass`, (req,res) => worker.ChangePassword(req,res,db))
 
+app.post(`/RecoverAccountWorker/:email/:pass`, (req,res) => worker.recover_account(req,res,db))
+
+app.post(`/SendMailWorker/:email`, (req,res) => worker.send_mail(req,res))
+
 app.get(`/GetBusyInfo/:idCard`, (req,res) => worker.GetBusyInfo(req,res,db))
 
 app.post(`/FinalizarLabor/:idServicio`, (req, res) => worker.FinalizarLabor(req,res,db))
@@ -138,5 +142,9 @@ app.get(`/SearchWorkers/:workersToSearch/:idCardU`, (req,res) => user.getWorkers
 app.get(`/SearchWorkersAdvanced/:workersToSearch/:idCardU/:type/:stars/:min/:max`, (req,res) => user.getWorkersWithXJobAdvanced(req,res,db))
 
 app.post(`/serviceRequest/:idWorker/:phoneUser/:idLabor/:desc`, (req, res) => user.serviceRequest(req,res,db))
+
+app.post(`/RecoverAccountUser/:email/:pass`, (req,res) => user.recover_account(req,res,db))
+
+app.post(`/SendMailUser/:email`, (req,res) => user.send_mail(req,res))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))
