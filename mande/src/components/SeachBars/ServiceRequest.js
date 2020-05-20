@@ -10,7 +10,10 @@ import axios from 'axios';
 
 export default function ServiceRequest(props) {
   const [open, setOpen] = React.useState(false);
+  const [disable, setDisable] = React.useState(false); 
+  const [text, setText] = React.useState("Pedir Servicio"); 
 
+  var button = false;
   const handleClickOpen = async () => {
     setOpen(true);
   };
@@ -24,7 +27,8 @@ export default function ServiceRequest(props) {
     const phoneUser = props.phoneUser;
     const idLab = props.idLabor;
     const desc = props.desc;
-
+    setDisable(true);
+    setText("Trabajador Ocupado")
     const res = await axios.post(`http://localhost:5000/serviceRequest/${idWorker}/${phoneUser}/${idLab}/${desc}`);
     alert(`Servicio solicitado a ${idWorker}`);
     setOpen(false);
@@ -32,8 +36,8 @@ export default function ServiceRequest(props) {
 
   return (
     <div>
-      <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-        Pedir Servicio
+      <Button disabled = {disable} variant="contained" color="secondary" onClick={handleClickOpen}>
+        {text}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Da una breve descripción para el trabajador</DialogTitle>
