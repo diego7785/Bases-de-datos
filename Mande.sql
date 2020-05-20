@@ -120,7 +120,7 @@ CREATE TABLE Tarjeta_debito(
 	 servicio_fecha DATE NOT NULL,
 	 servicio_hora_inicio TIME NOT NULL,
 	 servicio_hora_fin TIME,
-	 servicio_calificacion INT,
+	 servicio_calificacion INT DEFAULT 0,
 	 paga_fecha_pago DATE,
 	 paga_valor_pago INT,
 	 numero_tarjeta_debito VARCHAR(255),
@@ -219,7 +219,6 @@ $$ LANGUAGE plpgsql;
 
 -- Funcion para notificar que ha sido seleccionado para una labor
 -- Parametros: Cedula del trabajador  (Si no esta ocupado retorna la tabla vacia)
-DROP FUNCTION get_busy_information(VARCHAR(10));
 CREATE OR REPLACE FUNCTION get_busy_information(VARCHAR(10)) RETURNS TABLE(idservicio INTEGER, celularU VARCHAR(10), laborid INTEGER, serviciodescripcion VARCHAR(200),
 																			serviciofecha DATE, serviciohorainicio TIME, labornombre VARCHAR(70), distancia DOUBLE PRECISION, domicilio VARCHAR(70)) AS $$
 DECLARE
@@ -242,21 +241,56 @@ BEGIN
 END
 $$ LANGUAGE plpgsql;
 
-
--- Funcion para finalizar la labor
--- Parametros: id del servicio
-CREATE OR REPLACE FUNCTION finalizar_labor(INTEGER) RETURNS TEXT AS $$
+-- Funcion para determinar que tipo de pago usa el usuario
+-- Parametros; idServicio
+CREATE OR REPLACE FUNCTION get_type_pay(INTEGER) RETURNS TEXT AS $$
 DECLARE
 	idServicio ALIAS FOR $1;
+	celularU VARCHAR(10) := (SELECT celular_usuario FROM Servicio WHERE id_servicio = idServicio);
+BEGIN
+	IF NOT EXISTS (SELECT numero_tarjeta_credito FROM Tarjeta_credito WHERE celular_usuario = celularU)
+	THEN
+		RETURN 'Debito';
+	ELSE
+		RETURN 'Credito';
+	END IF;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Funcion para finalizar la labor
+-- Parametros: id del servicio, tipo de tarjeta
+CREATE OR REPLACE FUNCTION finalizar_labor(INTEGER, VARCHAR(7)) RETURNS TEXT AS $$
+DECLARE
+	idServicio ALIAS FOR $1;
+	tipoPago ALIAS FOR $2;
 	cedulaT VARCHAR(10) := (SELECT cedula_trabajador FROM Servicio WHERE id_servicio = idServicio);
+	celularU VARCHAR(10) := (SELECT celular_usuario FROM Servicio WHERE id_servicio = idServicio);
 BEGIN
 	SET TIME ZONE -5;
-	UPDATE Servicio SET servicio_hora_fin = (SELECT current_time) WHERE id_servicio = idServicio;
+	IF (tipoPago = 'Credito')
+	THEN
+		DECLARE
+			t_credit VARCHAR(255) := (SELECT numero_tarjeta_credito FROM Tarjeta_credito WHERE celular_usuario = celularU);
+		BEGIN
+			UPDATE Servicio SET numero_tarjeta_credito = t_credit,
+								servicio_hora_fin = (SELECT current_time),
+								paga_fecha_pago = (SELECT current_date)  WHERE id_servicio = idServicio;
+		END;
+	ELSE
+		DECLARE
+			t_debit VARCHAR(255) := (SELECT numero_tarjeta_debito FROM Tarjeta_debito WHERE celular_usuario = celularU);
+		BEGIN
+			UPDATE Servicio SET numero_tarjeta_debito = t_debit,
+								servicio_hora_fin = (SELECT current_time),
+								paga_fecha_pago = (SELECT current_date)  WHERE id_servicio = idServicio;
+		END;
+	END IF;
 	UPDATE Realiza SET trabajador_estado = B'1' WHERE cedula_trabajador = cedulaT;
 	RETURN 'OK';
 END
 $$ LANGUAGE plpgsql;
-=======
+
 --validaciones worker
 CREATE OR REPLACE FUNCTION validateIdWorker(VARCHAR(10)) RETURNS boolean AS $$
 DECLARE

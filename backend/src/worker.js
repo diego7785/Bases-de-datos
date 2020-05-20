@@ -264,13 +264,20 @@ var GetBusyInfo =  (req,res,db) =>{
 
 var FinalizarLabor = (req,res,db) => {
   const idServicio = req.params.idServicio;
-  console.log(idServicio);
-  db.none(`SELECT * FROM finalizar_labor(${idServicio})`)
+  console.log('oli')
+  db.many(`SELECT * FROM get_type_pay(${idServicio})`)
   .then((data) => {
-    res.send(data);
+    const tipo = data[0].get_type_pay;
+    db.many(`SELECT * FROM finalizar_labor(${idServicio}, '${tipo}')`)
+    .then((data) => {
+      res.send(JSON.stringify(data));
+    })
+    .catch((error) => {
+      res.send(JSON.stringify(error.detail));
+    })
   })
   .catch((error) => {
-    res.send(error);
+    res.send(JSON.stringify(error.detail));
   })
 }
 module.exports = {
