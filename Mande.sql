@@ -562,6 +562,14 @@ CREATE INDEX indiceDireccion ON Direccion USING HASH (id_direccion);
 
 CREATE INDEX indiceServicio ON Servicio USING HASH(id_servicio);
 
+CREATE INDEX indiceRealiza ON Realiza USING HASH(id_labor);
+
+CREATE INDEX indiceTarjetaCredito ON Tarjeta_credito USING HASH(numero_tarjeta_credito);
+
+CREATE INDEX indiceTarjetaDebito ON Tarjeta_debito USING HASH(numero_tarjeta_debito);
+
+CREATE INDEX indiceCuentaBancaria ON Cuenta_bancaria USING HASH(numero_cuenta_bancaria);
+
 
 
 -- Labores predeterminadas

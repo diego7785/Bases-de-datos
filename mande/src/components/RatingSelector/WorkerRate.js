@@ -38,7 +38,7 @@ class WorkerRater extends React.Component {
                 name = {this.props.servicio.trabajadornombre + ' ' + this.props.servicio.trabajadorapellido}
                 titulo = {this.props.servicio.nombrelabor}
                 id = {this.props.servicio.idservicio}
-                logout = {this.onHandleCalificacion}
+                logout = {this.props.props}
                 />
           </CardBody>
           </>

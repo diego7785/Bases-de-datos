@@ -41,6 +41,12 @@ class IndexC extends React.Component {
     this.setState({ [id]: e })
   }
 
+  logout = (id) => {
+    this.props.history.push({
+      pathname: id,
+    });
+  }
+
   showResults = () => {
     if (this.state.openResults === true) {
 
@@ -65,7 +71,7 @@ class IndexC extends React.Component {
 
             <br />
             <Col xl="4" style={{ marginTop: 30 }}>
-              <WorkerRater servicio={this.props.location.state.servicio}/>
+              <WorkerRater servicio={this.props.location.state.servicio} props={this.props}/>
             </Col>
             <br />
             <br />

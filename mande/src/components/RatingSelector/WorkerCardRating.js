@@ -30,12 +30,14 @@ const useStyles = makeStyles(() => ({
 const WorkerRating = (props) => {
   const classes = useStyles();
   const [rate, setRate] = React.useState(1);
-
+  console.log(props)
   const calificar = async (e) => {
     e.preventDefault();
     await axios.post(`http://localhost:5000/CalificarLabor/${props.id}/${rate}`);
     alert('Labor de '+props.name+' Calificada correctamente, por favor vuelve a iniciar sesion');
-    props.logout("/auth");
+    props.logout.history.push({
+      pathname: "/auth",
+    })
   }
 
   return (
