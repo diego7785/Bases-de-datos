@@ -78,6 +78,10 @@ app.post(`/RecoverAccountWorker/:email/:pass`, (req,res) => worker.recover_accou
 
 app.post(`/SendMailWorker/:email`, (req,res) => worker.send_mail(req,res))
 
+app.get(`/GetBusyInfo/:idCard`, (req,res) => worker.GetBusyInfo(req,res,db))
+
+app.post(`/FinalizarLabor/:idServicio`, (req, res) => worker.FinalizarLabor(req,res,db))
+
 //user
 app.post(`/RegisterUser1/images`, (req, res) => {
   upload(req, res, function (err) {

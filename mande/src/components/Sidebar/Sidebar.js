@@ -218,15 +218,7 @@ class Sidebar extends React.Component {
               <Row>
                 {logo ? (
                   <Col className="collapse-brand" xs="10">
-                    {logo.innerLink ? (
-                      <Link to={logo.innerLink}>
                         <img alt={logo.imgAlt} src={logo.imgSrc} />
-                      </Link>
-                    ) : (
-                      <a href={logo.outterLink}>
-                        <img alt={logo.imgAlt} src={logo.imgSrc} />
-                      </a>
-                    )}
                   </Col>
                 ) : null}
                 <Col className="collapse-close" xs="6">

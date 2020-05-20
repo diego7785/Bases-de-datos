@@ -294,6 +294,30 @@ var send_mail = (req, res)=>
   });
 }
 
+var GetBusyInfo =  (req,res,db) =>{
+  const idCard = req.params.idCard;
+  db.many(`SELECT * FROM get_busy_information('${idCard}')`)
+  .then(function (data) {
+    res.send(JSON.stringify(data));
+  })
+  .catch(function (error) {
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var FinalizarLabor = (req,res,db) => {
+  const idServicio = req.params.idServicio;
+  console.log(idServicio);
+  db.none(`SELECT * FROM finalizar_labor(${idServicio})`)
+  .then((data) => {
+    res.send(data);
+  })
+  .catch((error) => {
+    res.send(error);
+  })
+}
+
 module.exports = {
   createWorker,
   getPreDefinedJobs,
@@ -312,4 +336,6 @@ module.exports = {
   validateAccount,
   recover_account,
   send_mail,
+  GetBusyInfo,
+  FinalizarLabor,
 }
