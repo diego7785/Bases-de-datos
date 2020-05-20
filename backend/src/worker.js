@@ -326,7 +326,7 @@ var FinalizarLabor = (req,res,db) => {
 
 var GetSolicitudesLabor = (req,res,db) => {
   const idCard = req.params.idCard;
-  db.many(`SELECT COUNT(*), labor_nombre FROM servicio INNER JOIN labor ON labor_id = id_labor WHERE cedula_trabajador='${idCard}' GROUP BY labor_id, labor_nombre`)
+  db.many(`SELECT COUNT(*) AS Labores, labor_nombre FROM servicio INNER JOIN labor ON labor_id = id_labor WHERE cedula_trabajador='${idCard}' GROUP BY labor_id, labor_nombre`)
   .then((data) => {
     res.send(JSON.stringify(data));
   })
