@@ -21,8 +21,8 @@ class IndexC extends React.Component {
       chartExample1Data: "data1",
       results: true,
       openResults: false,
-      idCard: this.props.location.state.idCard,
-      jobs: this.props.location.state.wjobs
+      idCard: this.props.location.state.state.userInfo.celular_usuario,
+      jobs: this.props.location.state.state.wjobs
     };
     console.log("pare menor")
     console.log(props)

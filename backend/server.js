@@ -74,6 +74,10 @@ app.get(`/GetAccountInfo/:idCard`, (req,res) => worker.GetAccountInfo(req,res,db
 
 app.post(`/ChangePasswordWorker/:idCard/:newPass`, (req,res) => worker.ChangePassword(req,res,db))
 
+app.get(`/GetBusyInfo/:idCard`, (req,res) => worker.GetBusyInfo(req,res,db))
+
+app.post(`/FinalizarLabor/:idServicio`, (req, res) => worker.FinalizarLabor(req,res,db))
+
 //user
 app.post(`/RegisterUser1/images`, (req, res) => {
   upload(req, res, function (err) {
