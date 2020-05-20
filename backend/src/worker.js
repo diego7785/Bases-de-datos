@@ -237,16 +237,26 @@ var GetAccountInfo = (req,res,db)=>{
 var ChangePassword = (req,res,db)=>{
   const idCard = req.params.idCard;
   const newPass = req.params.newPass;
-
-  db.none(`UPDATE Trabajador SET trabajador_contrasenia = PGP_SYM_ENCRYPT('${newPass}', 'AES_KEY') WHERE cedula_trabajador = $1`,
-  [escape(idCard)])
+  const actualPass = req.params.actualPass;
+  db.many(`SELECT PGP_SYM_DECRYPT(trabajador_contrasenia::BYTEA, 'AES_KEY') AS actualpass FROM Trabajador WHERE cedula_trabajador = '${idCard}'`)
   .then((data) => {
-    res.send(JSON.stringify(`Contraseña cambiada éxitosamente`))
+    if(data[0].actualpass === actualPass){
+      db.none(`UPDATE Trabajador SET trabajador_contrasenia = PGP_SYM_ENCRYPT('${newPass}', 'AES_KEY') WHERE cedula_trabajador = $1`,
+      [escape(idCard)])
+      .then((data) => {
+        res.send(JSON.stringify(0))
+      })
+      .catch((error) => {
+        console.log(`ERROR CAMBIANDO CONTRASENIA`, error)
+        res.send(JSON.stringify(1));
+      })
+    } else {
+      res.send(JSON.stringify(2));
+    }
   })
   .catch((error) => {
-    console.log(req.params)
-    console.log(`ERROR CAMBIANDO CONTRASENIA`, error)
-    res.send(error.detail)
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(1));
   })
 }
 

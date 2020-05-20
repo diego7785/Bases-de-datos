@@ -25,22 +25,34 @@ export default function ChangePassword(props) {
     if(props.state.newPass === props.state.newConfirmPass){
       var res;
       const newPass = props.state.newPass;
+      const actualPass = props.state.actualPass;
       if(props.state.path.substring(0,7) === '/worker'){
         const idCard = props.state.idCard;
-        res = await axios.post(`http://localhost:5000/ChangePasswordWorker/${idCard}/${newPass}`)
+        console.log(props.state)
+        res = await axios.post(`http://localhost:5000/ChangePasswordWorker/${idCard}/${newPass}/${actualPass}`)
+        if(res.data === 0){
+          alert("Contraeña cambiada éxitosamente");
+          setOpen(false);
+        } else if(res.data === 2) {
+          alert("La contraseña ingresada no coincide con la contraseña actual");
+        } else{
+          alert("Error cambiando la contraseña");
+        }
       } else{
         const phone = props.state.phonee;
         console.log(phone);
-        res = await axios.post(`http://localhost:5000/ChangePasswordUser/${phone}/${newPass}`)
-        console.log(res)
+        res = await axios.post(`http://localhost:5000/ChangePasswordUser/${phone}/${newPass}/${actualPass}`)
+        console.log(res);
+        if(res.data === 0){
+          alert("Contraeña cambiada éxitosamente");
+          setOpen(false);
+        } else if(res.data === 2) {
+          alert("La contraseña ingresada no coincide con la contraseña actual");
+        } else{
+          alert("Error cambiando la contraseña");
+        }
       }
-      setOpen(false);
-      if(res.statusText === 'OK'){
-        alert("Contraeña cambiada éxitosamente");
-        console.log(props)
-      } else {
-        alert("Error al cambiar la contraseña, intente de nuevo");
-      }
+
 
     } else {
       alert("La nueva contraseña no coincide con su confirmación");

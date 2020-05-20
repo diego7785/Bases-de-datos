@@ -246,14 +246,26 @@ var getDebitCardInfo = (req,res,db) => {
 var ChangePassword = (req,res,db)=>{
   const phone = req.params.phone;
   const newPass = req.params.newPass;
-  db.none(`UPDATE Usuario SET usuario_contrasenia = '${newPass}' WHERE celular_usuario = '${phone}'`)
+  const actualPass = req.params.actualPass;
+  db.many(`SELECT PGP_SYM_DECRYPT(usuario_contrasenia::BYTEA, 'AES_KEY') AS actualpass FROM Usuario WHERE celular_usuario = '${phone}'`)
   .then((data) => {
-    res.send(JSON.stringify(`Contraseña cambiada éxitosamente`))
+    if(data[0].actualpass === actualPass){
+      db.none(`UPDATE Usuario SET usuario_contrasenia = PGP_SYM_ENCRYPT('${newPass}', 'AES_KEY') WHERE celular_usuario = $1`,
+      [escape(phone)])
+      .then((data) => {
+        res.send(JSON.stringify(0))
+      })
+      .catch((error) => {
+        console.log(`ERROR CAMBIANDO CONTRASENIA`, error)
+        res.send(JSON.stringify(1));
+      })
+    } else {
+      res.send(JSON.stringify(2));
+    }
   })
   .catch((error) => {
-    console.log(req.params)
-    console.log(`ERROR CAMBIANDO CONTRASENIA`, error)
-    res.send(error.detail)
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(1));
   })
 }
 
@@ -428,7 +440,7 @@ module.exports = {
   validateEmail,
   validatePhone,
   validateCreditCard,
-  validateDebitCard, 
+  validateDebitCard,
   recover_account,
   send_mail,
   validateDebitCard,
