@@ -7,6 +7,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import Rating from '@material-ui/lab/Rating';
+import axios from 'axios';
+
+import {
+  Button,
+} from 'reactstrap'
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -21,22 +26,38 @@ const useStyles = makeStyles(() => ({
     backgroundColor: red[500],
   },
 }));
-
+//onClick={e => this.endJob(e, this.state)}
 const WorkerRating = (props) => {
   const classes = useStyles();
-console.log(props.src)
+  const [rate, setRate] = React.useState(1);
+  console.log(props)
+  const calificar = async (e) => {
+    e.preventDefault();
+    await axios.post(`http://localhost:5000/CalificarLabor/${props.id}/${rate}`);
+    alert('Labor de '+props.name+' Calificada correctamente, por favor vuelve a iniciar sesion');
+    props.logout.history.push({
+      pathname: "/auth",
+    })
+  }
+
   return (
     <Card className={classes.root} >
       <CardHeader
         avatar={
-          <Avatar alt = {props.name} src = {props.src}></Avatar>
+          <Avatar alt = {props.name} src = {require("assets/img/userImages/worker/profilepic-" + props.cedula + ".png")}></Avatar>
         }
         title={props.titulo}
         subheader={props.name}
       />
       <CardContent>
       <Typography component="legend">Calificación:</Typography>
-              <Rating name="rating" defaultValue={3} value={props.rating}/>
+              <Rating name="rating" defaultValue={rate} onChange={async (event) => {
+                await setRate(event.target.value);
+                console.log(rate)}
+              }/>
+            <Button className="my-4" color="primary" type="button" onClick={e => calificar(e)}>
+                  Calificar
+            </Button>
       </CardContent>
     </Card>
   );
