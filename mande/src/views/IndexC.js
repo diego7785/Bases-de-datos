@@ -65,7 +65,7 @@ class IndexC extends React.Component {
 
             <br />
             <Col xl="4" style={{ marginTop: 30 }}>
-              <WorkerRater />
+              <WorkerRater servicio={this.props.location.state.servicio}/>
             </Col>
             <br />
             <br />

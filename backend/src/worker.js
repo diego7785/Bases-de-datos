@@ -187,7 +187,7 @@ var login = (req,res,db) =>{
 var GetWorkerInfo = (req,res,db) => {
   const idCard = req.params.idCard;
   db.many(`SELECT cedula_trabajador, celular_trabajador, trabajador_email, trabajador_nombre, trabajador_apellido,
-    PGP_SYM_DECRYPT(trabajador_contrasenia::bytea, 'AES_KEY') AS trabajador_contrasenia FROM Trabajador WHERE cedula_trabajador=$1`, [escape(idCard)])
+    PGP_SYM_DECRYPT(trabajador_contrasenia::bytea, 'AES_KEY') AS trabajador_contrasenia, trabajador_calificacion FROM Trabajador WHERE cedula_trabajador=$1`, [escape(idCard)])
   .then((data) => {
     res.send(JSON.stringify(data))
   })
@@ -264,7 +264,6 @@ var GetBusyInfo =  (req,res,db) =>{
 
 var FinalizarLabor = (req,res,db) => {
   const idServicio = req.params.idServicio;
-  console.log('oli')
   db.many(`SELECT * FROM get_type_pay(${idServicio})`)
   .then((data) => {
     const tipo = data[0].get_type_pay;
@@ -280,6 +279,19 @@ var FinalizarLabor = (req,res,db) => {
     res.send(JSON.stringify(error.detail));
   })
 }
+
+var GetSolicitudesLabor = (req,res,db) => {
+  const idCard = req.params.idCard;
+  db.many(`SELECT COUNT(*), labor_nombre FROM servicio INNER JOIN labor ON labor_id = id_labor WHERE cedula_trabajador='${idCard}' GROUP BY labor_id, labor_nombre`)
+  .then((data) => {
+    res.send(JSON.stringify(data));
+  })
+  .catch((error) => {
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
 module.exports = {
   createWorker,
   getPreDefinedJobs,
@@ -298,4 +310,5 @@ module.exports = {
   validateAccount,
   GetBusyInfo,
   FinalizarLabor,
+  GetSolicitudesLabor,
 }

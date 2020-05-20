@@ -108,7 +108,7 @@ class IndexW extends React.Component {
              </tr>
            </tbody>
          </Table>
-         <Button className="my-4" color="primary" type="button" onClick={e => this.endJob(e, this.state)}>
+         <Button className="my-4" color="primary" type="button" onClick={e => this.endJob(e)}>
            Terminar
          </Button>
          </>

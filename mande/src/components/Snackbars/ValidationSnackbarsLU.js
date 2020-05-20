@@ -53,7 +53,7 @@ export default function SnackbarLU(props) {
                 for(var i=0; i<res5.data.length; i++){
                     dutiesWithWorker.push({code: res5.data[i].labor_nombre, label: res5.data[i].labor_nombre});
                 }
-            
+
                 var paymentMethod;
                 var type;
                 console.log(userInfo)
@@ -66,8 +66,10 @@ export default function SnackbarLU(props) {
                     type='Debito'
                 }
                 console.log(paymentMethod)
-            
-            
+
+                const res6 = await axios.get(`http://localhost:5000/GetJobsNoStars/${userInfo.celular_usuario}`)
+                const servicioNoCal = res6.data[0];
+                console.log(servicioNoCal)
                 props.props.history.push({
                     pathname: "/client/", state: {
                     idCard: res.data[1],
@@ -76,9 +78,10 @@ export default function SnackbarLU(props) {
                     paymentMethod: paymentMethod,
                     type: type,
                     wjobs: dutiesWithWorker,
+                    servicio : servicioNoCal,
                     }
                 })
-            } 
+            }
         }
     }
 

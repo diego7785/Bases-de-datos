@@ -223,7 +223,7 @@ CREATE OR REPLACE FUNCTION get_busy_information(VARCHAR(10)) RETURNS TABLE(idser
 																			serviciofecha DATE, serviciohorainicio TIME, labornombre VARCHAR(70), distancia DOUBLE PRECISION, domicilio VARCHAR(70)) AS $$
 DECLARE
 	idCard ALIAS FOR $1;
-	status INTEGER := CAST((SELECT trabajador_estado FROM Realiza WHERE cedula_trabajador = idCard) AS INTEGER);
+	status INTEGER := CAST((SELECT trabajador_estado FROM Realiza WHERE cedula_trabajador = idCard ORDER BY id_labor LIMIT 1) AS INTEGER);
 	ubiT GEOGRAPHY = (SELECT direccion_ubicacion FROM Direccion WHERE cedula_trabajador = idCard);
 BEGIN
 	IF(status = 0)
@@ -266,30 +266,195 @@ DECLARE
 	tipoPago ALIAS FOR $2;
 	cedulaT VARCHAR(10) := (SELECT cedula_trabajador FROM Servicio WHERE id_servicio = idServicio);
 	celularU VARCHAR(10) := (SELECT celular_usuario FROM Servicio WHERE id_servicio = idServicio);
+	idLabor INTEGER := (SELECT labor_id FROM Servicio WHERE id_servicio = idServicio);
+	tipoCobro VARCHAR(10) := (SELECT realiza_tipo FROM realiza WHERE cedula_trabajador=cedulaT AND id_labor=idLabor);
+	precio INTEGER := (SELECT realiza_precio FROM realiza WHERE cedula_trabajador=cedulaT AND id_labor=idLabor);
 BEGIN
 	SET TIME ZONE -5;
-	IF (tipoPago = 'Credito')
+	IF(tipoCobro = 'Por hora')
 	THEN
 		DECLARE
-			t_credit VARCHAR(255) := (SELECT numero_tarjeta_credito FROM Tarjeta_credito WHERE celular_usuario = celularU);
+			diaInicio DOUBLE PRECISION := (SELECT EXTRACT(DAY FROM servicio_fecha ) FROM Servicio WHERE id_servicio = idServicio);
+			diaFinal DOUBLE PRECISION := EXTRACT(DAY FROM (SELECT current_date));
+			inicio DOUBLE PRECISION := (SELECT EXTRACT(HOUR FROM servicio_hora_inicio ) FROM Servicio WHERE id_servicio = idServicio);
+			final DOUBLE PRECISION := EXTRACT(HOUR FROM (SELECT current_time));
+			lapsoH INTEGER := CAST(final - inicio AS INTEGER);
+			lapsoD INTEGER := CAST(diaFinal - diaInicio AS INTEGER);
 		BEGIN
-			UPDATE Servicio SET numero_tarjeta_credito = t_credit,
-								servicio_hora_fin = (SELECT current_time),
-								paga_fecha_pago = (SELECT current_date)  WHERE id_servicio = idServicio;
+			IF(lapsoD = 0)
+			THEN
+				IF(lapsoH = 0)
+				THEN
+					IF (tipoPago = 'Credito')
+					THEN
+						DECLARE
+							t_credit VARCHAR(255) := (SELECT numero_tarjeta_credito FROM Tarjeta_credito WHERE celular_usuario = celularU);
+						BEGIN
+							UPDATE Servicio SET numero_tarjeta_credito = t_credit,
+												servicio_hora_fin = (SELECT current_time),
+												paga_fecha_pago = (SELECT current_date),
+												paga_valor_pago = precio WHERE id_servicio = idServicio;
+						END;
+					ELSE
+						DECLARE
+							t_debit VARCHAR(255) := (SELECT numero_tarjeta_debito FROM Tarjeta_debito WHERE celular_usuario = celularU);
+						BEGIN
+							UPDATE Servicio SET numero_tarjeta_debito = t_debit,
+												servicio_hora_fin = (SELECT current_time),
+												paga_fecha_pago = (SELECT current_date),
+												paga_valor_pago = precio WHERE id_servicio = idServicio;
+						END;
+					END IF;
+				ELSE
+					DECLARE
+						pago INTEGER := lapsoH * precio;
+					BEGIN
+						IF (tipoPago = 'Credito')
+						THEN
+							DECLARE
+								t_credit VARCHAR(255) := (SELECT numero_tarjeta_credito FROM Tarjeta_credito WHERE celular_usuario = celularU);
+							BEGIN
+								UPDATE Servicio SET numero_tarjeta_credito = t_credit,
+													servicio_hora_fin = (SELECT current_time),
+													paga_fecha_pago = (SELECT current_date),
+													paga_valor_pago = pago WHERE id_servicio = idServicio;
+							END;
+						ELSE
+							DECLARE
+								t_debit VARCHAR(255) := (SELECT numero_tarjeta_debito FROM Tarjeta_debito WHERE celular_usuario = celularU);
+							BEGIN
+								UPDATE Servicio SET numero_tarjeta_debito = t_debit,
+													servicio_hora_fin = (SELECT current_time),
+													paga_fecha_pago = (SELECT current_date),
+													paga_valor_pago = pago WHERE id_servicio = idServicio;
+							END;
+						END IF;
+					END;
+				END IF;
+			ELSE
+				IF(lapsoH = 0)
+				THEN
+					IF (tipoPago = 'Credito')
+					THEN
+						DECLARE
+							precioD INTEGER := 24 * precio;
+							t_credit VARCHAR(255) := (SELECT numero_tarjeta_credito FROM Tarjeta_credito WHERE celular_usuario = celularU);
+						BEGIN
+							UPDATE Servicio SET numero_tarjeta_credito = t_credit,
+												servicio_hora_fin = (SELECT current_time),
+												paga_fecha_pago = (SELECT current_date),
+												paga_valor_pago = precioD WHERE id_servicio = idServicio;
+						END;
+					ELSE
+						DECLARE
+							precioD INTEGER := 24 * precio;
+							t_debit VARCHAR(255) := (SELECT numero_tarjeta_debito FROM Tarjeta_debito WHERE celular_usuario = celularU);
+						BEGIN
+							UPDATE Servicio SET numero_tarjeta_debito = t_debit,
+												servicio_hora_fin = (SELECT current_time),
+												paga_fecha_pago = (SELECT current_date),
+												paga_valor_pago = precioD WHERE id_servicio = idServicio;
+						END;
+					END IF;
+				ELSE
+					DECLARE
+						pago INTEGER := 24 * lapsoD * precio + lapsoH * precio;
+					BEGIN
+						IF (tipoPago = 'Credito')
+						THEN
+							DECLARE
+								t_credit VARCHAR(255) := (SELECT numero_tarjeta_credito FROM Tarjeta_credito WHERE celular_usuario = celularU);
+							BEGIN
+								UPDATE Servicio SET numero_tarjeta_credito = t_credit,
+													servicio_hora_fin = (SELECT current_time),
+													paga_fecha_pago = (SELECT current_date),
+													paga_valor_pago = pago WHERE id_servicio = idServicio;
+							END;
+						ELSE
+							DECLARE
+								t_debit VARCHAR(255) := (SELECT numero_tarjeta_debito FROM Tarjeta_debito WHERE celular_usuario = celularU);
+							BEGIN
+								UPDATE Servicio SET numero_tarjeta_debito = t_debit,
+													servicio_hora_fin = (SELECT current_time),
+													paga_fecha_pago = (SELECT current_date),
+													paga_valor_pago = pago WHERE id_servicio = idServicio;
+							END;
+						END IF;
+					END;
+				END IF;
+			END IF;
 		END;
 	ELSE
-		DECLARE
-			t_debit VARCHAR(255) := (SELECT numero_tarjeta_debito FROM Tarjeta_debito WHERE celular_usuario = celularU);
-		BEGIN
-			UPDATE Servicio SET numero_tarjeta_debito = t_debit,
-								servicio_hora_fin = (SELECT current_time),
-								paga_fecha_pago = (SELECT current_date)  WHERE id_servicio = idServicio;
-		END;
+		IF (tipoPago = 'Credito')
+		THEN
+			DECLARE
+				t_credit VARCHAR(255) := (SELECT numero_tarjeta_credito FROM Tarjeta_credito WHERE celular_usuario = celularU);
+			BEGIN
+				UPDATE Servicio SET numero_tarjeta_credito = t_credit,
+									servicio_hora_fin = (SELECT current_time),
+									paga_fecha_pago = (SELECT current_date),
+									paga_valor_pago = precio WHERE id_servicio = idServicio;
+			END;
+		ELSE
+			DECLARE
+				t_debit VARCHAR(255) := (SELECT numero_tarjeta_debito FROM Tarjeta_debito WHERE celular_usuario = celularU);
+			BEGIN
+				UPDATE Servicio SET numero_tarjeta_debito = t_debit,
+									servicio_hora_fin = (SELECT current_time),
+									paga_fecha_pago = (SELECT current_date),
+									paga_valor_pago = precio WHERE id_servicio = idServicio;
+			END;
+		END IF;
 	END IF;
+
 	UPDATE Realiza SET trabajador_estado = B'1' WHERE cedula_trabajador = cedulaT;
 	RETURN 'OK';
 END
 $$ LANGUAGE plpgsql;
+
+-- Funcion para avisar al usuario las labores que tiene sin calificar y notificar el cobro
+-- Parametros: Celular usuario
+CREATE OR REPLACE FUNCTION labores_sin_calificar(VARCHAR(10)) RETURNS TABLE(idServicio INTEGER, cedulaT VARCHAR(10), idLabor INTEGER, hora TIME, fecha DATE, valor INTEGER, nombreLabor VARCHAR(50), trabajadorNombre VARCHAR(70), trabajadorApellido VARCHAR(70))
+AS $$
+DECLARE
+	celularU ALIAS FOR $1;
+BEGIN
+	RETURN QUERY WITH servicio_info AS(SELECT id_servicio, cedula_trabajador, labor_id, servicio_hora_fin, paga_fecha_pago, paga_valor_pago
+		FROM servicio WHERE celular_usuario = celularU AND servicio_calificacion = 0
+			ORDER BY paga_fecha_pago, servicio_hora_fin LIMIT 1),
+	servicio_labor AS (SELECT id_servicio, cedula_trabajador, labor_id, servicio_hora_fin, paga_fecha_pago, paga_valor_pago, labor_nombre
+		FROM servicio_info, Labor WHERE labor_id = id_labor), servicio_trabajador AS (SELECT id_servicio, servicio_labor.cedula_trabajador, labor_id,
+																					  servicio_hora_fin, paga_fecha_pago, paga_valor_pago, labor_nombre, trabajador_nombre, trabajador_apellido
+		FROM servicio_labor, Trabajador WHERE servicio_labor.cedula_trabajador = Trabajador.cedula_trabajador) SELECT * FROM servicio_trabajador;
+
+END;
+$$
+LANGUAGE plpgsql;
+
+--Funcion para calificar el usuario
+-- Parametros: id del servicio, calificacion
+CREATE OR REPLACE FUNCTION calificar_labor(INTEGER, INTEGER) RETURNS TEXT AS $$
+DECLARE
+	idServicio ALIAS FOR $1;
+	calificacion ALIAS FOR $2;
+	cedulaT VARCHAR(10) := (SELECT cedula_trabajador FROM Servicio WHERE id_servicio = idServicio);
+BEGIN
+	UPDATE Servicio SET servicio_calificacion = calificacion WHERE id_servicio = idServicio;
+	DECLARE
+		califOld INTEGER := (SELECT trabajador_calificacion FROM Trabajador WHERE cedula_trabajador = cedulaT);
+		califNew INTEGER := (califOld + calificacion)/2;
+	BEGIN
+		IF(califOld = 0)
+		THEN
+			UPDATE Trabajador SET trabajador_calificacion = calificacion WHERE cedula_trabajador = cedulaT;
+		ELSE
+			UPDATE Trabajador SET trabajador_calificacion = califNew WHERE cedula_trabajador = cedulaT;
+		END IF;
+	END;
+RETURN 'OK';
+END;
+$$
+LANGUAGE plpgsql;
 
 --validaciones worker
 CREATE OR REPLACE FUNCTION validateIdWorker(VARCHAR(10)) RETURNS boolean AS $$
@@ -417,3 +582,5 @@ INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT('2234567890', 'AES_KEY'), 'Ba
 INSERT INTO Realiza VALUES(3, '2234567890', 25000, 'Por hora', 'Quiero ensenar mates++', B'1');
 
 INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio) VALUES('2234567890', 3.376045, -76.550033, 'Calle 2c # 92 - 133, Cali, Valle del Cauca, Colombia');
+
+-- select COUNT(*), labor_id, labor_nombre from servicio INNER JOIN labor ON labor_id = id_labor where  cedula_trabajador='1234567890' GROUP BY labor_id, labor_nombre;

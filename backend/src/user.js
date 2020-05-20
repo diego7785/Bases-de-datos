@@ -318,8 +318,33 @@ var serviceRequest = (req,res,db) => {
   })
   .catch((error) => {
     console.log(req.params)
-    console.log(`Error`, error)
-    res.send(error.detail)
+    console.log(`ERROR`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var GetJobsNoStars = (req,res,db) => {
+  const celular = req.params.celular;
+  db.many(`SELECT * FROM labores_sin_calificar('${celular}')`)
+  .then((data) => {
+    res.send(JSON.stringify(data));
+  })
+  .catch((error) => {
+    console.log(`ERROR`, error);
+    res.send(JSON.stringify(error.detail));
+  })
+}
+
+var CalificarLabor = (req,res,db) => {
+  const idServicio = req.params.id;
+  const rate = req.params.rate;
+  db.many(`SELECT * FROM calificar_labor(${idServicio}, ${rate})`)
+  .then((data) => {
+    res.send(JSON.stringify(data));
+  })
+  .catch((error) => {
+    console.log(`ERROR`, error);
+    res.send(JSON.stringify(error.detail));
   })
 }
 
@@ -344,5 +369,6 @@ module.exports = {
   validatePhone,
   validateCreditCard,
   validateDebitCard,
-
+  GetJobsNoStars,
+  CalificarLabor,
 }
