@@ -6,8 +6,9 @@ import { Container, Row, Col } from "reactstrap";
 // core components
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
-
 import routes from "routes.js";
+
+var bg=require('../assets/img/theme/banner.jpg')
 
 class Auth extends React.Component {
   componentDidMount() {
@@ -36,13 +37,13 @@ class Auth extends React.Component {
       <>
         <div className="main-content">
           <AuthNavbar />
-          <div className="header bg-gradient-info py-7 py-lg-8">
+          <div className="header py-7 py-lg-8" style = {{backgroundImage: "url("+bg+")"}}>
             <Container>
-              <div className="header-body text-center mb-7">
+              <div className="header-body text-center mb-7" >
                 <Row className="justify-content-center">
-                  <Col lg="5" md="6">
-                    <h1 className="text-white">¡Bienvenido!</h1>
-                    <p className="text-lead text-light">
+                  <Col lg="5" md="6" >
+                    <h1 className="text-blue"  style = {{backgroundColor: "white"}}>¡Bienvenido!</h1>
+                    <p className="text-lead text-blue"  style = {{backgroundColor: "white"}}>
                       Mande App
                       <br/>
                       Trabaja o consigue trabajadores
