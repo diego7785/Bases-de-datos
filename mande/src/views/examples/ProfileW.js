@@ -50,6 +50,7 @@ class Profile extends React.Component {
     typeBank: this.props.location.state.state.accountInfo.cuenta_bancaria_tipo,
     numberAccount: this.props.location.state.state.accountInfo.numero_cuenta_bancaria,
     phone: this.props.location.state.state.workerInfo.celular_trabajador,
+    rate: this.props.location.state.state.workerInfo.trabajador_calificacion,
     path: this.props.match.path,
   }
 
@@ -302,7 +303,7 @@ class Profile extends React.Component {
 
                     <Box component="fieldset" mb={3} borderColor="transparent">
                       <Typography component="legend">Calificación promedio</Typography>
-                      <Rating name="read-only" value={4.4} precision={0.1} readOnly />
+                      <Rating name="read-only" value={this.state.rate} precision={0.1} readOnly />
                     </Box>
 
                     <ChangePassword changePass={this.changeState} state={this.state} />

@@ -82,6 +82,8 @@ app.get(`/GetBusyInfo/:idCard`, (req,res) => worker.GetBusyInfo(req,res,db))
 
 app.post(`/FinalizarLabor/:idServicio`, (req, res) => worker.FinalizarLabor(req,res,db))
 
+app.get(`/GetSolicitudesLabor/:idCard`, (req,res) => worker.GetSolicitudesLabor(req,res,db))
+
 //user
 app.post(`/RegisterUser1/images`, (req, res) => {
   upload(req, res, function (err) {
@@ -94,15 +96,7 @@ app.post(`/RegisterUser1/images`, (req, res) => {
     })
 });
 
-app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`,
-[
-  check('idCard')
-         .isNumeric().isLength({min:10, max:10}),
-         //.withMessage('phone should not be empty, minimum eight characters, at least one letter, one number and one special character')
-],
-(req,res) =>{user.createUser(req,res,validationResult,db);
-  console.log('AHHHHHHHHHHH');
-})
+app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) =>{user.createUser(req,res,validationResult,db)})
 
 app.post(`/RegisterUser2_2/:cardNumber/:phone/:bank/:numberAccount`, (req,res) => user.createDebitCard(req,res,db))
 
@@ -116,7 +110,6 @@ app.get(`/validateDebitCardExistence/:cardNumber`, (req, res) => user.validateDe
 
 app.get(`/validateCreditCardExistence/:cardNumber`, (req, res) => user.validateCreditCard(req, res, db))
 
-//
 app.post(`/RegisterUser2_3/:phone/:lat/:lng/:address/:city/:depto`, (req,res)=> user.createAddress(req,res,db))
 
 app.post(`/RegisterCreditCard/:cardNumber/:phone/:bank/:endDate/:cvc` , (req,res) => user.createCreditCard(req,res,db))
@@ -143,8 +136,13 @@ app.get(`/SearchWorkersAdvanced/:workersToSearch/:idCardU/:type/:stars/:min/:max
 
 app.post(`/serviceRequest/:idWorker/:phoneUser/:idLabor/:desc`, (req, res) => user.serviceRequest(req,res,db))
 
+app.get(`/GetJobsNoStars/:celular`, (req,res) => user.GetJobsNoStars(req,res,db))
+
+app.post(`/CalificarLabor/:id/:rate`, (req,res) => user.CalificarLabor(req,res,db))
+
 app.post(`/RecoverAccountUser/:email/:pass`, (req,res) => user.recover_account(req,res,db))
 
 app.post(`/SendMailUser/:email`, (req,res) => user.send_mail(req,res))
+
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))
