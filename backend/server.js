@@ -76,11 +76,13 @@ app.post(`/ChangePasswordWorker/:idCard/:newPass`, (req,res) => worker.ChangePas
 
 app.post(`/RecoverAccountWorker/:email/:pass`, (req,res) => worker.recover_account(req,res,db))
 
-app.post(`/SendMailWorker/:email`, (req,res) => worker.send_mail(req,res))
+app.get(`/SendMailWorker/:email`, (req,res) => worker.send_mail(req,res))
 
 app.get(`/GetBusyInfo/:idCard`, (req,res) => worker.GetBusyInfo(req,res,db))
 
 app.post(`/FinalizarLabor/:idServicio`, (req, res) => worker.FinalizarLabor(req,res,db))
+
+app.get(`/CheckCodeWorker/:code`, (req,res) => worker.check_code(req,res))
 
 //user
 app.post(`/RegisterUser1/images`, (req, res) => {
@@ -145,6 +147,8 @@ app.post(`/serviceRequest/:idWorker/:phoneUser/:idLabor/:desc`, (req, res) => us
 
 app.post(`/RecoverAccountUser/:email/:pass`, (req,res) => user.recover_account(req,res,db))
 
-app.post(`/SendMailUser/:email`, (req,res) => user.send_mail(req,res))
+app.get(`/SendMailUser/:email`, (req,res) => user.send_mail(req,res))
+
+app.get(`/CheckCodeUser/:code`, (req,res) => user.check_code(req,res))
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))
