@@ -321,6 +321,50 @@ var serviceRequest = (req,res,db) => {
   })
 }
 
+var recover_account = (req,res,db)=>{
+  const email = req.params.email;
+  const pass = req.params.pass;
+  db.none(`UPDATE Usuario SET usuario_contrasenia = PGP_SYM_ENCRYPT('${pass}', 'AES_KEY') WHERE usuario_email ='${email}'`)
+  .then((data) => {
+    res.send(JSON.stringify(`Contraseña cambiada éxitosamente`))
+  })
+  .catch((error) => {
+    console.log(req.params)
+    console.log(`ERROR CAMBIANDO CONTRASENIA`, error)
+    res.send(error.detail)
+  })
+}
+
+var nodemailer = require('nodemailer');
+var send_mail = (req, res)=>
+{
+  const email = req.params.email;
+  var transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+          user: 'telefoniaraja@gmail.com',
+          pass: 'desarrollo1'
+      }
+  });
+  // Definimos el email
+  var mailOptions = {
+  from: 'Mande app',
+  to: email,
+  subject: 'Recuperación de cuenta en Mande App',
+  text: 'Su código de recuperación de cuenta es 1234'
+  };
+  // Enviamos el email
+  transporter.sendMail(mailOptions, function(error, info){
+  if (error){
+      console.log(error);
+      res.send(500, err.message);
+  } else {
+      console.log("Email sent");
+      res.status(200).jsonp(req.body);
+  }
+  });
+}
+
 module.exports = {
   createUser,
   createDebitCard,
@@ -342,5 +386,7 @@ module.exports = {
   validatePhone,
   validateCreditCard,
   validateDebitCard, 
+  recover_account,
+  send_mail,
 
 }
