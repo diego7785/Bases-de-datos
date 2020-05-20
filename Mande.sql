@@ -84,7 +84,7 @@ CREATE TABLE Trabajador(
 	 cedula_trabajador VARCHAR(10),
 	 direccion_latitud DECIMAL(7,5) NOT NULL,
  	 direccion_longitud DECIMAL(7,5) NOT NULL,
-	 direccion_domicilio VARCHAR(70) NOT NULL,
+	 direccion_domicilio VARCHAR(200) NOT NULL,
 	 direccion_complemento VARCHAR(100),
 	 direccion_ubicacion GEOGRAPHY(POINT,4686),
 	 CONSTRAINT pk_direccion PRIMARY KEY (id_direccion),
