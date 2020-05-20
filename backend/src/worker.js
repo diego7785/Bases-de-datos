@@ -265,8 +265,10 @@ var recover_account = (req,res,db)=>{
 }
 
 var nodemailer = require('nodemailer');
+var code = 0;
 var send_mail = (req, res)=>
 {
+  code = Math.floor(Math.random() * 10000);
   const email = req.params.email;
   var transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -280,7 +282,8 @@ var send_mail = (req, res)=>
   from: 'Mande app',
   to: email,
   subject: 'Recuperación de cuenta en Mande App',
-  text: 'Su código de recuperación de cuenta es 1234'
+  text: 'Su código de recuperación de cuenta es ' + code,
+ 
   };
   // Enviamos el email
   transporter.sendMail(mailOptions, function(error, info){
@@ -292,6 +295,7 @@ var send_mail = (req, res)=>
       res.status(200).jsonp(req.body);
   }
   });
+  res.send.code;
 }
 
 var GetBusyInfo =  (req,res,db) =>{
@@ -324,6 +328,20 @@ var FinalizarLabor = (req,res,db) => {
   })
 }
 
+var check_code = (req,res)=>
+{
+  const codeCheck = req.params.code;
+  if(parseInt(codeCheck) === code)
+  {
+    res.send({respuesta: true});
+    console.log(respuesta);
+  }
+  else
+  {
+    res.send({respuesta: false});
+  }
+}
+
 var GetSolicitudesLabor = (req,res,db) => {
   const idCard = req.params.idCard;
   db.many(`SELECT COUNT(*) AS Labores, labor_nombre FROM servicio INNER JOIN labor ON labor_id = id_labor WHERE cedula_trabajador='${idCard}' GROUP BY labor_id, labor_nombre`)
@@ -335,7 +353,6 @@ var GetSolicitudesLabor = (req,res,db) => {
     res.send(JSON.stringify(error.detail))
   })
 }
-
 
 module.exports = {
   createWorker,
@@ -357,5 +374,6 @@ module.exports = {
   send_mail,
   GetBusyInfo,
   FinalizarLabor,
+  check_code,
   GetSolicitudesLabor,
 }

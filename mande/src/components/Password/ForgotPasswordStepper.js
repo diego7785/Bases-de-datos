@@ -196,14 +196,12 @@ export default function ForgotPasswordStepper(props) {
           validatedStep[1] =true;  
           if(validateEmailW.data[0].validateemailworker)
           {
-            var resi = await axios.post(`http://localhost:5000/SendMailWorker/${props.state.correo}/`)  
-            console.log(resi);
+            var resi = await axios.get(`http://localhost:5000/SendMailWorker/${props.state.correo}/`)  
             props.onHandleChange('worker', true);
           }
           if(validateEmailU.data[0].validateemailuser)
           {
-            var resi = await axios.post(`http://localhost:5000/SendMailUser/${props.state.correo}/`)  
-            console.log(resi);
+            var resi = await axios.get(`http://localhost:5000/SendMailUser/${props.state.correo}/`) 
             props.onHandleChange('user', true);
           }
         }
@@ -227,6 +225,7 @@ export default function ForgotPasswordStepper(props) {
 
   const handleNextI = async() => 
   {
+
       for (var i = 0; i < verifications.length; i++) 
       {
         verifications[i] = true;
@@ -241,15 +240,35 @@ export default function ForgotPasswordStepper(props) {
         emptyFields = false;
       }
 
-      if(emptyFields && props.state.codigo !== '1234')
+      if(props.state.user && emptyFields)
       {
-        verifications[3]=false;
-        cont++;
+        var res = await axios.get(`http://localhost:5000/CheckCodeUser/${props.state.codigo}/`) 
+        console.log(res.data.respuesta);
+        if(true !== res.data.respuesta)
+        {
+          verifications[3]=false;
+          cont++;
+        }
+  
+        if(true === res.data.respuesta)
+        {
+          validatedStep[2] =true;
+        }
       }
-
-      if(emptyFields && props.state.codigo === '1234')
+      if(props.state.worker && emptyFields)
       {
-        validatedStep[2] =true;
+        var res = await axios.get(`http://localhost:5000/CheckCodeWorker/${props.state.codigo}/`) 
+        console.log(res.data.respuesta);
+        if(true !== res.data.respuesta)
+        {
+          verifications[3]=false;
+          cont++;
+        }
+  
+        if(true === res.data.respuesta)
+        {
+          validatedStep[2] =true;
+        }
       }
 
       if (cont >0)
