@@ -47,7 +47,9 @@ export default function SnackbarLW(props) {
                 const realizaInfo = res3.data;
                 const res4 = await axios.get(`http://localhost:5000/GetAccountInfo/${idCard}/`)
                 const accountInfo = res4.data[0];
-            
+                const res5 = await axios.get(`http://localhost:5000/GetBusyInfo/${idCard}`)
+                const busyInfo = res5.data[0];
+
                 props.props.history.push({
                     pathname: "/worker/", state: {
                     idCard: props.state.idCard,
@@ -55,9 +57,10 @@ export default function SnackbarLW(props) {
                     addressInfo : addressInfo,
                     realizaInfo : realizaInfo,
                     accountInfo : accountInfo,
+                    busyInfo : busyInfo,
                     }
                 })
-            } 
+            }
         }
     }
 

@@ -28,8 +28,8 @@ class Profile extends React.Component {
     super(props);
     console.log(props)
     console.log(this.state)
-    for (var i = 0; i < this.props.location.state.realizaInfo.length; i++) {
-      this.setState({ labores: this.props.location.state.realizaInfo[i].labor_nombre })
+    for (var i = 0; i < this.props.location.state.state.realizaInfo.length; i++) {
+      this.setState({ labores: this.props.location.state.state.realizaInfo[i].labor_nombre })
     }
   }
 
@@ -41,27 +41,27 @@ class Profile extends React.Component {
     description: true,
     type: true, //type of payment
     price: true,
-    idCard: this.props.location.state.workerInfo.cedula_trabajador,
-    name: this.props.location.state.workerInfo.trabajador_nombre,
-    lastname: this.props.location.state.workerInfo.trabajador_apellido,
-    email: this.props.location.state.workerInfo.trabajador_email,
-    address: this.props.location.state.addressInfo.direccion_domicilio,
-    bank: this.props.location.state.accountInfo.cuenta_bancaria_banco,
-    typeBank: this.props.location.state.accountInfo.cuenta_bancaria_tipo,
-    numberAccount: this.props.location.state.accountInfo.numero_cuenta_bancaria,
-    phone: this.props.location.state.workerInfo.celular_trabajador,
+    idCard: this.props.location.state.state.workerInfo.cedula_trabajador,
+    name: this.props.location.state.state.workerInfo.trabajador_nombre,
+    lastname: this.props.location.state.state.workerInfo.trabajador_apellido,
+    email: this.props.location.state.state.workerInfo.trabajador_email,
+    address: this.props.location.state.state.addressInfo.direccion_domicilio,
+    bank: this.props.location.state.state.accountInfo.cuenta_bancaria_banco,
+    typeBank: this.props.location.state.state.accountInfo.cuenta_bancaria_tipo,
+    numberAccount: this.props.location.state.state.accountInfo.numero_cuenta_bancaria,
+    phone: this.props.location.state.state.workerInfo.celular_trabajador,
     path: this.props.match.path,
   }
 
-  
+
 
   changeState = (id, event) => {
     this.setState({ [id]: event })
   }
 
   log = () => {
-    for (var i = 0; i < this.props.location.state.realizaInfo.length; i++) {
-      console.log(this.props.location.state.realizaInfo[i].labor_nombre)
+    for (var i = 0; i < this.props.location.state.state.realizaInfo.length; i++) {
+      console.log(this.props.location.state.state.realizaInfo[i].labor_nombre)
     }
   }
 
@@ -120,7 +120,7 @@ class Profile extends React.Component {
                     <div>
                       <i className="ni education_hat mr-2" />
                       {
-                        this.props.location.state.realizaInfo.map((item) => {
+                        this.props.location.state.state.realizaInfo.map((item) => {
                           return (<div className='text-center'>{item.labor_nombre}<br /></div>);
                         })
                       }

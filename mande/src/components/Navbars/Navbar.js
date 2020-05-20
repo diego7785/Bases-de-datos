@@ -14,12 +14,12 @@ import {
 
 function isWorker(state){
   if(state.path === "/worker"){
-    const status = state.status;
-    if(parseInt(status) === 1){
+    const status = state.busy;
+    if(status){
       return(
         <DropdownItem >
           <i className="ni ni-bell-55"></i>
-          <span>Disponible</span>
+          <span>Ocupado</span>
           </DropdownItem>
         )
     } else {
@@ -27,7 +27,7 @@ function isWorker(state){
         <DropdownItem >
           <i className="ni ni-bell-55"></i>
           {/*EL ESTADO DEBE CAMBIAR SEGUN SERVICIO*/}
-          <span>Has sido escodigo par alguna labor</span>
+          <span>Disponible</span>
           </DropdownItem>
         )
     }
@@ -38,8 +38,8 @@ function isWorker(state){
 function getNotification(state){
   //Se adquiere algo desde la base de datos para verificar si se ha solicitado un servicio para este trabajador y se retorna un numero
   if(state.path === "/worker"){
-    const status = state.status;
-    if(parseInt(status) === 0){
+    const status = state.busy;
+    if(status){
       return(
         <Nav className="align-items-center d-none d-md-flex" navbar>
           <UncontrolledDropdown nav>
@@ -60,7 +60,7 @@ function getNotification(state){
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
               <DropdownItem className="noti-title" header tag="div">
-                <h6 className="text-overflow m-0">Has sido escogido para blaaaa</h6>
+                <h6 className="text-overflow m-0">Has sido escogido para {state.nombreLabor}</h6>
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -107,21 +107,21 @@ class NavbarC extends React.Component {
     name: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_nombre : this.props.location.state.userInfo.usuario_nombre,
     lastname: this.props.match.path === '/worker' ? this.props.location.state.workerInfo.trabajador_apellido : this.props.location.state.userInfo.usuario_apellido,
     status: this.props.match.path === '/worker' ? this.props.location.state.realizaInfo.trabajador_estado : 1,
+    busy: this.props.match.path === '/worker' ? this.props.location.state.busyInfo === undefined ? false : true : false,
+    nombreLabor : this.props.match.path === '/worker' ? this.props.location.state.busyInfo === undefined ? false : this.props.location.state.busyInfo.labornombre : false,
     path: this.props.match.path,
   }
 
+constructor(props){
+  super(props);
+  console.log(props);
+}
   render() {
     return (
       <>
         <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
           <Container fluid>
                 {getNotification(this.state)}
-            <Link
-              className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
-              to = {this.props.match.path + "/index"}
-            >
-              INICIO
-            </Link>
             <Nav className="align-items-center d-none d-md-flex" navbar>
               <UncontrolledDropdown nav>
                 <DropdownToggle className="pr-0" nav>

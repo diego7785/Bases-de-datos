@@ -271,6 +271,8 @@ var getJobsWithWorker = (req,res,db) =>{
 var getWorkersWithXJob = (req,res,db) => {
   const workersToSearch = req.params.workersToSearch;
   const userSearch = req.params.idCardU;
+  console.log(workersToSearch);
+  console.log(userSearch);
   db.many(`SELECT * FROM get_workers_results('${workersToSearch}', '${userSearch}')`)
   .then(function (data) {
 
@@ -341,6 +343,6 @@ module.exports = {
   validateEmail,
   validatePhone,
   validateCreditCard,
-  validateDebitCard, 
+  validateDebitCard,
 
 }

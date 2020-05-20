@@ -9,9 +9,9 @@ class UserHeader extends React.Component {
     super(props)
     console.log(props)
   }
-  
+
   state = {
-    name: this.props.path === '/worker/user-profile' ? this.props.state.location.state.workerInfo.trabajador_nombre : this.props.state.location.state.userInfo.usuario_nombre,
+    name: this.props.path === '/worker/user-profile' ? this.props.state.location.state.state.workerInfo.trabajador_nombre : this.props.state.location.state.state.userInfo.usuario_nombre,
   }
 
   render() {

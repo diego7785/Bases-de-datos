@@ -24,8 +24,9 @@ export default function ServiceRequest(props) {
     const phoneUser = props.phoneUser;
     const idLab = props.idLabor;
     const desc = props.desc;
-    
+
     const res = await axios.post(`http://localhost:5000/serviceRequest/${idWorker}/${phoneUser}/${idLab}/${desc}`);
+    alert(`Servicio solicitado a ${idWorker}`);
     setOpen(false);
     };
 
