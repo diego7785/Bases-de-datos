@@ -7,6 +7,15 @@ class ForgotPassword extends React.Component{
     codigo: true,
     nuevaContrasenia: true,
     nuevaConfirmacionContrasenia: true,
+    open: false,
+    worker: false,
+    user: false,
+  }
+
+
+  setOpen = (id,val)=>
+  {
+    this.setState({[id] : val})
   }
 
   onHandleChange = (id, event) => {
@@ -15,8 +24,7 @@ class ForgotPassword extends React.Component{
   }
 
   render(){
-  return(<Stepper state={this.state} onHandleChange={this.onHandleChange}/>);
-
+  return(<Stepper state={this.state}  onHandleChange={this.setOpen} props={this.props}/>);
   }
 }
 

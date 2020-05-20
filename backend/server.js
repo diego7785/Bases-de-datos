@@ -74,6 +74,10 @@ app.get(`/GetAccountInfo/:idCard`, (req,res) => worker.GetAccountInfo(req,res,db
 
 app.post(`/ChangePasswordWorker/:idCard/:newPass`, (req,res) => worker.ChangePassword(req,res,db))
 
+app.post(`/RecoverAccountWorker/:email/:pass`, (req,res) => worker.recover_account(req,res,db))
+
+app.post(`/SendMailWorker/:email`, (req,res) => worker.send_mail(req,res))
+
 app.get(`/GetBusyInfo/:idCard`, (req,res) => worker.GetBusyInfo(req,res,db))
 
 app.post(`/FinalizarLabor/:idServicio`, (req, res) => worker.FinalizarLabor(req,res,db))
@@ -135,5 +139,10 @@ app.post(`/serviceRequest/:idWorker/:phoneUser/:idLabor/:desc`, (req, res) => us
 app.get(`/GetJobsNoStars/:celular`, (req,res) => user.GetJobsNoStars(req,res,db))
 
 app.post(`/CalificarLabor/:id/:rate`, (req,res) => user.CalificarLabor(req,res,db))
+
+app.post(`/RecoverAccountUser/:email/:pass`, (req,res) => user.recover_account(req,res,db))
+
+app.post(`/SendMailUser/:email`, (req,res) => user.send_mail(req,res))
+
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))
