@@ -70,6 +70,7 @@ export default function SnackbarLW(props) {
                     solicitudes: solicitudes,
                     calificacionesTotales : calificacionesTotales,
                     trabajosTotales : trabajosTotales,
+                    scoreAvg: scoreAvg,
                     }
                 })
             }
