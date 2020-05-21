@@ -49,6 +49,9 @@ export default function SnackbarLW(props) {
                 const accountInfo = res4.data[0];
                 const res5 = await axios.get(`http://localhost:5000/GetBusyInfo/${idCard}`)
                 const busyInfo = res5.data[0];
+                const res6 = await axios.get(`http://localhost:5000/ScoreAverageWorker/${idCard}/`)
+                const scoreAvg = res6.data;
+                console.log(scoreAvg);
 
                 props.props.history.push({
                     pathname: "/worker/", state: {

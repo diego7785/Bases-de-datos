@@ -84,6 +84,8 @@ app.post(`/FinalizarLabor/:idServicio`, (req, res) => worker.FinalizarLabor(req,
 
 app.get(`/CheckCodeWorker/:code`, (req,res) => worker.check_code(req,res))
 
+app.get(`/ScoreAverageWorker/:idCard` , (req,res) => worker.score_avg(req,res,db))
+
 //user
 app.post(`/RegisterUser1/images`, (req, res) => {
   upload(req, res, function (err) {
