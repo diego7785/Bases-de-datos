@@ -69,7 +69,7 @@ export default function Direccion(props) {
         <FormControl>
         <FieldDireccion onHandleChange={props.functionSetState}/>
         </FormControl>
-        <FormControl className={classes.marginN}>
+        <FormControl className={classes.marginN} style={{marginTop: 10}}>
           <div style={{ marginTop: 15 }}>
           <TextField
           id="outlined-multiline-static"

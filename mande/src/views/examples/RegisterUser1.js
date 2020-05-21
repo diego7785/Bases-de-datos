@@ -33,17 +33,6 @@ onHandleChange = (id, value) => {
 
   onChangeHandler = (id, event, type) =>{
    this.setState({ [id]: event.target.files[0]})
-  /* switch (type) {
-     case 1: this.setState({ loaded1: true})
-       break;
-     case 2: this.setState({ loaded2: true})
-       break;
-     case 3: this.setState({ loaded3: true})
-       break;
-      case 4: this.setState({ loaded4: true})
-      break;
-     default: return('Unknow index');
-   }*/
 }
 
     render() {
