@@ -22,6 +22,7 @@ const useStyles = makeStyles(() => ({
 }));
 //onClick={e => this.endJob(e, this.state)}
 const WorkerRateDuty = (props) => {
+  console.log("No quiero funcionar",props)
   const classes = useStyles();
   return (
     <Card className={classes.root}>

@@ -25,7 +25,9 @@ export default function SnackbarRWI(props) {
         }
         var cont = 0;
         var emptyFields=true;
-        if ((props.state.job !==1 && props.state.job !==2 && props.state.job !==3 && props.state.job !==4 && props.state.job !==5)
+        console.log(typeof(props.state.job))
+        console.log(props.state.job)
+        if ((validations.emptyField(props.state.job))
             ||(validations.diferentType(props.state.type,'string')) || (validations.emptyField(props.state.price))
             ||(validations.emptyField(props.state.description)))
         {
