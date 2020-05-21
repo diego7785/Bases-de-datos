@@ -28,9 +28,11 @@ function Alert(props) {
 
 export default function SnackbarRW(props) {
     const handleClick = async() => {
+      console.log('oli')
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
         }
+
         var jobs = [];
         axios.get(`http://localhost:5000/RegisterWorker1/${"labores"}/`).then(res => {
             for (var i = 0; i < res.data.length; i++) {
@@ -40,12 +42,12 @@ export default function SnackbarRW(props) {
 
         var cont = 0;
         var emptyFields=true;
-    
-        if (validations.emptyField(props.state.celular) || validations.emptyField(props.state.name) 
-            || validations.emptyField(props.state.lastname)  ||validations.emptyField(props.state.email) 
-            || validations.emptyField(props.state.idCard) || validations.emptyField(props.state.password) 
-            || validations.emptyField(props.state.passwordR)) 
-            
+
+        if (validations.emptyField(props.state.celular) || validations.emptyField(props.state.name)
+            || validations.emptyField(props.state.lastname)  ||validations.emptyField(props.state.email)
+            || validations.emptyField(props.state.idCard) || validations.emptyField(props.state.password)
+            || validations.emptyField(props.state.passwordR))
+
         {
             verifications[8] = false;
             cont++;
@@ -82,7 +84,7 @@ export default function SnackbarRW(props) {
         if (((false === (validations.validSizeMay(props.state.password,5))) || false === (validations.validSizeMay(props.state.passwordR,5)))&& emptyFields){
             verifications[6] = false;
             cont++;
-        }        
+        }
         if (cont >0)
         {
             props.onHandleChange('open', true);

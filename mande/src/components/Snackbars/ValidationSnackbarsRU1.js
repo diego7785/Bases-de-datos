@@ -15,7 +15,7 @@ for (var i = 0; i < verifications.length; i++) {
     verifications[i] = true;
 }
 
-function Alert(props) 
+function Alert(props)
 {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -25,7 +25,7 @@ export default function SnackbarRUI(props) {
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
         }
-        if(validations.diferentType(props.state.front,'object') || validations.diferentType(props.state.back,'object') 
+        if(validations.diferentType(props.state.front,'object') || validations.diferentType(props.state.back,'object')
         || validations.diferentType(props.state.profilepic,'object') || validations.diferentType(props.state.bill,'object'))
         {
             verifications[0] = false;
@@ -73,7 +73,7 @@ export default function SnackbarRUI(props) {
                             idCard: props.props.location.state.idCard,
                             password : props.props.location.state.password,
                             passwordR : props.props.location.state.passwordR,
-                            completeAddress : props.props.location.state.completeAddress,
+                            address : props.props.location.state.address,
                             complemento: props.props.location.state.complemento,
                             profilepic :  props.state.profilepic,
                             front : props.state.front,
@@ -83,7 +83,7 @@ export default function SnackbarRUI(props) {
                             length : props.props.location.state.length,
                         }
                     })
-                } 
+                }
                 else{
                     alert(messages[2]);
                 }
@@ -94,7 +94,7 @@ export default function SnackbarRUI(props) {
             return;
         }
         props.onHandleChange('open', false)
-    };  
+    };
     return (
         <>
         <div style={{ marginTop: 40}}>
@@ -114,5 +114,5 @@ export default function SnackbarRUI(props) {
                 </Alert>
             </Snackbar>
         </>
-    ); 
+    );
 }

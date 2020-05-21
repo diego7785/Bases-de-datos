@@ -35,12 +35,12 @@ export default function SnackbarRU(props) {
         }
         var cont = 0;
         var emptyFields=true;
-    
-        if (validations.emptyField(props.state.celular) || validations.emptyField(props.state.name) 
-            || validations.emptyField(props.state.lastname)  ||validations.emptyField(props.state.email) 
-            || validations.emptyField(props.state.idCard) || validations.emptyField(props.state.password) 
-            || validations.emptyField(props.state.passwordR)) 
-            
+
+        if (validations.emptyField(props.state.celular) || validations.emptyField(props.state.name)
+            || validations.emptyField(props.state.lastname)  ||validations.emptyField(props.state.email)
+            || validations.emptyField(props.state.idCard) || validations.emptyField(props.state.password)
+            || validations.emptyField(props.state.passwordR))
+
         {
             verifications[8] = false;
             cont++;
@@ -78,7 +78,7 @@ export default function SnackbarRU(props) {
             verifications[6] = false;
             cont++;
         }
-        
+
         if (cont >0)
         {
             props.onHandleChange('open', true);
@@ -127,8 +127,8 @@ export default function SnackbarRU(props) {
                         complemento: props.state.complemento,
                         latitude: props.state.latitude,
                         length: props.state.length,
-                        completeAddress: props.state.completeAddress,
-                    }   
+                        address: props.state.address,
+                    }
                 })
             }
         }

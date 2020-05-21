@@ -113,7 +113,7 @@ app.get(`/validateDebitCardExistence/:cardNumber`, (req, res) => user.validateDe
 
 app.get(`/validateCreditCardExistence/:cardNumber`, (req, res) => user.validateCreditCard(req, res, db))
 
-app.post(`/RegisterUser2_3/:phone/:lat/:lng/:address/:city/:depto`, (req,res)=> user.createAddress(req,res,db))
+app.post(`/RegisterUser2_3/:phone/:lat/:lng/:address/:complemento`, (req,res)=> user.createAddress(req,res,db))
 
 app.post(`/RegisterCreditCard/:cardNumber/:phone/:bank/:endDate/:cvc` , (req,res) => user.createCreditCard(req,res,db))
 
