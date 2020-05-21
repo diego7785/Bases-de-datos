@@ -84,8 +84,9 @@ app.post(`/FinalizarLabor/:idServicio`, (req, res) => worker.FinalizarLabor(req,
 
 app.get(`/CheckCodeWorker/:code`, (req,res) => worker.check_code(req,res))
 
-app.get(`/GetSolicitudesLabor/:idCard`, (req,res) => worker.GetSolicitudesLabor(req,res,db))
+app.get(`/ScoreAverageWorker/:idCard` , (req,res) => worker.score_avg(req,res,db))
 
+app.get(`/GetSolicitudesLabor/:idCard`, (req,res) => worker.GetSolicitudesLabor(req,res,db))
 
 //user
 app.post(`/RegisterUser1/images`, (req, res) => {

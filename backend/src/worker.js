@@ -352,6 +352,29 @@ var check_code = (req,res)=>
   }
 }
 
+var score_avg = (req, res, db)=>
+{
+  const idCard = req.params.idCard;
+  db.many(`WITH prom AS 
+  (
+  SELECT CAST (AVG(servicio_calificacion)AS float) AS promedio_calificacion,labor_id
+  FROM Servicio
+  WHERE cedula_trabajador = '${idCard}'
+  GROUP BY labor_id
+  ORDER BY AVG(servicio_calificacion)
+  )
+  SELECT id_labor, labor_nombre, promedio_calificacion FROM prom
+  INNER JOIN labor
+  ON labor.id_labor = prom.labor_id;`)
+  .then((data) => {
+    res.send(JSON.stringify(data))
+  })
+  .catch(function (error) {
+    console.log(`ERROR:`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
 var GetSolicitudesLabor = (req,res,db) => {
   const idCard = req.params.idCard;
   db.many(`SELECT COUNT(*) AS Labores, labor_nombre FROM servicio INNER JOIN labor ON labor_id = id_labor WHERE cedula_trabajador='${idCard}' GROUP BY labor_id, labor_nombre`)
@@ -385,5 +408,6 @@ module.exports = {
   GetBusyInfo,
   FinalizarLabor,
   check_code,
+  score_avg,
   GetSolicitudesLabor,
 }
