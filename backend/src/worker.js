@@ -363,7 +363,7 @@ var score_avg = (req, res, db)=>
   GROUP BY labor_id
   ORDER BY AVG(servicio_calificacion)
   )
-  SELECT id_labor, labor_nombre, promedio_calificacion FROM prom
+  SELECT labor_nombre as name, promedio_calificacion as Calificacion FROM prom
   INNER JOIN labor
   ON labor.id_labor = prom.labor_id;`)
   .then((data) => {
