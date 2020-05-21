@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+    database:
+        image: mdillon/postgis
+        ports:
+            - "5432:5432"
+        environment: 
+            POSTGRES_DB: "Mande"
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "mande123"
+        volumes:
+            - :/docker-entrypoint-initdb.d
+
+'''
+FROM postgres:11.2
+COPY ["Mande.sql", "./docker-entrypoint-initdb.d/"]
+RUN apt-get update && apt-get install postgis postgresql-10-postgis-2.5-scripts -y
+'''
