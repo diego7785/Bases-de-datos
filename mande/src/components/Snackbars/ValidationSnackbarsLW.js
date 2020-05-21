@@ -64,6 +64,7 @@ export default function SnackbarLW(props) {
                     accountInfo : accountInfo,
                     busyInfo : busyInfo,
                     solicitudes: solicitudes,
+                    scoreAvg: scoreAvg,
                     }
                 })
             }
