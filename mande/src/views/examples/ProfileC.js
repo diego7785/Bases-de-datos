@@ -77,11 +77,11 @@ class Profile extends React.Component {
                     <div className="col">
                       <div className="card-profile-stats d-flex justify-content-center mt-md-5">
                         <div>
-                          <span className="heading">22</span>
+                          <span className="heading">{this.props.location.state.state.calificacionesTotales.calificaciones}</span>
                           <span className="description">Trabajos calificados</span>
                         </div>
                         <div>
-                          <span className="heading">40</span>
+                          <span className="heading">{this.props.location.state.state.trabajosTotales.trabajos}</span>
                           <span className="description">Trabajos solicitados</span>
                         </div>
                       </div>

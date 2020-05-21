@@ -69,7 +69,11 @@ export default function SnackbarLU(props) {
 
                 const res6 = await axios.get(`http://localhost:5000/GetJobsNoStars/${userInfo.celular_usuario}`)
                 const servicioNoCal = res6.data[0];
-                console.log(servicioNoCal)
+                const res7 = await axios.get(`http://localhost:5000/GetCalificacionesTotalesUser/${phone}`)
+                const calificacionesTotales = res7.data[0];
+                const res8 = await axios.get(`http://localhost:5000/GetTrabajosTotalesUser/${phone}`)
+                const trabajosTotales = res8.data[0];
+
                 props.props.history.push({
                     pathname: "/client/", state: {
                     idCard: res.data[1],
@@ -79,6 +83,8 @@ export default function SnackbarLU(props) {
                     type: type,
                     wjobs: dutiesWithWorker,
                     servicio : servicioNoCal,
+                    calificacionesTotales : calificacionesTotales,
+                    trabajosTotales : trabajosTotales,
                     }
                 })
             }
