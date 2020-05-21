@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Direccion from "components/Address/Direccion.js"
-import TextField from '@material-ui/core/TextField';
 import Geocode from "react-geocode";
 import Map from 'components/Maps/map.js';
 import ValidationSnackbarsRW from 'components/Snackbars/ValidationSnackbarsRW';
@@ -59,7 +58,6 @@ class RegisterWorker extends React.Component {
       console.log(this.state)
     } else{
       this.setState({ [id]: event.replace(/#/g,' No ') })
-      var addressPass = this.state.address;
       Geocode.fromAddress(event).then(
         response => {
           const { lat, lng } = response.results[0].geometry.location;

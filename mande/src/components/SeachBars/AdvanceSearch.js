@@ -3,7 +3,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import RangeSlider from './Slider';
 import Rater from '../RatingSelector/RatingSelector'
-import axios from 'axios';
 
 // reactstrap components
 import {

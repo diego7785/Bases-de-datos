@@ -1,6 +1,5 @@
 import React from "react";
 import Jobs from "components/Jobs/Jobs.js"
-import axios from 'axios'
 import ValidationSnackbarsRW1 from 'components/Snackbars/ValidationSnackbarsRW1';
 
 // reactstrap components
@@ -9,8 +8,7 @@ import {
   CardBody,
   FormGroup,
   Form,
-  Col,
-  Button
+  Col
 } from "reactstrap";
 
 class RegisterWorker1 extends React.Component {

@@ -132,7 +132,6 @@ export default function SnackbarRUCred(props)
                 const cvc = props.props.cvc;
                 const cardNumber=props.props.cardNumber;
                 const bank=props.props.bank;
-                const idCardCredit= props.props.idCardCredit;
                 res = await axios.post(`http://localhost:5000/RegisterCreditCard/${cardNumber}/${phone}/${bank}/${endDate}/${cvc}`)
                 console.log(res)
                 if(res.statusText === "OK"){

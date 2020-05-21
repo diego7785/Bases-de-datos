@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import ValidationSnackbarsRUDeb from 'components/Snackbars/ValidationSnackbarsRUDeb';
 
 import {
-  Button,
   FormGroup,
   InputGroup,
   InputGroupAddon,

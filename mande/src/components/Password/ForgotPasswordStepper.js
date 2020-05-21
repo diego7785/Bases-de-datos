@@ -196,12 +196,12 @@ export default function ForgotPasswordStepper(props) {
           validatedStep[1] =true;
           if(validateEmailW.data[0].validateemailworker)
           {
-            var resi = await axios.get(`http://localhost:5000/SendMailWorker/${props.state.correo}/`)
+            await axios.get(`http://localhost:5000/SendMailWorker/${props.state.correo}/`)
             props.onHandleChange('worker', true);
           }
           if(validateEmailU.data[0].validateemailuser)
           {
-            var resi = await axios.get(`http://localhost:5000/SendMailUser/${props.state.correo}/`)
+            await axios.get(`http://localhost:5000/SendMailUser/${props.state.correo}/`)
             props.onHandleChange('user', true);
           }
         }
@@ -257,7 +257,7 @@ export default function ForgotPasswordStepper(props) {
       }
       if(props.state.worker && emptyFields)
       {
-        var res = await axios.get(`http://localhost:5000/CheckCodeWorker/${props.state.codigo}/`)
+        await axios.get(`http://localhost:5000/CheckCodeWorker/${props.state.codigo}/`)
         console.log(res.data.respuesta);
         if(true !== res.data.respuesta)
         {

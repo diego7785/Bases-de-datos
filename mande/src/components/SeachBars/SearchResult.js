@@ -47,8 +47,6 @@ const useStyles = makeStyles((theme) => ({
 const ResultCard = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-  const [] = React.useState(false);
-
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
