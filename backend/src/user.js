@@ -105,10 +105,9 @@ var createAddress = (req,res,db) => {
   const lat=req.params.lat;
   const lng=req.params.lng;
   const address=req.params.address;
-  const city=req.params.city;
-  const depto=req.params.depto;
+  const complemento = req.params.complemento;
 
-  db.none(`INSERT INTO Direccion(celular_usuario,direccion_latitud,direccion_longitud,direccion_domicilio,direccion_ciudad,direccion_departamento) VALUES($1,$2,$3,'${address}','${city}','${depto}')`,
+  db.none(`INSERT INTO Direccion(celular_usuario,direccion_latitud,direccion_longitud,direccion_domicilio, direccion_complemento) VALUES($1,$2,$3,'${address}','${complemento}')`,
   [escape(phone), escape(lat), escape(lng)])
   .then((data) => {
     res.send(JSON.stringify(`Direccion registrada exitosamente`))
@@ -246,14 +245,26 @@ var getDebitCardInfo = (req,res,db) => {
 var ChangePassword = (req,res,db)=>{
   const phone = req.params.phone;
   const newPass = req.params.newPass;
-  db.none(`UPDATE Usuario SET usuario_contrasenia = '${newPass}' WHERE celular_usuario = '${phone}'`)
+  const actualPass = req.params.actualPass;
+  db.many(`SELECT PGP_SYM_DECRYPT(usuario_contrasenia::BYTEA, 'AES_KEY') AS actualpass FROM Usuario WHERE celular_usuario = '${phone}'`)
   .then((data) => {
-    res.send(JSON.stringify(`Contraseña cambiada éxitosamente`))
+    if(data[0].actualpass === actualPass){
+      db.none(`UPDATE Usuario SET usuario_contrasenia = PGP_SYM_ENCRYPT('${newPass}', 'AES_KEY') WHERE celular_usuario = $1`,
+      [escape(phone)])
+      .then((data) => {
+        res.send(JSON.stringify(0))
+      })
+      .catch((error) => {
+        console.log(`ERROR CAMBIANDO CONTRASENIA`, error)
+        res.send(JSON.stringify(1));
+      })
+    } else {
+      res.send(JSON.stringify(2));
+    }
   })
   .catch((error) => {
-    console.log(req.params)
-    console.log(`ERROR CAMBIANDO CONTRASENIA`, error)
-    res.send(error.detail)
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(1));
   })
 }
 
@@ -318,8 +329,33 @@ var serviceRequest = (req,res,db) => {
   })
   .catch((error) => {
     console.log(req.params)
-    console.log(`Error`, error)
-    res.send(error.detail)
+    console.log(`ERROR`, error)
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var GetJobsNoStars = (req,res,db) => {
+  const celular = req.params.celular;
+  db.many(`SELECT * FROM labores_sin_calificar('${celular}')`)
+  .then((data) => {
+    res.send(JSON.stringify(data));
+  })
+  .catch((error) => {
+    console.log(`ERROR`, error);
+    res.send(JSON.stringify(error.detail));
+  })
+}
+
+var CalificarLabor = (req,res,db) => {
+  const idServicio = req.params.id;
+  const rate = req.params.rate;
+  db.many(`SELECT * FROM calificar_labor(${idServicio}, ${rate})`)
+  .then((data) => {
+    res.send(JSON.stringify(data));
+  })
+  .catch((error) => {
+    console.log(`ERROR`, error);
+    res.send(JSON.stringify(error.detail));
   })
 }
 
@@ -375,7 +411,6 @@ var check_code = (req,res)=>
   if(parseInt(codeCheck) === code)
   {
     res.send({respuesta: true});
-    console.log(respuesta);
   }
   else
   {
@@ -403,9 +438,12 @@ module.exports = {
   validateEmail,
   validatePhone,
   validateCreditCard,
-  validateDebitCard, 
+  validateDebitCard,
   recover_account,
   send_mail,
   validateDebitCard,
   check_code,
+  GetJobsNoStars,
+  CalificarLabor,
+
 }

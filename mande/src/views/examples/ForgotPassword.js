@@ -12,7 +12,10 @@ class ForgotPassword extends React.Component{
     user: false,
   }
 
-
+constructor(props){
+  super(props);
+  console.log(props)
+}
   setOpen = (id,val)=>
   {
     this.setState({[id] : val})

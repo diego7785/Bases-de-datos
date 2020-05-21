@@ -22,9 +22,9 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function SnackbarRUDeb(props) 
+export default function SnackbarRUDeb(props)
 {
-    const finalRegister = async () => 
+    const finalRegister = async () =>
     {
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
@@ -89,7 +89,7 @@ export default function SnackbarRUDeb(props)
                 if(res.statusText === "OK"){
                 exito=exito+1;
                 }
-
+                console.log(props);
                 const cardNumber = props.props.cardNumber;
                 const bank = props.props.bank;
                 const numberAccount = props.props.numberAccount;
@@ -101,11 +101,10 @@ export default function SnackbarRUDeb(props)
 
                 const lat = props.state1.location.state.latitude;
                 const lng = props.state1.location.state.length;
-                const address = props.state1.location.state.completeAddress;
-                const city = props.state1.location.state.city;
-                const depto = props.state1.location.state.depto;
+                const address = props.state1.location.state.address;
+                const complemento = props.state1.location.state.complemento;
 
-                res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
+                res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${complemento}`)
                 console.log(res)
                 if(res.statusText === "OK"){
                 exito=exito+1;
@@ -151,4 +150,3 @@ export default function SnackbarRUDeb(props)
         </>
     );
 }
-

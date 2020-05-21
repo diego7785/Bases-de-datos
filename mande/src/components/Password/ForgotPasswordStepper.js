@@ -163,12 +163,12 @@ for (var i = 0; i < verifications.length; i++) {
 export default function ForgotPasswordStepper(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-
+  console.log(props);
   const steps = getSteps();
 
-  const handleNext = async() => 
+  const handleNext = async() =>
   {
-      for (var i = 0; i < verifications.length; i++) 
+      for (var i = 0; i < verifications.length; i++)
       {
         verifications[i] = true;
       }
@@ -193,15 +193,15 @@ export default function ForgotPasswordStepper(props) {
         }
         if(validateEmailW.data[0].validateemailworker || validateEmailU.data[0].validateemailuser)
         {
-          validatedStep[1] =true;  
+          validatedStep[1] =true;
           if(validateEmailW.data[0].validateemailworker)
           {
-            var resi = await axios.get(`http://localhost:5000/SendMailWorker/${props.state.correo}/`)  
+            var resi = await axios.get(`http://localhost:5000/SendMailWorker/${props.state.correo}/`)
             props.onHandleChange('worker', true);
           }
           if(validateEmailU.data[0].validateemailuser)
           {
-            var resi = await axios.get(`http://localhost:5000/SendMailUser/${props.state.correo}/`) 
+            var resi = await axios.get(`http://localhost:5000/SendMailUser/${props.state.correo}/`)
             props.onHandleChange('user', true);
           }
         }
@@ -212,7 +212,7 @@ export default function ForgotPasswordStepper(props) {
           props.onHandleChange('open', true);
       }
 
-      setActiveStep((prevActiveStep) => 
+      setActiveStep((prevActiveStep) =>
       { if(validatedStep[1]){
         return prevActiveStep+1;
       }
@@ -223,10 +223,10 @@ export default function ForgotPasswordStepper(props) {
       });
   };
 
-  const handleNextI = async() => 
+  const handleNextI = async() =>
   {
 
-      for (var i = 0; i < verifications.length; i++) 
+      for (var i = 0; i < verifications.length; i++)
       {
         verifications[i] = true;
       }
@@ -242,14 +242,14 @@ export default function ForgotPasswordStepper(props) {
 
       if(props.state.user && emptyFields)
       {
-        var res = await axios.get(`http://localhost:5000/CheckCodeUser/${props.state.codigo}/`) 
+        var res = await axios.get(`http://localhost:5000/CheckCodeUser/${props.state.codigo}/`)
         console.log(res.data.respuesta);
         if(true !== res.data.respuesta)
         {
           verifications[3]=false;
           cont++;
         }
-  
+
         if(true === res.data.respuesta)
         {
           validatedStep[2] =true;
@@ -257,14 +257,14 @@ export default function ForgotPasswordStepper(props) {
       }
       if(props.state.worker && emptyFields)
       {
-        var res = await axios.get(`http://localhost:5000/CheckCodeWorker/${props.state.codigo}/`) 
+        var res = await axios.get(`http://localhost:5000/CheckCodeWorker/${props.state.codigo}/`)
         console.log(res.data.respuesta);
         if(true !== res.data.respuesta)
         {
           verifications[3]=false;
           cont++;
         }
-  
+
         if(true === res.data.respuesta)
         {
           validatedStep[2] =true;
@@ -276,7 +276,7 @@ export default function ForgotPasswordStepper(props) {
           props.onHandleChange('open', true);
       }
 
-      setActiveStep((prevActiveStep) => 
+      setActiveStep((prevActiveStep) =>
       { if(validatedStep[1]){
         return prevActiveStep+1;
       }
@@ -287,9 +287,9 @@ export default function ForgotPasswordStepper(props) {
       });
   };
 
-  const handleNextII = async() => 
+  const handleNextII = async() =>
   {
-      for (var i = 0; i < verifications.length; i++) 
+      for (var i = 0; i < verifications.length; i++)
       {
         verifications[i] = true;
       }
@@ -324,10 +324,11 @@ export default function ForgotPasswordStepper(props) {
       {
         if(props.state.worker)
         {
-          var res = await axios.post(`http://localhost:5000/RecoverAccountWorker/${props.state.correo}/${props.state.nuevaContrasenia}`)           
+          var res = await axios.post(`http://localhost:5000/RecoverAccountWorker/${props.state.correo}/${props.state.nuevaContrasenia}`)
           if(res.status === 200)
           {
             alert("Contraseña actualizada");
+            props.props.history.push({pathname: "/auth"})
           }
           else
           {
@@ -340,15 +341,16 @@ export default function ForgotPasswordStepper(props) {
           if(resI.status === 200)
           {
             alert("Contraseña actualizada");
+            props.props.history.push({pathname: "/auth"})
           }
           else
           {
             alert("Fallo al actualizar la contraseña");
           }
-        }        
+        }
       }
 
-      setActiveStep((prevActiveStep) => 
+      setActiveStep((prevActiveStep) =>
       { if(validatedStep[1]){
         return prevActiveStep+1;
       }

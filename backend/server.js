@@ -72,7 +72,7 @@ app.get(`/GetRealizaInfo/:idCard`, (req,res) => worker.GetRealizaInfo(req,res,db
 
 app.get(`/GetAccountInfo/:idCard`, (req,res) => worker.GetAccountInfo(req,res,db))
 
-app.post(`/ChangePasswordWorker/:idCard/:newPass`, (req,res) => worker.ChangePassword(req,res,db))
+app.post(`/ChangePasswordWorker/:idCard/:newPass/:actualPass`, (req,res) => worker.ChangePassword(req,res,db))
 
 app.post(`/RecoverAccountWorker/:email/:pass`, (req,res) => worker.recover_account(req,res,db))
 
@@ -86,6 +86,8 @@ app.get(`/CheckCodeWorker/:code`, (req,res) => worker.check_code(req,res))
 
 app.get(`/ScoreAverageWorker/:idCard` , (req,res) => worker.score_avg(req,res,db))
 
+app.get(`/GetSolicitudesLabor/:idCard`, (req,res) => worker.GetSolicitudesLabor(req,res,db))
+
 //user
 app.post(`/RegisterUser1/images`, (req, res) => {
   upload(req, res, function (err) {
@@ -98,15 +100,7 @@ app.post(`/RegisterUser1/images`, (req, res) => {
     })
 });
 
-app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`,
-[
-  check('idCard')
-         .isNumeric().isLength({min:10, max:10}),
-         //.withMessage('phone should not be empty, minimum eight characters, at least one letter, one number and one special character')
-],
-(req,res) =>{user.createUser(req,res,validationResult,db);
-  console.log('AHHHHHHHHHHH');
-})
+app.post(`/RegisterUser2/:idCard/:phone/:email/:name/:lastname/:password`, (req,res) =>{user.createUser(req,res,validationResult,db)})
 
 app.post(`/RegisterUser2_2/:cardNumber/:phone/:bank/:numberAccount`, (req,res) => user.createDebitCard(req,res,db))
 
@@ -120,8 +114,7 @@ app.get(`/validateDebitCardExistence/:cardNumber`, (req, res) => user.validateDe
 
 app.get(`/validateCreditCardExistence/:cardNumber`, (req, res) => user.validateCreditCard(req, res, db))
 
-//
-app.post(`/RegisterUser2_3/:phone/:lat/:lng/:address/:city/:depto`, (req,res)=> user.createAddress(req,res,db))
+app.post(`/RegisterUser2_3/:phone/:lat/:lng/:address/:complemento`, (req,res)=> user.createAddress(req,res,db))
 
 app.post(`/RegisterCreditCard/:cardNumber/:phone/:bank/:endDate/:cvc` , (req,res) => user.createCreditCard(req,res,db))
 
@@ -137,7 +130,7 @@ app.get(`/GetCreditCardInfo/:phone`, (req,res) => user.getCreditCardInfo(req,res
 
 app.get(`/GetDebitCardInfo/:phone`, (req,res) => user.getDebitCardInfo(req,res,db))
 
-app.post(`/ChangePasswordUser/:phone/:newPass`, (req,res) => user.ChangePassword(req,res,db))
+app.post(`/ChangePasswordUser/:phone/:newPass/:actualPass`, (req,res) => user.ChangePassword(req,res,db))
 
 app.get(`/GetJobsWithWorker/:jobs`, (req,res) => user.getJobsWithWorker(req,res,db))
 
@@ -147,10 +140,15 @@ app.get(`/SearchWorkersAdvanced/:workersToSearch/:idCardU/:type/:stars/:min/:max
 
 app.post(`/serviceRequest/:idWorker/:phoneUser/:idLabor/:desc`, (req, res) => user.serviceRequest(req,res,db))
 
+app.get(`/GetJobsNoStars/:celular`, (req,res) => user.GetJobsNoStars(req,res,db))
+
+app.post(`/CalificarLabor/:id/:rate`, (req,res) => user.CalificarLabor(req,res,db))
+
 app.post(`/RecoverAccountUser/:email/:pass`, (req,res) => user.recover_account(req,res,db))
 
 app.get(`/SendMailUser/:email`, (req,res) => user.send_mail(req,res))
 
 app.get(`/CheckCodeUser/:code`, (req,res) => user.check_code(req,res))
+
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))

@@ -1,6 +1,5 @@
 import React from "react";
-import Chart from "chart.js";
-import { Bar } from "react-chartjs-2";
+import Chart from "../components/Chart/Charts";
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -19,11 +18,6 @@ import {
 } from "reactstrap";
 
 // core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample2
-} from "variables/charts.js";
 
 
 import Header from "components/Headers/Header.js";
@@ -31,9 +25,6 @@ import Header from "components/Headers/Header.js";
 class IndexW extends React.Component {
   constructor(props){
     super(props);
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
-    }
     console.log("meda?")
     console.log(props)
     console.log(this.state)
@@ -41,7 +32,6 @@ class IndexW extends React.Component {
 
   state = {
     activeNav: 1,
-    chartExample1Data: "data1",
     busy: this.props.location.state.state.busyInfo === undefined ? false : true,
     celularCliente: this.props.location.state.state.busyInfo === undefined ? true : this.props.location.state.state.busyInfo.celularu,
     distancia: this.props.location.state.state.busyInfo === undefined ? true : this.props.location.state.state.busyInfo.distancia,
@@ -58,8 +48,6 @@ class IndexW extends React.Component {
     e.preventDefault();
     this.setState({
       activeNav: index,
-      chartExample1Data:
-        this.state.chartExample1Data === "data1" ? "data2" : "data1"
     });
   };
 
@@ -108,7 +96,7 @@ class IndexW extends React.Component {
              </tr>
            </tbody>
          </Table>
-         <Button className="my-4" color="primary" type="button" onClick={e => this.endJob(e, this.state)}>
+         <Button className="my-4" color="primary" type="button" onClick={e => this.endJob(e)}>
            Terminar
          </Button>
          </>
@@ -152,10 +140,7 @@ class IndexW extends React.Component {
                 <CardBody>
                   {/* Chart */}
                   <div className="chart">
-                    <Bar
-                      data={chartExample2.data}
-                      options={chartExample2.options}
-                    />
+                    <Chart data = {this.props.location.state.state.solicitudes}/>
                   </div>
                 </CardBody>
               </Card>

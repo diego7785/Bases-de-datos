@@ -15,6 +15,10 @@ class Client extends React.Component {
     console.log(props);
   }
 
+  state={
+    serviciosNoCal : this.props.location.state.servicio,
+  }
+
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -66,7 +70,7 @@ class Client extends React.Component {
           />
           <Switch>
             {this.getRoutes(routes,this.props)}
-            <Redirect from="*" to={{ pathname: "/client/index", state: { path: 'client', state: this.props.location.state}}} />
+            <Redirect from="*" to={{ pathname: "/client/index", state: { path: 'client', state: this.props.location.state, servicio: this.state.serviciosNoCal} }} />
           </Switch>
           <Container fluid>
             <Footer />
