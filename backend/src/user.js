@@ -411,7 +411,6 @@ var check_code = (req,res)=>
   if(parseInt(codeCheck) === code)
   {
     res.send({respuesta: true});
-    console.log(respuesta);
   }
   else
   {
