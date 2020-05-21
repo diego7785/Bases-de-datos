@@ -28,9 +28,9 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function SnackbarRUCred(props) 
+export default function SnackbarRUCred(props)
 {
-    const finalRegister = async () => 
+    const finalRegister = async () =>
     {
         for (var i = 0; i < verifications.length; i++) {
             verifications[i] = true;
@@ -72,7 +72,7 @@ export default function SnackbarRUCred(props)
         }
         if(emptyFields && (props.props.month !== '01' && props.props.month !== '02' && props.props.month !== '03'
         && props.props.month !== '04' && props.props.month !== '05' && props.props.month !== '06' && props.props.month !== '07'
-        && props.props.month !== '08' && props.props.month !== '09' && props.props.month !== '10' && props.props.month !== '11' 
+        && props.props.month !== '08' && props.props.month !== '09' && props.props.month !== '10' && props.props.month !== '11'
         && props.props.month !== '12'))
         {
             verifications[6]=false;
@@ -121,13 +121,13 @@ export default function SnackbarRUCred(props)
                 const name = props.state1.location.state.name;
                 const lastname = props.state1.location.state.lastname;
                 const password = props.state1.location.state.password;
-            
+
                 var res = await axios.post(`http://localhost:5000/RegisterUser2/${idCard}/${phone}/${email}/${name}/${lastname}/${password}`)
                 console.log(res)
                 if(res.statusText === "OK"){
                 exito=exito+1;
                 }
-            
+
                 const endDate = props.props.month+'-'+props.props.year;
                 const cvc = props.props.cvc;
                 const cardNumber=props.props.cardNumber;
@@ -138,19 +138,18 @@ export default function SnackbarRUCred(props)
                 if(res.statusText === "OK"){
                 exito=exito+1;
                 }
-            
+
                 const lat = props.state1.location.state.latitude;
                 const lng = props.state1.location.state.length;
-                const address = props.state1.location.state.completeAddress;
-                const city = props.state1.location.state.city;
-                const depto = props.state1.location.state.depto;
-            
-                res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${city}/${depto}`)
+                const address = props.state1.location.state.address;
+                const complemento = props.state1.location.state.complemento;
+
+                res = await axios.post(`http://localhost:5000/RegisterUser2_3/${phone}/${lat}/${lng}/${address}/${complemento}`)
                 console.log(res)
                 if(res.statusText === "OK"){
                 exito=exito+1;
                 }
-            
+
                 if(exito === 3){
                 alert('Registro exitoso');
                 props.state1.history.push({pathname: "/auth/"})

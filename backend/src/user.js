@@ -105,10 +105,9 @@ var createAddress = (req,res,db) => {
   const lat=req.params.lat;
   const lng=req.params.lng;
   const address=req.params.address;
-  const city=req.params.city;
-  const depto=req.params.depto;
+  const complemento = req.params.complemento;
 
-  db.none(`INSERT INTO Direccion(celular_usuario,direccion_latitud,direccion_longitud,direccion_domicilio,direccion_ciudad,direccion_departamento) VALUES($1,$2,$3,'${address}','${city}','${depto}')`,
+  db.none(`INSERT INTO Direccion(celular_usuario,direccion_latitud,direccion_longitud,direccion_domicilio, direccion_complemento) VALUES($1,$2,$3,'${address}','${complemento}')`,
   [escape(phone), escape(lat), escape(lng)])
   .then((data) => {
     res.send(JSON.stringify(`Direccion registrada exitosamente`))
@@ -412,7 +411,6 @@ var check_code = (req,res)=>
   if(parseInt(codeCheck) === code)
   {
     res.send({respuesta: true});
-    console.log(respuesta);
   }
   else
   {

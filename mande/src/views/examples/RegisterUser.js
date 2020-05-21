@@ -29,13 +29,6 @@ var retornaMap = (state) => {
   }
 }
 
-var retornarDireccion = (state) =>{
-  if(state.completeAddress === true){
-    return(<TextField id="address" disabled="true" label="Continúe escribiendo la dirección" style={{width:500}}/>);
-  } else{
-    return(<TextField id="address" disabled="true" label={state.completeAddress} style={{width:500}}/>)
-  }
-}
 class RegisterUser extends React.Component {
   state = {
     celular: true,
@@ -94,7 +87,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-tablet-button" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Celular" type="text" required maxLength="10" onChange={e => this.onHandleChange(e, 'celular', 1)} />
+                    <Input placeholder="Celular" type="text" required maxLength="10" onChange={e => this.onHandleChange(e.target.value, 'celular', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -104,7 +97,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Nombre" type="text" onChange={e => this.onHandleChange(e, 'name', 1)} />
+                    <Input placeholder="Nombre" type="text" onChange={e => this.onHandleChange(e.target.value, 'name', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -114,7 +107,7 @@ class RegisterUser extends React.Component {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Apellido" type="text" onChange={e => this.onHandleChange(e, 'lastname', 1)}/>
+                  <Input placeholder="Apellido" type="text" onChange={e => this.onHandleChange(e.target.value, 'lastname', 1)}/>
                 </InputGroup>
               </FormGroup>
                 <FormGroup>
@@ -124,7 +117,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email" onChange={e => this.onHandleChange(e, 'email', 1)} />
+                    <Input placeholder="Email" type="email" autoComplete="new-email" onChange={e => this.onHandleChange(e.target.value, 'email', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -134,7 +127,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-key-25" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Cedula" type="text" id="idCard" required maxLength="10" onChange={e => this.onHandleChange(e, 'idCard', 1)}/>
+                    <Input placeholder="Cedula" type="text" id="idCard" required maxLength="10" onChange={e => this.onHandleChange(e.target.value, 'idCard', 1)}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -144,7 +137,7 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" onChange={e => this.onHandleChange(e, 'password', 1)} />
+                    <Input placeholder="Contraseña" type="password" autoComplete="new-password" onChange={e => this.onHandleChange(e.target.value, 'password', 1)} />
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -154,14 +147,13 @@ class RegisterUser extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" onChange={e => this.onHandleChange(e, 'passwordR', 1)} />
+                    <Input placeholder="Repita la contraseña" type="password" autoComplete="new-password" onChange={e => this.onHandleChange(e.target.value, 'passwordR', 1)} />
                   </InputGroup>
                 </FormGroup>
 
 
                   <Direccion state={this.state} functionSetState={this.onHandleChange} changeViaState={this.changeViaState}/>
                   {retornaMap(this.state)}
-                  {retornarDireccion(this.state)}
                 <div className="text-center">
                   <ValidationSnackbarsRU state={this.state} onHandleChange={this.setOpen} props={this.props}/>
                 </div>
