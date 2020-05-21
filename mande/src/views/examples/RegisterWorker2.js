@@ -1,6 +1,5 @@
 import React from 'react';
 import CuentaBancaria from 'components/Banco/CuentaBancaria';
-import axios from 'axios'
 import ValidationSnackbarsRW2 from 'components/Snackbars/ValidationSnackbarsRW2';
 
 import {
@@ -8,8 +7,7 @@ import {
   CardBody,
   FormGroup,
   Form,
-  Col,
-  Button
+  Col
 } from "reactstrap";
 
 
@@ -27,10 +25,6 @@ setOpen = (id,val)=>
 }
 onHandleChange = (id, value) => {
   this.setState({ [id]: value })
-}
-
-constructor(props){
-  super(props)
 }
 
 selectCuenta = (event, id) => {

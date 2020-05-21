@@ -7,7 +7,6 @@ import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footers/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routes.js";
-import Cookies from "js-cookie";
 class Client extends React.Component {
 
   constructor(props) {

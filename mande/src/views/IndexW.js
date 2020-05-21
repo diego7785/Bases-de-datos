@@ -53,7 +53,7 @@ class IndexW extends React.Component {
     e.preventDefault()
     console.log(this.state);
     const idServicio = this.state.idServicio;
-    const res = await axios.post(`http://localhost:5000/FinalizarLabor/${idServicio}`);
+    await axios.post(`http://localhost:5000/FinalizarLabor/${idServicio}`);
     alert('Labor terminada, por favor vuelva a iniciar sesion');
     this.props.history.push({
       pathname: "/auth",

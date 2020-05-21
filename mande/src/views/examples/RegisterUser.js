@@ -1,13 +1,11 @@
 import React from "react";
 import Direccion from "components/Address/Direccion.js"
 import Geocode from "react-geocode";
-import Map from 'components/Maps/map.js'; //Esto no funciona correctamente todavía
-import TextField from '@material-ui/core/TextField';
+import Map from 'components/Maps/map.js';
 import ValidationSnackbarsRU from 'components/Snackbars/ValidationSnackbarsRU';
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardBody,
   FormGroup,
@@ -56,7 +54,6 @@ class RegisterUser extends React.Component {
       console.log(this.state)
     } else{
       this.setState({ [id]: event.replace(/#/g,' No ') })
-      var addressPass = this.state.address;
       Geocode.fromAddress(event).then(
         response => {
           const { lat, lng } = response.results[0].geometry.location;

@@ -1,11 +1,8 @@
 import React from "react";
 import { Link } from 'react-router-dom'
 import ValidationSnackbarsLU from 'components/Snackbars/ValidationSnackbarsLU';
-import Cookies from 'js-cookie';
-
 // reactstrap components
 import {
-  Button,
   Card,
   CardBody,
   FormGroup,
@@ -21,10 +18,6 @@ import {
 
 class LoginAsUser extends React.Component {
 
-  constructor(props){
-    super(props)
-    Cookies.remove("Client");
-  }
   state = {
     phone: true,
     pass: true,

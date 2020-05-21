@@ -18,7 +18,7 @@ class Results extends React.Component {
 
   handleChange = (e) => {
     this.setState({desc: e.target.value})
-  } 
+  }
 
   render() {
     return (
@@ -26,12 +26,12 @@ class Results extends React.Component {
       <Row>
         {this.props.results.data.map((user) => {
           var estado = true;
-          if (user.trabajador_estado == 0){
+          if (user.trabajador_estado === 0){
             estado = false;
             console.log(estado)
-          } 
-           
-          
+          }
+
+
           return <li key={user.cedula_trabajador} style={{ listStyle: "none" }}><ResultCard name={user.trabajador_nombre}
             descripcion={user.labor_descripcion}
             titulo={user.labor_nombre}

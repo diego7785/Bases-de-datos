@@ -4,7 +4,6 @@ import ValidationSnackbarsLW from 'components/Snackbars/ValidationSnackbarsLW';
 
 // reactstrap components
 import {
-  Button,
   Card,
   CardBody,
   FormGroup,
@@ -66,7 +65,7 @@ class LoginAsWorker extends React.Component {
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <ValidationSnackbarsLW state={this.state} onHandleChange={this.setOpen} props={this.props}/>  
+                  <ValidationSnackbarsLW state={this.state} onHandleChange={this.setOpen} props={this.props}/>
                 </div>
               </Form>
             </CardBody>
