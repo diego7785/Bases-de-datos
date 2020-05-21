@@ -629,8 +629,3 @@ INSERT INTO Cuenta_bancaria VALUES(PGP_SYM_ENCRYPT('2234567890', 'AES_KEY'), 'Ba
 INSERT INTO Realiza VALUES(3, '2234567890', 25000, 'Por hora', 'Quiero ensenar mates++', B'1');
 
 INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio) VALUES('2234567890', 3.376045, -76.550033, 'Calle 2c # 92 - 133, Cali, Valle del Cauca, Colombia');
-
---SELECT COUNT(cedula_trabajador) AS Calificaciones FROM Servicio WHERE cedula_trabajador='2234567890' AND servicio_calificacion > 0;
---SELECT COUNT(cedula_trabajador) AS Trabajos FROM Servicio WHERE  cedula_trabajador='2234567890';
---SELECT COUNT(celular_usuario) AS Calificaciones FROM Servicio WHERE celular_usuario='3219234114' AND servicio_calificacion > 0;
---SELECT COUNT(celular_usuario) AS Trabajos FROM Servicio WHERE  celular_usuario='3219234114';
