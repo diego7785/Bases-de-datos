@@ -283,8 +283,8 @@ var send_mail = (req, res)=>
   var transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-          user: 'telefoniaraja@gmail.com',
-          pass: 'desarrollo1'
+          user: 'helpmandeapp@gmail.com',
+          pass: 'mande123'
       }
   });
   // Definimos el email

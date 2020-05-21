@@ -37,16 +37,6 @@ class RegisterWorker1 extends React.Component {
 
   onChangeHandler = (id, event, type) =>{
    this.setState({ [id]: event.target.files[0]})
-   switch (type) {
-     case 1: this.setState({ loaded1: true})
-       break;
-     case 2: this.setState({ loaded2: true})
-       break;
-     case 3: this.setState({ loaded3: true})
-       break;
-     default: return('Unknow index');
-
-   }
 }
 
   render(){
@@ -59,6 +49,13 @@ class RegisterWorker1 extends React.Component {
               <small>PASO 2: Labores y verificación</small>
             </div>
             <Form role="form">
+              <div className="text-center text-muted mb-4">
+                <small>
+                  Si tu labor no aparece aquí, puedes enviarnos un correo a: helpmandeapp@gmail.com,
+                  nosotros la agregaremos y te notificaremos lo más pronto posible para que puedas continuar
+                  con tu registro.
+              </small>
+              </div>
             <Jobs state={this.state}  jobs={this.props.location.state.tjobs} onHandleChange={this.onHandleChange}/>
             <FormGroup className="text-center">
             <label>

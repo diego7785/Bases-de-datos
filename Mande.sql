@@ -572,11 +572,39 @@ CREATE INDEX indiceCuentaBancaria ON Cuenta_bancaria USING HASH(numero_cuenta_ba
 
 
 -- Labores predeterminadas
-INSERT INTO Labor(labor_nombre) VALUES('Profesor Ingles'),
+INSERT INTO Labor(labor_nombre) VALUES('Profesor(a) de Ingles'),
 																			('Paseador de perros'),
-																			('Profesor de matemáticas'),
-																			('Plomero'),
-																			('Electricista');
+																			('Profesor(a) de matemáticas'),
+																			('Plomero(a)'),
+																			('Electricista'),
+																			('Confeccion de ropa'),
+																			('Decoracion para fiestas'),
+																			('Manicurista'),
+																			('Servicios generales del hogar'),
+																			('Cocinero(a)'),
+																			('Niñera(o)'),
+																			('Carpintero(a)'),
+																			('Cerrajero(a)'),
+																			('Albañil'),
+																			('Chofer'),
+																			('Vigilante'),
+																			('Repartidor(a)'),
+																			('Taxista'),
+																			('Fotógrafo(a)'),
+																			('Barbero o Estilista'),
+																			('Mecánico(a)'),
+																			('Panadero(a)'),
+																			('Cajero(a)'),
+																			('Soldador'),
+																			('Cartero(a)'),
+																			('Estibador(a)'),
+																			('Maquinista'),
+																			('Reparación de neveras'),
+																			('Reparación de lavadoras'),
+																			('Reparación de electrodomésticos'),
+																			('Maquilladora')
+
+
 
 -- Inserts predeterminados
 
