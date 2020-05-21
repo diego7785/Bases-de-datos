@@ -418,6 +418,30 @@ var check_code = (req,res)=>
   }
 }
 
+var GetCalificacionesTotales = (req,res,db) => {
+  const phone = req.params.phone;
+  db.many(`SELECT COUNT(celular_usuario) AS Calificaciones FROM Servicio WHERE celular_usuario='${phone}' AND servicio_calificacion > 0`)
+  .then((data) => {
+    res.send(JSON.stringify(data));
+  })
+  .catch((error) => {
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var GetTrabajosTotales = (req,res,db) => {
+  const phone = req.params.phone;
+  db.many(`SELECT COUNT(celular_usuario) AS Trabajos FROM Servicio WHERE  celular_usuario='${phone}'`)
+  .then((data) => {
+    res.send(JSON.stringify(data));
+  })
+  .catch((error) => {
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
 module.exports = {
   createUser,
   createDebitCard,
@@ -445,5 +469,6 @@ module.exports = {
   check_code,
   GetJobsNoStars,
   CalificarLabor,
-
+  GetCalificacionesTotales,
+  GetTrabajosTotales,
 }

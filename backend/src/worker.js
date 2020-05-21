@@ -293,7 +293,7 @@ var send_mail = (req, res)=>
   to: email,
   subject: 'Recuperación de cuenta en Mande App',
   text: 'Su código de recuperación de cuenta es ' + code,
- 
+
   };
   // Enviamos el email
   transporter.sendMail(mailOptions, function(error, info){
@@ -355,7 +355,7 @@ var check_code = (req,res)=>
 var score_avg = (req, res, db)=>
 {
   const idCard = req.params.idCard;
-  db.many(`WITH prom AS 
+  db.many(`WITH prom AS
   (
   SELECT CAST (AVG(servicio_calificacion)AS float) AS promedio_calificacion,labor_id
   FROM Servicio
@@ -378,6 +378,30 @@ var score_avg = (req, res, db)=>
 var GetSolicitudesLabor = (req,res,db) => {
   const idCard = req.params.idCard;
   db.many(`SELECT COUNT(*) AS Labores, labor_nombre FROM servicio INNER JOIN labor ON labor_id = id_labor WHERE cedula_trabajador='${idCard}' GROUP BY labor_id, labor_nombre`)
+  .then((data) => {
+    res.send(JSON.stringify(data));
+  })
+  .catch((error) => {
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var GetCalificacionesTotales = (req,res,db) => {
+  const idCard = req.params.idCard;
+  db.many(`SELECT COUNT(cedula_trabajador) AS Calificaciones FROM Servicio WHERE cedula_trabajador='${idCard}' AND servicio_calificacion > 0`)
+  .then((data) => {
+    res.send(JSON.stringify(data));
+  })
+  .catch((error) => {
+    console.log(`ERROR:`, error);
+    res.send(JSON.stringify(error.detail))
+  })
+}
+
+var GetTrabajosTotales = (req,res,db) => {
+  const idCard = req.params.idCard;
+  db.many(`SELECT COUNT(cedula_trabajador) AS Trabajos FROM Servicio WHERE  cedula_trabajador='${idCard}'`)
   .then((data) => {
     res.send(JSON.stringify(data));
   })
@@ -410,4 +434,6 @@ module.exports = {
   check_code,
   score_avg,
   GetSolicitudesLabor,
+  GetCalificacionesTotales,
+  GetTrabajosTotales,
 }

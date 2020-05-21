@@ -54,6 +54,10 @@ export default function SnackbarLW(props) {
                 console.log(scoreAvg);
                 const res7 = await axios.get(`http://localhost:5000/GetSolicitudesLabor/${idCard}`)
                 const solicitudes = res7.data;
+                const res8 = await axios.get(`http://localhost:5000/GetCalificacionesTotalesWorker/${idCard}`)
+                const calificacionesTotales = res8.data[0];
+                const res9 = await axios.get(`http://localhost:5000/GetTrabajosTotalesWorker/${idCard}`)
+                const trabajosTotales = res9.data[0];
 
                 props.props.history.push({
                     pathname: "/worker/", state: {
@@ -64,6 +68,8 @@ export default function SnackbarLW(props) {
                     accountInfo : accountInfo,
                     busyInfo : busyInfo,
                     solicitudes: solicitudes,
+                    calificacionesTotales : calificacionesTotales,
+                    trabajosTotales : trabajosTotales,
                     }
                 })
             }

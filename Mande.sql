@@ -162,11 +162,10 @@ BEGIN
 								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Trabajador_realiza.trabajador_foto_perfil, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
 							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
 							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.id_labor, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil,
-							TR_Direccion.direccion_domicilio, DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY TR_Direccion.trabajador_calificacion, DistanciaUT, TR_Direccion.realiza_precio;
+							TR_Direccion.direccion_domicilio, DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY  TR_Direccion.realiza_precio DESC, DistanciaUT ASC, TR_Direccion.trabajador_calificacion ASC;
 END;
 $$
 LANGUAGE plpgsql;
-select * from get_workers_results('Profesor de matemáticas', '1987654321');
 
 -- Funcion para obtener los datos del trabajador que se busca avanzadamente y calcular la distancia
 -- Parametros: Labor a buscar, celular usuario, tipo de cobro, cantidad de estrellas, precio minimo, precio maximo
@@ -188,7 +187,7 @@ BEGIN
 								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Trabajador_realiza.trabajador_foto_perfil, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
 							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
 							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.id_labor, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil, TR_Direccion.direccion_domicilio,
-							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY TR_Direccion.trabajador_calificacion, DistanciaUT, TR_Direccion.realiza_precio;
+							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY TR_Direccion.realiza_precio DESC, DistanciaUT ASC, TR_Direccion.trabajador_calificacion ASC
 END;
 $$
 LANGUAGE plpgsql;
@@ -603,4 +602,7 @@ INSERT INTO Realiza VALUES(3, '2234567890', 25000, 'Por hora', 'Quiero ensenar m
 
 INSERT INTO Direccion(cedula_trabajador, direccion_latitud, direccion_longitud, direccion_domicilio) VALUES('2234567890', 3.376045, -76.550033, 'Calle 2c # 92 - 133, Cali, Valle del Cauca, Colombia');
 
--- select COUNT(*), labor_id, labor_nombre from servicio INNER JOIN labor ON labor_id = id_labor where  cedula_trabajador='1234567890' GROUP BY labor_id, labor_nombre;
+--SELECT COUNT(cedula_trabajador) AS Calificaciones FROM Servicio WHERE cedula_trabajador='2234567890' AND servicio_calificacion > 0;
+--SELECT COUNT(cedula_trabajador) AS Trabajos FROM Servicio WHERE  cedula_trabajador='2234567890';
+--SELECT COUNT(celular_usuario) AS Calificaciones FROM Servicio WHERE celular_usuario='3219234114' AND servicio_calificacion > 0;
+--SELECT COUNT(celular_usuario) AS Trabajos FROM Servicio WHERE  celular_usuario='3219234114';

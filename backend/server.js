@@ -88,6 +88,10 @@ app.get(`/ScoreAverageWorker/:idCard` , (req,res) => worker.score_avg(req,res,db
 
 app.get(`/GetSolicitudesLabor/:idCard`, (req,res) => worker.GetSolicitudesLabor(req,res,db))
 
+app.get(`/GetCalificacionesTotalesWorker/:idCard`, (req,res) => worker.GetCalificacionesTotales(req,res,db))
+
+app.get(`/GetTrabajosTotalesWorker/:idCard`, (req,res) => worker.GetTrabajosTotales(req,res,db))
+
 //user
 app.post(`/RegisterUser1/images`, (req, res) => {
   upload(req, res, function (err) {
@@ -149,6 +153,10 @@ app.post(`/RecoverAccountUser/:email/:pass`, (req,res) => user.recover_account(r
 app.get(`/SendMailUser/:email`, (req,res) => user.send_mail(req,res))
 
 app.get(`/CheckCodeUser/:code`, (req,res) => user.check_code(req,res))
+
+app.get(`/GetCalificacionesTotalesUser/:phone`, (req,res) => user.GetCalificacionesTotales(req,res,db))
+
+app.get(`/GetTrabajosTotalesUser/:phone`, (req,res) => user.GetTrabajosTotales(req,res,db))
 
 
 app.listen(port, () => console.log(`API listening on port ${port}!`))
