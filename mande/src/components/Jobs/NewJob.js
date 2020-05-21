@@ -41,7 +41,7 @@ export default function AddNewJob(props) {
       var res = await axios.post(`http://localhost:5000/RegisterWorker2_1/${idJob}/${idCard}/${phone}/${price}/${typePay}/${description}/${status}`)
       console.log(res);
       if(res.statusText === "OK"){
-        alert("Labor agregada con éxito");
+        alert("Labor agregada con éxito. Vuelve a ingresar para hacer efectivos los cambios.");
       }
     }
   };

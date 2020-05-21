@@ -51,12 +51,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //Esto se debe actualizar con respecto a la base de datos
-var labores =[];
+var labores = [];
 
-const tipoCobro = [{type:"Por hora"}, {type:"Por labor"},];
+const tipoCobro = [{ type: "Por hora" }, { type: "Por labor" },];
 
 export default function Jobs(props) {
-  labores=props.jobs;
+  labores = props.jobs;
   const classes = useStyles();
   const [values, setValues] = React.useState({
     textmask: '(1  )    -    ',
@@ -71,8 +71,8 @@ export default function Jobs(props) {
 
   };
 
-    return(
-      <>
+  return (
+    <>
       <FormGroup>
         <Autocomplete
           id="jobs-selection"
@@ -93,26 +93,31 @@ export default function Jobs(props) {
               {...params}
               label="Escoja una labor"
               variant="outlined"
-              />
+            />
           )}
-        onChange={e => props.onHandleChange('job',parseInt(e.target.dataset.optionIndex)+1)}
+          onChange={e => {
+            e.target.dataset.optionIndex === undefined ? 
+            props.onHandleChange('job', true) : 
+            props.onHandleChange('job', parseInt(e.target.dataset.optionIndex) + 1)
+
+          }}
         />
       </FormGroup>
       <FormGroup>
         <FormControl className={classes.marginN}>
           <div style={{ marginTop: 15 }}>
-          <TextField
-          id="outlined-multiline-static"
-          label="Descripción"
-          multiline
-          rows="8"
-          style = {{width: 360}}
-          inputProps={{ maxLength: 200 }}
-          placeholder="Por favor, escriba una corta descripción de su labor"
-          variant="outlined"
-          onChange={e => props.onHandleChange('description', e.target.value)}
-        />
-        </div>
+            <TextField
+              id="outlined-multiline-static"
+              label="Descripción"
+              multiline
+              rows="8"
+              style={{ width: 360 }}
+              inputProps={{ maxLength: 200 }}
+              placeholder="Por favor, escriba una corta descripción de su labor"
+              variant="outlined"
+              onChange={e => props.onHandleChange('description', e.target.value)}
+            />
+          </div>
         </FormControl>
       </FormGroup>
       <FormGroup>
@@ -136,22 +141,22 @@ export default function Jobs(props) {
               label="Tipo cobro"
               variant="outlined"
             />
-        )}
-        onChange={e => props.onHandleChange('type', e.target.innerText)}
+          )}
+          onChange={e => props.onHandleChange('type', e.target.innerText)}
         />
-    </FormGroup>
+      </FormGroup>
       <FormGroup>
         <TextField
-        label="Cobro"
-        value={values.numberformat}
-        onChange={handleChange}
-        name="numberformat"
-        id="formatted-numberformat-input"
-        InputProps={{
-          inputComponent: NumberFormatCustom,
-        }}
-      />
+          label="Cobro"
+          value={values.numberformat}
+          onChange={handleChange}
+          name="numberformat"
+          id="formatted-numberformat-input"
+          InputProps={{
+            inputComponent: NumberFormatCustom,
+          }}
+        />
       </FormGroup>
-      </>
-    );
-  }
+    </>
+  );
+}

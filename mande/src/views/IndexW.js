@@ -60,6 +60,17 @@ class IndexW extends React.Component {
     })
   }
 
+  mapAvgRating = () => {
+    if (this.props.location.state.state.scoreAvg !== undefined) {
+      this.props.location.state.state.scoreAvg.map((duty) => {
+        return <Row><WorkerRateDuty name={duty.labor_nombre} rating={duty.promedio_calificacion} /></Row>
+      })
+    }else{
+      return <div></div>
+    }
+  }
+
+
   laborActiva = () => {
     if (this.state.busy) {
       return (
@@ -164,9 +175,7 @@ class IndexW extends React.Component {
                       <h3 className="mb-0">Promedio de estrellas por labor</h3>
                     </div>
                   </Row>
-                  {this.props.location.state.state.scoreAvg.map((duty) => {
-                    return <Row><WorkerRateDuty name={duty.labor_nombre} rating={duty.promedio_calificacion} /></Row>
-                  })}
+                  {this.mapAvgRating}
                 </CardHeader>
 
               </Card>
