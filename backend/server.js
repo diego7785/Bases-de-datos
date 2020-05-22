@@ -6,7 +6,7 @@ const user = require('./src/user');
 const multer = require('multer');
 
 const connectionAdminOptions = {
-  host: 'localhost', port: 5433, database: 'Mande',
+  host: 'database', port: 5432, database: 'Mande',
   user: 'postgres', password: 'pg123', poolSize: 20, poolIdleTimeout: 10000
 };
 

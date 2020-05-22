@@ -11,6 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/diego7785/Bases-de-datos.git"
   },
+  "proxy": "http://back:5000/",
   "author": "Angelica,Diego,Pablo",
   "license": "MIT",
   "bugs": {

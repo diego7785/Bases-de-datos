@@ -2,7 +2,7 @@ version: '3.1'
 
 services: 
   front:
-    image: front
+    image: koronavairuz
     environment:
       NODE_ENV: production
     ports:
@@ -18,9 +18,9 @@ services:
     environment:
       - DATABASE_URL=postgres://postgres:pg123@database:5432/Mande
   database:
-    image: postgres
+    image: base
     ports:
-      - 5433:5432    
+      - 5432:5432    
     environment:
       POSTGRES_DB: Mande
       POSTGRES_USER: postgres
