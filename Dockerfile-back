@@ -1,5 +1,0 @@
-FROM node:12.15
-ENV NODE_ENV production
-COPY ["/backend/package.json", "/backend/package-lock.json*", "/backend/", "./"]
-EXPOSE 5000
-CMD npm start
