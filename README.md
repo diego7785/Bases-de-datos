@@ -6,7 +6,7 @@
 ## Modulos
 
 * [Axios](https://github.com/axios/axios)
-* [Material-UI](https://material-ui.com/
+* [Material-UI](https://material-ui.com/)
 
 
 ## Para desarrolladores: 
@@ -59,7 +59,7 @@ docker run -p 80:80 --name pgadmin4 -e 'PGADMIN_DEFAULT_EMAIL=yo@domain.com' -e 
 * Acceder desde el navegador al puerto localhost:80, ingresar a PgAdmin con usuario yo@domain.com y contraseña pg123, crear un nuevo servidor, configurar asi:
 
 
-![Alt text](/home/diego/Im%C3%A1genes/Captura%20de%20pantalla%20de%202020-05-24%2000-57-03.png?raw=true "DataBase")
+![Screenshot](images/database.png)
 
 
 El nombre del servidor queda a criterio del usuario, el username debe ser postgres y la contraseña pg123
@@ -67,7 +67,7 @@ El nombre del servidor queda a criterio del usuario, el username debe ser postgr
 :warning: En caso de error con el hostname este se obtiene de entrar a la consola y escribir ifconfig y tomar el inet address de la sección docker0 :warning:
 
 
-![Alt text](/home/diego/Im%C3%A1genes/Captura%20de%20pantalla%20de%202020-05-24%2001-05-00.png?raw=true "HostnameError")
+![Screenshot](images/docker.png)
 
 
 * Crear una base de datos con nombre Mande y copiarle el archivo Mande.sql
