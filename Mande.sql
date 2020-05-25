@@ -162,7 +162,7 @@ BEGIN
 								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Trabajador_realiza.trabajador_foto_perfil, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
 							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
 							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.id_labor, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil,
-							TR_Direccion.direccion_domicilio, DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY  TR_Direccion.realiza_precio DESC, DistanciaUT ASC, TR_Direccion.trabajador_calificacion ASC;
+							TR_Direccion.direccion_domicilio, DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY  TR_Direccion.realiza_precio, DistanciaUT, TR_Direccion.trabajador_calificacion DESC;
 END;
 $$
 LANGUAGE plpgsql;
@@ -187,7 +187,7 @@ BEGIN
 								Trabajador_realiza.trabajador_nombre, Trabajador_realiza.trabajador_apellido, Trabajador_realiza.trabajador_calificacion, Trabajador_realiza.trabajador_foto_perfil, Direccion.direccion_latitud, Direccion.direccion_longitud, Direccion.direccion_domicilio, Direccion.direccion_ubicacion FROM Trabajador_realiza NATURAL JOIN Direccion),
 							Distancia AS (SELECT TR_Direccion.cedula_trabajador, ST_Distance(TR_Direccion.direccion_ubicacion, ubicacionU) AS DistanciaUT FROM TR_Direccion)
 							SELECT DISTINCT Distancia.cedula_trabajador, TR_Direccion.id_labor, TR_Direccion.realiza_precio, TR_Direccion.realiza_tipo, TR_Direccion.labor_descripcion, TR_Direccion.trabajador_estado, TR_Direccion.trabajador_nombre, TR_Direccion.trabajador_apellido, TR_Direccion.trabajador_calificacion, TR_Direccion.trabajador_foto_perfil, TR_Direccion.direccion_domicilio,
-							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY TR_Direccion.realiza_precio DESC, DistanciaUT ASC, TR_Direccion.trabajador_calificacion ASC;
+							DistanciaUT FROM TR_Direccion NATURAL JOIN Distancia ORDER BY TR_Direccion.realiza_precio, DistanciaUT, TR_Direccion.trabajador_calificacion DESC;
 END;
 $$
 LANGUAGE plpgsql;
